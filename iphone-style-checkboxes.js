@@ -25,7 +25,7 @@
           container = elem.parent('.container'),
           rightside = container.width() - 39;
       
-      container.click(function() {
+      container.mouseup(function() {
         var is_onstate = (handle.position().left <= 0);
             new_left   = (is_onstate) ? rightside : 0,
             bgleft     = (is_onstate) ? 34 : 0;
@@ -46,6 +46,11 @@
         elem.attr('checked', !is_onstate);
         return false;
       });
+      
+      // Disable text selection
+      $(container, onlabel, offlabel, handle).mousedown(function() { return false; });
+      if ($.browser.ie)
+        $(container, onlabel, offlabel, handle).bind('startselect', function() { return false; });
       
       // initial load
       if (elem.is(':checked')) {
