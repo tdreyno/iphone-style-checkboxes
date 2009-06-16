@@ -12,6 +12,7 @@
       if (!elem.is(':checkbox'))
         return;
       
+      elem.css({ opacity: 0 });
       elem.wrap('<div class="container" />');
       elem.after('<div class="handle"><div style="background: ' + options.background + '"/><img src="images/slider.png" /></div>')
           .after('<label class="off">'+ options.uncheckedLabel + '</label>')
