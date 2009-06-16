@@ -33,26 +33,26 @@
     z-index: 2; }
 label.on, label.off {
   font-size: 17px;
+  line-height: 17px;
   font-weight: bold;
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   cursor: pointer;
   display: block;
-  height: 24px;
+  height: 22px;
   position: absolute;
+  width: 52px;
   top: 0; }
   label.on {
     color: #fff;
     background: url(images/on.png) no-repeat;
     text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
     left: 0;
-    width: 50px;
-    padding: 3px 0 0 10px; }
+    padding: 5px 0 0 8px; }
   label.off {
     color: #8B8B8B;
     background: url(images/off.png) no-repeat right 0;
     text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.6);
     text-align: right;
     right: 0;
-    width: 52px;
-    padding: 3px 8px 0 0; }
+    padding: 5px 8px 0 0; }
