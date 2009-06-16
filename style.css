@@ -1,0 +1,56 @@
+.container {
+  position: relative;
+  width: 85px;
+  height: 27px;
+  cursor: pointer;
+  overflow: hidden; }
+  .container input {
+    position: absolute;
+    top: 5px;
+    left: 30px; }
+.handle {
+  display: block;
+  height: 27px;
+  width: 39px;
+  background: url(images/slider.png) no-repeat; 
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0; }
+  .handle div {
+    position: absolute;
+    width: 5px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1; }
+  .handle img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2; }
+label.on, label.off {
+  font-size: 17px;
+  font-weight: bold;
+  font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: block;
+  height: 24px;
+  position: absolute;
+  top: 0; }
+  label.on {
+    color: #fff;
+    background: url(images/on.png) no-repeat;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
+    left: 0;
+    width: 50px;
+    padding: 3px 0 0 10px; }
+  label.off {
+    color: #8B8B8B;
+    background: url(images/off.png) no-repeat right 0;
+    text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.6);
+    text-align: right;
+    right: 0;
+    width: 52px;
+    padding: 3px 8px 0 0; }
