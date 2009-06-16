@@ -12,22 +12,24 @@
   display: block;
   height: 27px;
   width: 39px;
-  background: url(images/slider.png) no-repeat; 
   cursor: pointer;
   position: absolute;
   top: 0;
   left: 0; }
-  .handle div {
+  .handle .bg {
     position: absolute;
     width: 5px;
     height: 100%;
     top: 0;
     left: 0;
     z-index: 1; }
-  .handle img {
+  .handle .slider {
     position: absolute;
     top: 0;
     left: 0;
+    height: 27px;
+    width: 39px;
+    background: url(images/slider.png) no-repeat;
     z-index: 2; }
 label.on, label.off {
   font-size: 17px;

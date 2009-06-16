@@ -14,12 +14,12 @@
       
       elem.css({ opacity: 0 });
       elem.wrap('<div class="container" />');
-      elem.after('<div class="handle"><div style="background: ' + options.background + '"/><img src="images/slider.png" /></div>')
+      elem.after('<div class="handle"><div class="bg" style="background: ' + options.background + '"/><div class="slider" /></div>')
           .after('<label class="off">'+ options.uncheckedLabel + '</label>')
           .after('<label class="on">' + options.checkedLabel   + '</label>');
       
       var handle    = elem.siblings('.handle'),
-          handlebg  = handle.children('div'),
+          handlebg  = handle.children('.bg'),
           offlabel  = elem.siblings('.off'),
           onlabel   = elem.siblings('.on'),
           container = elem.parent('.container'),
