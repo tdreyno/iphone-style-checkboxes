@@ -1,6 +1,16 @@
 (function($){
   $.iphoneStyle = {
-    defaults: { checkedLabel: 'ON', uncheckedLabel: 'OFF', background: '#fff' }
+    defaults: { 
+      checkedLabel:      'ON', 
+      uncheckedLabel:    'OFF', 
+      background:        '#fff',
+      containerClass:    'iPhoneCheckContainer',
+      labelOnClass:      'iPhoneCheckLabelOn',
+      labelOffClass:     'iPhoneCheckLabelOff',
+      handleClass:       'iPhoneCheckHandle',
+      handleBGClass:     'iPhoneCheckHandleBG',
+      handleSliderClass: 'iPhoneCheckHandleSlider'
+    }
   }
   
   $.fn.iphoneStyle = function(options) {
@@ -13,16 +23,16 @@
         return;
       
       elem.css({ opacity: 0 });
-      elem.wrap('<div class="container" />');
-      elem.after('<div class="handle"><div class="bg" style="background: ' + options.background + '"/><div class="slider" /></div>')
-          .after('<label class="off">'+ options.uncheckedLabel + '</label>')
-          .after('<label class="on">' + options.checkedLabel   + '</label>');
+      elem.wrap('<div class="' + options.containerClass + '" />');
+      elem.after('<div class="' + options.handleClass + '"><div class="' + options.handleBGClass + '" style="background: ' + options.background + '"/><div class="' + options.handleSliderClass + '" /></div>')
+          .after('<label class="' + options.labelOffClass + '">'+ options.uncheckedLabel + '</label>')
+          .after('<label class="' + options.labelOnClass + '">' + options.checkedLabel   + '</label>');
       
-      var handle    = elem.siblings('.handle'),
-          handlebg  = handle.children('.bg'),
-          offlabel  = elem.siblings('.off'),
-          onlabel   = elem.siblings('.on'),
-          container = elem.parent('.container'),
+      var handle    = elem.siblings('.' + options.handleClass),
+          handlebg  = handle.children('.' + options.handleBGClass),
+          offlabel  = elem.siblings('.' + options.labelOffClass),
+          onlabel   = elem.siblings('.' + options.labelOnClass),
+          container = elem.parent('.' + options.containerClass),
           rightside = container.width() - 39;
       
       container.mouseup(function() {
