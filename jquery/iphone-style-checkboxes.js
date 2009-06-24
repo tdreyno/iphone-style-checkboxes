@@ -53,7 +53,7 @@
           onlabel.animate({ opacity: 0 }, 200);
         }
         
-        elem.attr('checked', !is_onstate);
+        elem.attr('checked', !is_onstate).change();
         return false;
       });
       
