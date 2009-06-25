@@ -8,17 +8,39 @@
   <script src="prototype/scriptaculous-effects-1.8.2.js" type="text/javascript" charset="utf-8"></script>
   <script src="prototype/iphone-style-checkboxes.js" type="text/javascript" charset="utf-8"></script>
   <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8" />
+  <style type="text/css">
+    .css_sized_container .iPhoneCheckContainer {
+      width: 300px;
+    }
+  </style>
+
   <script type="text/javascript" charset="utf-8">
     document.observe("dom:loaded", function() {
-      new iPhoneStyle('input[type=checkbox]');
+      new iPhoneStyle('.on_off input[type=checkbox]');
+      new iPhoneStyle('.css_sized_container input[type=checkbox]', { resizeContainer: false, resizeHandle: false });
+      new iPhoneStyle('.long_tiny input[type=checkbox]', { checkedLabel: 'Very Long Text', uncheckedLabel: 'Tiny' });
     });
   </script>
+  
 </head>
 <body>
-  <h2>Off by default</h2>
-  <input type="checkbox" />
+  <div class="on_off">
+    <h2>Default off</h2>
+    <input type="checkbox" />
   
-  <h2>On by default</h2>
-  <input type="checkbox" checked="checked" />
+    <h2>Default on</h2>
+    <input type="checkbox" checked="checked" />
+  </div>
+
+  <div class="css_sized_container">
+    <h2>CSS Sized Container and Handle</h2>
+    <input type="checkbox" />
+  </div>
+
+  <div class="long_tiny">
+    <h2>Long and short labels</h2>
+    <input type="checkbox" />
+  </div>
+
 </body>
 </html>

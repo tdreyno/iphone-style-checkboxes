@@ -1,16 +1,20 @@
 $.iphoneStyle = {
   defaults: { 
-    checkedLabel: 'ON', uncheckedLabel: 'OFF', background: '#fff',
+    duration:          200,
+    checkedLabel:      'ON', 
+    uncheckedLabel:    'OFF', 
+    resizeHandle:      true,
+    resizeContainer:   true,
+    background:        '#fff',
     containerClass:    'iPhoneCheckContainer',
     labelOnClass:      'iPhoneCheckLabelOn',
     labelOffClass:     'iPhoneCheckLabelOff',
     handleClass:       'iPhoneCheckHandle',
-    handleSliderClass: 'iPhoneCheckHandleSlider'
   }
 }
 
 var iPhoneStyle = function(selector_or_elem, options) {
-  options = Object.extend($.iphoneStyle.defaults, options);
+  options = Object.extend(Object.clone($.iphoneStyle.defaults), options || {});
   
   return $$(selector_or_elem).each(function(elem) {
     
@@ -19,30 +23,42 @@ var iPhoneStyle = function(selector_or_elem, options) {
     
     elem.setOpacity(0);
     elem.wrap('div', { 'class': options.containerClass});
-    elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="' + options.handleSliderClass + '" /></div>' })
+    elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="right"><div class="center" /></div></div>' })
         .insert({ 'after': '<label class="' + options.labelOffClass + '">'+ options.uncheckedLabel + '</label>' })
         .insert({ 'after': '<label class="' + options.labelOnClass + '">' + options.checkedLabel   + '</label>' });
     
     var handle    = elem.up().down('.' + options.handleClass),
-        handlebg  = handle.down('.' + options.handleBGClass),
-        offlabel  = elem.adjacent('.' + options.labelOffClass).first(),
-        onlabel   = elem.adjacent('.' + options.labelOnClass).first(),
-        container = elem.up('.' + options.containerClass),
-        rightside = container.getWidth() - 39;
-        
-    
+      offlabel  = elem.adjacent('.' + options.labelOffClass).first(),
+      onlabel   = elem.adjacent('.' + options.labelOnClass).first(),
+      container = elem.up('.' + options.containerClass);
+      
+    if (options.resizeHandle) {
+      var min = (onlabel.getWidth() < offlabel.getWidth()) ? onlabel.getWidth() : offlabel.getWidth();
+      handle.setStyle({width: min - 8 + 'px'});
+    }
+    if (options.resizeContainer) {
+      var max = (onlabel.getWidth() > offlabel.getWidth()) ? onlabel.getWidth() : offlabel.getWidth();
+      container.setStyle({width: max + handle.getWidth() + 12 + 'px'});
+    }
+    offlabel.setStyle({width: container.getWidth() - 12  + 'px'})
+
+    var rightside = container.getWidth() - handle.getWidth() - 4;
+
+    if (elem.checked) {
+      handle.setStyle({ left: rightside + 'px' });
+      onlabel.setStyle({ width: rightside + 'px' })
+    } else {
+      handle.setStyle({ left: 0 });
+      onlabel.setStyle({ width: 0 })
+    }    
+
     container.observe('mouseup', function() {
       var is_onstate = (elem.checked);
     
-      new Effect.Tween(null, (is_onstate) ? 1 : 0, (is_onstate) ? 0 : 1, { duration: 0.2 }, function(p) { handle.setStyle({ left: p * rightside + 'px' }) });
-      
-      if (is_onstate) {
-        offlabel.appear({ duration: 0.2 });
-        onlabel.fade({ duration: 0.2 });
-      } else {
-        offlabel.fade({ duration: 0.2 });
-        onlabel.appear({ duration: 0.2 });
-      }
+      new Effect.Tween(null, (is_onstate) ? 1 : 0, (is_onstate) ? 0 : 1, { duration: options.duration / 1000 }, function(p) {
+        handle.setStyle({ left: p * rightside + 'px' }) 
+        onlabel.setStyle({ width: p * rightside + 'px' }) 
+      });
       
       elem.writeAttribute('checked', !is_onstate);
       return false;
@@ -53,11 +69,5 @@ var iPhoneStyle = function(selector_or_elem, options) {
     if (Prototype.Browser.IE)
       [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); return false; });
     
-    // initial load
-    if (elem.match(':checked')) {
-      offlabel.setOpacity(0);
-      onlabel.setOpacity(1);
-      handle.setStyle({ left: rightside + 'px'});
-    }
   });
 };
