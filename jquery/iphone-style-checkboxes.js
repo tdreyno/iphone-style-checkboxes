@@ -1,6 +1,7 @@
 (function($){
   $.iphoneStyle = {
     defaults: { 
+      duration:          200,
       checkedLabel:      'ON', 
       uncheckedLabel:    'OFF', 
       background:        '#fff',
@@ -24,34 +25,36 @@
       
       elem.css({ opacity: 0 });
       elem.wrap('<div class="' + options.containerClass + '" />');
-      elem.after('<div class="' + options.handleClass + '"><div class="' + options.handleBGClass + '" style="background: ' + options.background + '"/><div class="' + options.handleSliderClass + '" /></div>')
+      elem.after('<div class="' + options.handleClass + '"><div class="' + options.handleSliderClass + '"><div class="right"><div class="center" /></div></div></div>')
           .after('<label class="' + options.labelOffClass + '">'+ options.uncheckedLabel + '</label>')
           .after('<label class="' + options.labelOnClass + '">' + options.checkedLabel   + '</label>');
       
       var handle    = elem.siblings('.' + options.handleClass),
-          handlebg  = handle.children('.' + options.handleBGClass),
           offlabel  = elem.siblings('.' + options.labelOffClass),
           onlabel   = elem.siblings('.' + options.labelOnClass),
-          container = elem.parent('.' + options.containerClass),
-          rightside = container.width() - 39;
+          container = elem.parent('.' + options.containerClass);
+      
+      var min = (onlabel.width() < offlabel.width()) ? onlabel.width() : offlabel.width();
+      container.css({width: onlabel.width() + offlabel.width() + 24 });
+      handle.css({width: min});
+      offlabel.css({width: container.width() - 12})
+      
+      var rightside = container.width() - handle.width() - 8;
+      
+      if (elem.is(':checked')) {
+        handle.css({ left: rightside });
+        onlabel.css({ width: rightside })
+      } else {
+        handle.css({ left: 0 });
+        onlabel.css({ width: 0 })
+      }
       
       container.mouseup(function() {
         var is_onstate = (handle.position().left <= 0);
-            new_left   = (is_onstate) ? rightside : 0,
-            bgleft     = (is_onstate) ? 34 : 0;
+            new_left   = (is_onstate) ? rightside : 0;
 
-        handlebg.hide();
-        handle.animate({ left: new_left }, 100, function() {
-          handlebg.css({ left: bgleft }).show();
-        });
-        
-        if (is_onstate) {
-          offlabel.animate({ opacity: 0 }, 200);
-          onlabel.animate({ opacity: 1 }, 200);
-        } else {
-          offlabel.animate({ opacity: 1 }, 200);
-          onlabel.animate({ opacity: 0 }, 200);
-        }
+        handle.animate({ left: new_left }, options.duration);
+        onlabel.animate({ width: new_left }, options.duration);
         
         elem.attr('checked', !is_onstate).change();
         return false;
@@ -61,14 +64,6 @@
       $(container, onlabel, offlabel, handle).mousedown(function() { return false; });
       if ($.browser.ie)
         $(container, onlabel, offlabel, handle).bind('startselect', function() { return false; });
-      
-      // initial load
-      if (elem.is(':checked')) {
-        offlabel.css({ opacity: 0 });
-        onlabel.css({ opacity: 1 });
-        handle.css({ left: rightside });
-        handlebg.css({ left: 34 });
-      }
-    });
+      });
   };
 })(jQuery);

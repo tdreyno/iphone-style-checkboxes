@@ -9,15 +9,38 @@
   <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8" />
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
-      $(':checkbox').iphoneStyle();
+      $('.on_off :checkbox').iphoneStyle();
+      $('.yes_no :checkbox').iphoneStyle({ checkedLabel: 'Yes', uncheckedLabel: 'No' });
+      $('.enabled_disabled :checkbox').iphoneStyle({ checkedLabel: 'Enabled', uncheckedLabel: 'Disabled' });
+      $('.long_tiny :checkbox').iphoneStyle({ checkedLabel: 'Very Long Text', uncheckedLabel: 'Tiny' });
     });
   </script>
 </head>
 <body>
-  <h2>Off by default</h2>
-  <input type="checkbox" />
+  <h1>On/Off</h1>
   
-  <h2>On by default</h2>
-  <input type="checkbox" checked="checked" />
+  <div class="on_off">
+    <h2>Default off</h2>
+    <input type="checkbox" />
+  
+    <h2>Default on</h2>
+    <input type="checkbox" checked="checked" />
+  </div>
+
+  <div class="yes_no">
+    <h1>Yes/No</h1>
+    <input type="checkbox" />
+  </div>
+  
+  <div class="enabled_disabled">
+    <h1>Enabled/Disabled</h1>
+    <input type="checkbox" />
+  </div>
+
+  <div class="long_tiny">
+    <h1>Very Long Text/Tiny</h1>
+    <input type="checkbox" />
+  </div>
+
 </body>
 </html>
