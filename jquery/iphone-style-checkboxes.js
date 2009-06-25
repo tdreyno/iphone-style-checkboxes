@@ -14,7 +14,7 @@
       handleCenterClass: 'iPhoneCheckHandleCenter',
       handleRightClass:  'iPhoneCheckHandleRight'
     }
-  }
+  };
   
   $.fn.iphoneStyle = function(options) {
     options = $.extend({}, $.iphoneStyle.defaults, options);
@@ -22,8 +22,9 @@
     return this.each(function() {
       var elem = $(this);
       
-      if (!elem.is(':checkbox'))
+      if (!elem.is(':checkbox')) {
         return;
+      }
       
       elem.css({ opacity: 0 });
       elem.wrap('<div class="' + options.containerClass + '" />');
@@ -36,23 +37,27 @@
           onlabel   = elem.siblings('.' + options.labelOnClass),
           container = elem.parent('.' + options.containerClass);
       
+      // Automatically resize the handle
       if (options.resizeHandle) {
         var min = (onlabel.width() < offlabel.width()) ? onlabel.width() : offlabel.width();
-        handle.css({width: min});
+        handle.css({ width: min });
       }
+      
+      // Automatically resize the control
       if (options.resizeContainer) {
         var max = (onlabel.width() > offlabel.width()) ? onlabel.width() : offlabel.width();
-        container.css({width: max + handle.width() + 24 });
+        container.css({ width: max + handle.width() + 24 });
       }
-      offlabel.css({width: container.width() - 12});
+      
+      offlabel.css({ width: container.width() - 12 });
       
       var rightside = container.width() - handle.width() - 8;
       
       if (elem.is(':checked')) {
-        handle.css({ left: rightside });
+        handle.css({   left: rightside });
         onlabel.css({ width: rightside });
       } else {
-        handle.css({ left: 0 });
+        handle.css({   left: 0 });
         onlabel.css({ width: 0 });
       }
       
@@ -60,7 +65,7 @@
         var is_onstate = (handle.position().left <= 0);
             new_left   = (is_onstate) ? rightside : 0;
 
-        handle.animate({ left: new_left }, options.duration);
+        handle.animate({   left: new_left }, options.duration);
         onlabel.animate({ width: new_left }, options.duration);
         
         elem.attr('checked', !is_onstate).change();
@@ -69,8 +74,9 @@
       
       // Disable text selection
       $(container, onlabel, offlabel, handle).mousedown(function() { return false; });
-      if ($.browser.ie)
+      if ($.browser.ie) {
         $(container, onlabel, offlabel, handle).bind('startselect', function() { return false; });
-      });
+      }
+    });
   };
 })(jQuery);
