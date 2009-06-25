@@ -15,7 +15,7 @@
   }
   
   $.fn.iphoneStyle = function(options) {
-    options = $.extend($.iphoneStyle.defaults, options);
+    options = $.extend({}, $.iphoneStyle.defaults, options);
     
     return this.each(function() {
       var elem = $(this);
