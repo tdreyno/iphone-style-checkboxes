@@ -42,24 +42,24 @@ var iPhoneStyle = function(selector_or_elem, options) {
       var max = (onlabel.getWidth() > offlabel.getWidth()) ? onlabel.getWidth() : offlabel.getWidth();
       container.setStyle({width: max + handle.getWidth() + 12 + 'px'});
     }
-    offlabel.setStyle({width: container.getWidth() - 12  + 'px'})
+    offlabel.setStyle({width: container.getWidth() - 12  + 'px'});
 
     var rightside = container.getWidth() - handle.getWidth() - 4;
 
     if (elem.checked) {
       handle.setStyle({ left: rightside + 'px' });
-      onlabel.setStyle({ width: rightside + 'px' })
+      onlabel.setStyle({ width: rightside + 'px' });
     } else {
       handle.setStyle({ left: 0 });
-      onlabel.setStyle({ width: 0 })
+      onlabel.setStyle({ width: 0 });
     }    
 
     container.observe('mouseup', function() {
       var is_onstate = (elem.checked);
     
       new Effect.Tween(null, (is_onstate) ? 1 : 0, (is_onstate) ? 0 : 1, { duration: options.duration / 1000 }, function(p) {
-        handle.setStyle({ left: p * rightside + 'px' }) 
-        onlabel.setStyle({ width: p * rightside + 'px' }) 
+        handle.setStyle({ left: p * rightside + 'px' });
+        onlabel.setStyle({ width: p * rightside + 'px' });
       });
       
       elem.writeAttribute('checked', !is_onstate);

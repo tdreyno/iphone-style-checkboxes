@@ -44,16 +44,16 @@
         var max = (onlabel.width() > offlabel.width()) ? onlabel.width() : offlabel.width();
         container.css({width: max + handle.width() + 24 });
       }
-      offlabel.css({width: container.width() - 12})
+      offlabel.css({width: container.width() - 12});
       
       var rightside = container.width() - handle.width() - 8;
       
       if (elem.is(':checked')) {
         handle.css({ left: rightside });
-        onlabel.css({ width: rightside })
+        onlabel.css({ width: rightside });
       } else {
         handle.css({ left: 0 });
-        onlabel.css({ width: 0 })
+        onlabel.css({ width: 0 });
       }
       
       container.mouseup(function() {
