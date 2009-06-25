@@ -4,13 +4,13 @@
       duration:          200,
       checkedLabel:      'ON', 
       uncheckedLabel:    'OFF', 
+      resizeHandle:      true,
+      resizeContainer:   true,
       background:        '#fff',
       containerClass:    'iPhoneCheckContainer',
       labelOnClass:      'iPhoneCheckLabelOn',
       labelOffClass:     'iPhoneCheckLabelOff',
       handleClass:       'iPhoneCheckHandle',
-      handleBGClass:     'iPhoneCheckHandleBG',
-      handleSliderClass: 'iPhoneCheckHandleSlider'
     }
   }
   
@@ -25,7 +25,7 @@
       
       elem.css({ opacity: 0 });
       elem.wrap('<div class="' + options.containerClass + '" />');
-      elem.after('<div class="' + options.handleClass + '"><div class="' + options.handleSliderClass + '"><div class="right"><div class="center" /></div></div></div>')
+      elem.after('<div class="' + options.handleClass + '"><div class="right"><div class="center" /></div></div>')
           .after('<label class="' + options.labelOffClass + '">'+ options.uncheckedLabel + '</label>')
           .after('<label class="' + options.labelOnClass + '">' + options.checkedLabel   + '</label>');
       
@@ -34,9 +34,14 @@
           onlabel   = elem.siblings('.' + options.labelOnClass),
           container = elem.parent('.' + options.containerClass);
       
-      var min = (onlabel.width() < offlabel.width()) ? onlabel.width() : offlabel.width();
-      container.css({width: onlabel.width() + offlabel.width() + 24 });
-      handle.css({width: min});
+      if (options.resizeHandle) {
+        var min = (onlabel.width() < offlabel.width()) ? onlabel.width() : offlabel.width();
+        handle.css({width: min});
+      }
+      if (options.resizeContainer) {
+        var max = (onlabel.width() > offlabel.width()) ? onlabel.width() : offlabel.width();
+        container.css({width: max + handle.width() + 24 });
+      }
       offlabel.css({width: container.width() - 12})
       
       var rightside = container.width() - handle.width() - 8;
