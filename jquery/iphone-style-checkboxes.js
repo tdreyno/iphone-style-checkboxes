@@ -11,6 +11,8 @@
       labelOnClass:      'iPhoneCheckLabelOn',
       labelOffClass:     'iPhoneCheckLabelOff',
       handleClass:       'iPhoneCheckHandle',
+      handleCenterClass: 'iPhoneCheckHandleCenter',
+      handleRightClass:  'iPhoneCheckHandleRight'
     }
   }
   
@@ -25,7 +27,7 @@
       
       elem.css({ opacity: 0 });
       elem.wrap('<div class="' + options.containerClass + '" />');
-      elem.after('<div class="' + options.handleClass + '"><div class="right"><div class="center" /></div></div>')
+      elem.after('<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '" /></div></div>')
           .after('<label class="' + options.labelOffClass + '">'+ options.uncheckedLabel + '</label>')
           .after('<label class="' + options.labelOnClass + '">' + options.checkedLabel   + '</label>');
       

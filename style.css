@@ -17,13 +17,13 @@
   background: url(images/slider_left.png) no-repeat;
   z-index: 2;
   padding-left: 4px; }
-  .iPhoneCheckHandle .right {
+  .iPhoneCheckHandleRight {
     height: 100%;
     width: 100%;
     padding-right: 4px;
     background: url(images/slider_right.png) no-repeat top right;
     z-index: 2; }
-  .iPhoneCheckHandle .center {
+  .iPhoneCheckHandleCenter {
     height: 100%;
     width: 100%;
     background: url(images/slider_center.png);

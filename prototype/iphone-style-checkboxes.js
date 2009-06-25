@@ -10,6 +10,8 @@ $.iphoneStyle = {
     labelOnClass:      'iPhoneCheckLabelOn',
     labelOffClass:     'iPhoneCheckLabelOff',
     handleClass:       'iPhoneCheckHandle',
+    handleCenterClass: 'iPhoneCheckHandleCenter',
+    handleRightClass:  'iPhoneCheckHandleRight'
   }
 }
 
@@ -23,7 +25,7 @@ var iPhoneStyle = function(selector_or_elem, options) {
     
     elem.setOpacity(0);
     elem.wrap('div', { 'class': options.containerClass});
-    elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="right"><div class="center" /></div></div>' })
+    elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '" /></div></div>' })
         .insert({ 'after': '<label class="' + options.labelOffClass + '">'+ options.uncheckedLabel + '</label>' })
         .insert({ 'after': '<label class="' + options.labelOnClass + '">' + options.checkedLabel   + '</label>' });
     
