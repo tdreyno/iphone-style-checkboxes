@@ -68,7 +68,7 @@
         handle.animate({   left: new_left }, options.duration);
         onlabel.animate({ width: new_left }, options.duration);
         
-        elem.attr('checked', !is_onstate).change();
+        elem.attr('checked', is_onstate).change();
         return false;
       });
       
