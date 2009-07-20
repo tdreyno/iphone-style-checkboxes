@@ -63,13 +63,16 @@
       
       container.mouseup(function() {
         var is_onstate = (handle.position().left <= 0);
+        elem.attr('checked', is_onstate).change();
+        return false;
+      });
+      
+      elem.change(function() {
+        var is_onstate = (handle.position().left <= 0),
             new_left   = (is_onstate) ? rightside : 0;
 
         handle.animate({   left: new_left }, options.duration);
         onlabel.animate({ width: new_left }, options.duration);
-        
-        elem.attr('checked', is_onstate).change();
-        return false;
       });
       
       // Disable text selection
