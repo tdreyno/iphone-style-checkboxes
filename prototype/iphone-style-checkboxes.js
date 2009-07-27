@@ -15,10 +15,15 @@ $.iphoneStyle = {
   }
 }
 
-var iPhoneStyle = function(selector_or_elem, options) {
+var iPhoneStyle = function(selector_or_elems, options) {
   options = Object.extend(Object.clone($.iphoneStyle.defaults), options || {});
   
-  return $$(selector_or_elem).each(function(elem) {
+  if (Object.isString(selector_or_elems)) {
+    var elems = $$(selector_or_elems);
+  } else {
+    var elems = [selector_or_elems].flatten();
+  }
+  return elems.each(function(elem) {
     
     if (!elem.match('input[type=checkbox]'))
       return;
