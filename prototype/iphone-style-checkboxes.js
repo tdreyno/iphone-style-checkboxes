@@ -13,20 +13,21 @@ $.iphoneStyle = {
     handleCenterClass: 'iPhoneCheckHandleCenter',
     handleRightClass:  'iPhoneCheckHandleRight'
   }
-}
+};
 
 var iPhoneStyle = function(selector_or_elems, options) {
   options = Object.extend(Object.clone($.iphoneStyle.defaults), options || {});
-  
+  var elems;
   if (Object.isString(selector_or_elems)) {
-    var elems = $$(selector_or_elems);
+    elems = $$(selector_or_elems);
   } else {
-    var elems = [selector_or_elems].flatten();
+    elems = [selector_or_elems].flatten();
   }
   return elems.each(function(elem) {
     
-    if (!elem.match('input[type=checkbox]'))
+    if (!elem.match('input[type=checkbox]')) {
       return;
+    }
     
     elem.setOpacity(0);
     elem.wrap('div', { 'class': options.containerClass});
@@ -65,7 +66,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 'px' });
       });
-    }
+    };
 
     container.observe('mouseup', function() {
       var is_onstate = elem.checked;
@@ -76,8 +77,8 @@ var iPhoneStyle = function(selector_or_elems, options) {
     
     // Disable text selection
     [container, onlabel, offlabel, handle].invoke('observe', 'mousedown', function(e) { Event.stop(e); return false; });
-    if (Prototype.Browser.IE)
+    if (Prototype.Browser.IE) {
       [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); return false; });
-    
+    }
   });
 };
