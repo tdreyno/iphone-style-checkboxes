@@ -19,6 +19,14 @@
       new iPhoneStyle('.on_off input[type=checkbox]');
       new iPhoneStyle('.css_sized_container input[type=checkbox]', { resizeContainer: false, resizeHandle: false });
       new iPhoneStyle('.long_tiny input[type=checkbox]', { checkedLabel: 'Very Long Text', uncheckedLabel: 'Tiny' });
+
+      var onchange_checkbox = $$('.onchange input[type=checkbox]').first();
+      new iPhoneStyle(onchange_checkbox);
+      setInterval(function toggleCheckbox() {
+        onchange_checkbox.checked = !onchange_checkbox.checked;
+        onchange_checkbox.change();
+        $('status').update(onchange_checkbox.checked);
+      }, 2500);
     });
   </script>
   
@@ -42,5 +50,10 @@
     <input type="checkbox" />
   </div>
 
+  <div class="onchange">
+    <h2>onChange event</h2>
+    <input type="checkbox" />
+    <p>Checkbox status is <strong><span id="status">...</span></strong>.</p>
+  </div>
 </body>
 </html>

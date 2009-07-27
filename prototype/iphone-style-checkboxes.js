@@ -59,15 +59,18 @@ var iPhoneStyle = function(selector_or_elems, options) {
       onlabel.setStyle({ width: 0 });
     }    
 
-    container.observe('mouseup', function() {
+    elem.change = function() {
       var is_onstate = (elem.checked);
-    
-      new Effect.Tween(null, (is_onstate) ? 1 : 0, (is_onstate) ? 0 : 1, { duration: options.duration / 1000 }, function(p) {
+      new Effect.Tween(null, (is_onstate) ? 0 : 1, (is_onstate) ? 1 : 0, { duration: options.duration / 1000 }, function(p) {
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 'px' });
       });
-      
+    }
+
+    container.observe('mouseup', function() {
+      var is_onstate = elem.checked;
       elem.writeAttribute('checked', !is_onstate);
+      elem.change();
       return false;
     });
     
