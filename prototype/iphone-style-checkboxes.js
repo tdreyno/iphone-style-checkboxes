@@ -1,22 +1,5 @@
-$.iphoneStyle = {
-  defaults: { 
-    duration:          200,
-    checkedLabel:      'ON', 
-    uncheckedLabel:    'OFF', 
-    resizeHandle:      true,
-    resizeContainer:   true,
-    background:        '#fff',
-    containerClass:    'iPhoneCheckContainer',
-    labelOnClass:      'iPhoneCheckLabelOn',
-    labelOffClass:     'iPhoneCheckLabelOff',
-    handleClass:       'iPhoneCheckHandle',
-    handleCenterClass: 'iPhoneCheckHandleCenter',
-    handleRightClass:  'iPhoneCheckHandleRight'
-  }
-};
-
 var iPhoneStyle = function(selector_or_elems, options) {
-  options = Object.extend(Object.clone($.iphoneStyle.defaults), options || {});
+  options = Object.extend(Object.clone(iPhoneStyle.defaults), options || {});
   var elems;
   if (Object.isString(selector_or_elems)) {
     elems = $$(selector_or_elems);
@@ -81,4 +64,19 @@ var iPhoneStyle = function(selector_or_elems, options) {
       [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); return false; });
     }
   });
+};
+
+iPhoneStyle.defaults = {
+  duration:          200,
+  checkedLabel:      'ON', 
+  uncheckedLabel:    'OFF', 
+  resizeHandle:      true,
+  resizeContainer:   true,
+  background:        '#fff',
+  containerClass:    'iPhoneCheckContainer',
+  labelOnClass:      'iPhoneCheckLabelOn',
+  labelOffClass:     'iPhoneCheckLabelOff',
+  handleClass:       'iPhoneCheckHandle',
+  handleCenterClass: 'iPhoneCheckHandleCenter',
+  handleRightClass:  'iPhoneCheckHandleRight'
 };
