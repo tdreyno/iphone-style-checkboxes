@@ -29,12 +29,14 @@
       elem.css({ opacity: 0 });
       elem.wrap('<div class="' + options.containerClass + '" />');
       elem.after('<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '" /></div></div>')
-          .after('<label class="' + options.labelOffClass + '">'+ options.uncheckedLabel + '</label>')
-          .after('<label class="' + options.labelOnClass + '">' + options.checkedLabel   + '</label>');
+          .after('<label class="' + options.labelOffClass + '"><span>'+ options.uncheckedLabel + '</span></label>')
+          .after('<label class="' + options.labelOnClass + '"><span>' + options.checkedLabel   + '</span></label>');
       
       var handle    = elem.siblings('.' + options.handleClass),
           offlabel  = elem.siblings('.' + options.labelOffClass),
+          offspan   = offlabel.children('span'),
           onlabel   = elem.siblings('.' + options.labelOnClass),
+          onspan    = onlabel.children('span'),
           container = elem.parent('.' + options.containerClass);
       
       // Automatically resize the handle
@@ -73,6 +75,8 @@
 
         handle.animate({   left: new_left }, options.duration);
         onlabel.animate({ width: new_left }, options.duration);
+        onspan.animate({ margin: new_left - rightside }, options.duration);
+        offspan.animate({ margin: rightside + new_left }, options.duration);
       });
       
       // Disable text selection
