@@ -50,7 +50,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
     elem.change = function() {
       var is_onstate = elem.checked;
       var p = handle.positionedOffset().first() / rightside;
-      new Effect.Tween(null, p, (is_onstate) ? 1 : 0, { duration: options.duration / 1000 }, function(p) {
+      new Effect.Tween(null, p, Number(is_onstate), { duration: options.duration / 1000 }, function(p) {
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 'px' });
         offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
@@ -59,6 +59,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
     };
     
     document.observe('mouseup', function(e) {
+      e.stop();
       if (iPhoneStyle.clicking == handle) {
         if (!iPhoneStyle.dragging) {
           var is_onstate = elem.checked;
@@ -71,11 +72,11 @@ var iPhoneStyle = function(selector_or_elems, options) {
         iPhoneStyle.dragging = null;
         elem.change();
       }
-      return false;
     });
 
     document.observe('mousemove', function(e) {
       if (iPhoneStyle.clicking == handle) {
+        e.stop();
         if (Event.pointerX(e) != iPhoneStyle.dragStartPosition) {
           iPhoneStyle.dragging = true;
         }
@@ -86,22 +87,21 @@ var iPhoneStyle = function(selector_or_elems, options) {
         onlabel.setStyle({ width: p * rightside + 'px' });
         offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
         onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
-        return false;
       }
     });
     
     container.observe('mousedown', function(e) {
+      e.stop();
       iPhoneStyle.clicking = handle;
       iPhoneStyle.dragStartPosition = Event.pointerX(e) - (Number(handle.style.left.replace(/px$/, "")) || 0);
       console.debug( Number(handle.style.left.replace(/px$/, "")));
-      Event.stop(e);
       return false;
     });
     
     // Disable text selection
     // [container, onlabel, offlabel, handle].invoke('observe', 'mousedown', function(e) { Event.stop(e); return false; });
     if (Prototype.Browser.IE) {
-      [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); return false; });
+      [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); });
     }
   });
 };
