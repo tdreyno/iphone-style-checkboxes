@@ -15,12 +15,14 @@ var iPhoneStyle = function(selector_or_elems, options) {
     elem.setOpacity(0);
     elem.wrap('div', { 'class': options.containerClass});
     elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '" /></div></div>' })
-        .insert({ 'after': '<label class="' + options.labelOffClass + '">'+ options.uncheckedLabel + '</label>' })
-        .insert({ 'after': '<label class="' + options.labelOnClass + '">' + options.checkedLabel   + '</label>' });
+        .insert({ 'after': '<label class="' + options.labelOffClass + '"><span>'+ options.uncheckedLabel + '</span></label>' })
+        .insert({ 'after': '<label class="' + options.labelOnClass + '"><span>' + options.checkedLabel   + '</span></label>' });
     
     var handle    = elem.up().down('.' + options.handleClass),
       offlabel  = elem.adjacent('.' + options.labelOffClass).first(),
+      offspan   = offlabel.down('span'),
       onlabel   = elem.adjacent('.' + options.labelOnClass).first(),
+      onspan    = onlabel.down('span'),
       container = elem.up('.' + options.containerClass);
       
     if (options.resizeHandle) {
@@ -38,9 +40,11 @@ var iPhoneStyle = function(selector_or_elems, options) {
     if (elem.checked) {
       handle.setStyle({ left: rightside + 'px' });
       onlabel.setStyle({ width: rightside + 'px' });
+      offspan.setStyle({ 'marginRight': rightside + 'px' });
     } else {
       handle.setStyle({ left: 0 });
       onlabel.setStyle({ width: 0 });
+      onspan.setStyle({ 'marginLeft': -rightside + 'px' });
     }    
 
     elem.change = function() {
@@ -49,6 +53,8 @@ var iPhoneStyle = function(selector_or_elems, options) {
       new Effect.Tween(null, p, (is_onstate) ? 1 : 0, { duration: options.duration / 1000 }, function(p) {
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 'px' });
+        offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
+        onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
       });
     };
     
