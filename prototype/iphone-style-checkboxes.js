@@ -84,6 +84,8 @@ var iPhoneStyle = function(selector_or_elems, options) {
         if (p > 1) { p = 1; }
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 'px' });
+        offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
+        onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
         return false;
       }
     });
