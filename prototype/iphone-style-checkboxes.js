@@ -92,7 +92,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
     
     container.observe('mousedown', function(e) {
       iPhoneStyle.clicking = handle;
-      iPhoneStyle.dragStartPosition = Event.pointerX(e) - handle.viewportOffset().first() + 8;
+      iPhoneStyle.dragStartPosition = Event.pointerX(e);
       Event.stop(e);
       return false;
     });

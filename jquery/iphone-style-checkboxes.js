@@ -99,7 +99,7 @@
 
       container.mousedown(function(e) {
         $.fn.iphoneStyle.clicking = handle;
-        $.fn.iphoneStyle.dragStartPosition = e.pageX - handle.offset().left + 8;
+        $.fn.iphoneStyle.dragStartPosition = e.pageX;
         return false;
       });
 
