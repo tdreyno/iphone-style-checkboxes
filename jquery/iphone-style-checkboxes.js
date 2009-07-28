@@ -65,44 +65,53 @@
         onspan.css({ marginLeft: -rightside });
       }
       
-      $().mouseup(function(e) {
-        if ($.fn.iphoneStyle.clicking == handle) {
-          if (!$.fn.iphoneStyle.dragging) {
-            var is_onstate = elem.attr('checked');
-            elem.attr('checked', !is_onstate);
-          } else {
-            var p = (e.pageX - $.fn.iphoneStyle.dragStartPosition) / rightside;
-            elem.attr('checked', (p >= 0.5));
-          }
-          $.fn.iphoneStyle.clicking = null;
-          $.fn.iphoneStyle.dragging = null;
-          elem.change();
+      // When the mouse comes up, leave drag state
+      $(document).mouseup(function(e) {
+        if ($.iphoneStyle.clicking != handle) { return false }
+        
+        if (!$.iphoneStyle.dragging) {
+          var is_onstate = elem.attr('checked');
+          elem.attr('checked', !is_onstate);
+        } else {
+          var p = (e.pageX - $.iphoneStyle.dragStartPosition) / rightside;
+          elem.attr('checked', (p >= 0.5));
         }
+        
+        $.iphoneStyle.clicking = null;
+        $.iphoneStyle.dragging = null;
+        elem.change();
+        
         return false;
       });
 
-      $().mousemove(function(e) {
-        if ($.fn.iphoneStyle.clicking == handle) {
-          if (e.pageX != $.fn.iphoneStyle.dragStartPosition) {
-            $.fn.iphoneStyle.dragging = true;
-          }
-          var p = (e.pageX - $.fn.iphoneStyle.dragStartPosition) / rightside;
-          if (p < 0) { p = 0; }
-          if (p > 1) { p = 1; }
-          handle.css({ left: p * rightside + 'px' });
-          onlabel.css({ width: p * rightside + 'px' });
-          offspan.css({ 'marginRight': -p * rightside + 'px' });
-          onspan.css({ 'marginLeft': -(1 - p) * rightside + 'px' });
-          return false;
+      // As the mouse moves on the page, animate if we are in a drag state
+      $(document).mousemove(function(e) {
+        if ($.iphoneStyle.clicking != handle) { return }
+        
+        if (e.pageX != $.iphoneStyle.dragStartPosition) {
+          $.iphoneStyle.dragging = true;
         }
+        
+        var p = (e.pageX - $.iphoneStyle.dragStartPosition) / rightside;
+        if (p < 0) { p = 0; }
+        if (p > 1) { p = 1; }
+        
+        handle.css({ left: p * rightside });
+        onlabel.css({ width: p * rightside });
+        offspan.css({ 'marginRight': -p * rightside });
+        onspan.css({ 'marginLeft': -(1 - p) * rightside });
+        
+        return false;
       });
 
+      // A mousedown anywhere in the control will start tracking for dragging
       container.mousedown(function(e) {
-        $.fn.iphoneStyle.clicking = handle;
-        $.fn.iphoneStyle.dragStartPosition = e.pageX - (Number(handle.css('left').replace(/px$/, "")) || 0);
+        $.iphoneStyle.clicking = handle;
+        $.iphoneStyle.dragStartPosition = e.pageX - (parseInt(handle.css('left')) || 0);
         return false;
       });
 
+      // Animate when we get a change event
       elem.change(function() {
         var is_onstate = elem.attr('checked'),
             new_left   = (is_onstate) ? rightside : 0;
