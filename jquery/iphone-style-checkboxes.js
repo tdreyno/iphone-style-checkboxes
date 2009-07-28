@@ -58,9 +58,11 @@
       if (elem.is(':checked')) {
         handle.css({   left: rightside });
         onlabel.css({ width: rightside });
+        offspan.css({ marginRight: -rightside });
       } else {
         handle.css({   left: 0 });
         onlabel.css({ width: 0 });
+        onspan.css({ marginLeft: -rightside });
       }
       
       container.mouseup(function() {
@@ -75,8 +77,8 @@
 
         handle.animate({   left: new_left }, options.duration);
         onlabel.animate({ width: new_left }, options.duration);
-        onspan.animate({ margin: new_left - rightside }, options.duration);
-        offspan.animate({ margin: rightside + new_left }, options.duration);
+        onspan.animate({ marginLeft: new_left - rightside }, options.duration);
+        offspan.animate({ marginRight: -new_left }, options.duration);
       });
       
       // Disable text selection

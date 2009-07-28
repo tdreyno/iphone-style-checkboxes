@@ -40,9 +40,11 @@ var iPhoneStyle = function(selector_or_elems, options) {
     if (elem.checked) {
       handle.setStyle({ left: rightside + 'px' });
       onlabel.setStyle({ width: rightside + 'px' });
+      offspan.setStyle({ 'marginRight': rightside + 'px' });
     } else {
       handle.setStyle({ left: 0 });
       onlabel.setStyle({ width: 0 });
+      onspan.setStyle({ 'marginLeft': -rightside + 'px' });
     }    
 
     elem.change = function() {
@@ -50,8 +52,8 @@ var iPhoneStyle = function(selector_or_elems, options) {
       new Effect.Tween(null, (is_onstate) ? 0 : 1, (is_onstate) ? 1 : 0, { duration: options.duration / 1000 }, function(p) {
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 'px' });
-        offspan.setStyle({ margin: -p * rightside + 'px' });
-        onspan.setStyle({ margin: -(1 - p) * rightside + 'px' });
+        offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
+        onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
       });
     };
 
