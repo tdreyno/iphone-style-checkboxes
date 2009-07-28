@@ -92,7 +92,8 @@ var iPhoneStyle = function(selector_or_elems, options) {
     
     container.observe('mousedown', function(e) {
       iPhoneStyle.clicking = handle;
-      iPhoneStyle.dragStartPosition = Event.pointerX(e);
+      iPhoneStyle.dragStartPosition = Event.pointerX(e) - (Number(handle.style.left.replace(/px$/, "")) || 0);
+      console.debug( Number(handle.style.left.replace(/px$/, "")));
       Event.stop(e);
       return false;
     });
