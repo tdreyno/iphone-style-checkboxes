@@ -23,7 +23,7 @@
       var onchange_checkbox = $$('.onchange input[type=checkbox]').first();
       new iPhoneStyle(onchange_checkbox);
       setInterval(function toggleCheckbox() {
-        onchange_checkbox.checked = !onchange_checkbox.checked;
+        onchange_checkbox.writeAttribute('checked', !onchange_checkbox.checked);
         onchange_checkbox.change();
         $('status').update(onchange_checkbox.checked);
       }, 2500);

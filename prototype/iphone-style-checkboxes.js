@@ -44,22 +44,53 @@ var iPhoneStyle = function(selector_or_elems, options) {
     }    
 
     elem.change = function() {
-      var is_onstate = (elem.checked);
-      new Effect.Tween(null, (is_onstate) ? 0 : 1, (is_onstate) ? 1 : 0, { duration: options.duration / 1000 }, function(p) {
+      var is_onstate = elem.checked;
+      var p = handle.positionedOffset().first() / rightside;
+      new Effect.Tween(null, p, (is_onstate) ? 1 : 0, { duration: options.duration / 1000 }, function(p) {
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 'px' });
       });
     };
+    
+    document.observe('mouseup', function(e) {
+      if (iPhoneStyle.clicking == handle) {
+        if (!iPhoneStyle.dragging) {
+          var is_onstate = elem.checked;
+          elem.writeAttribute('checked', !is_onstate);
+        } else {
+          var p = (Event.pointerX(e) - iPhoneStyle.dragStartPosition) / rightside;
+          elem.writeAttribute('checked', (p >= 0.5));
+        }
+        iPhoneStyle.clicking = null;
+        iPhoneStyle.dragging = null;
+        elem.change();
+      }
+      return false;
+    });
 
-    container.observe('mouseup', function() {
-      var is_onstate = elem.checked;
-      elem.writeAttribute('checked', !is_onstate);
-      elem.change();
+    document.observe('mousemove', function(e) {
+      if (iPhoneStyle.clicking == handle) {
+        if (Event.pointerX(e) != iPhoneStyle.dragStartPosition) {
+          iPhoneStyle.dragging = true;
+        }
+        var p = (Event.pointerX(e) - iPhoneStyle.dragStartPosition) / rightside;
+        if (p < 0) { p = 0; }
+        if (p > 1) { p = 1; }
+        handle.setStyle({ left: p * rightside + 'px' });
+        onlabel.setStyle({ width: p * rightside + 'px' });
+        return false;
+      }
+    });
+    
+    container.observe('mousedown', function(e) {
+      iPhoneStyle.clicking = handle;
+      iPhoneStyle.dragStartPosition = Event.pointerX(e) - handle.viewportOffset().first() + 8;
+      Event.stop(e);
       return false;
     });
     
     // Disable text selection
-    [container, onlabel, offlabel, handle].invoke('observe', 'mousedown', function(e) { Event.stop(e); return false; });
+    // [container, onlabel, offlabel, handle].invoke('observe', 'mousedown', function(e) { Event.stop(e); return false; });
     if (Prototype.Browser.IE) {
       [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); return false; });
     }
