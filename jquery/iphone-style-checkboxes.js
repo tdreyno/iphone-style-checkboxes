@@ -65,14 +65,46 @@
         onspan.css({ marginLeft: -rightside });
       }
       
-      container.mouseup(function() {
-        var is_onstate = (handle.position().left <= 0);
-        elem.attr('checked', is_onstate).change();
+      $().mouseup(function(e) {
+        if ($.fn.iphoneStyle.clicking == handle) {
+          if (!$.fn.iphoneStyle.dragging) {
+            var is_onstate = elem.attr('checked');
+            elem.attr('checked', !is_onstate);
+          } else {
+            var p = (e.pageX - $.fn.iphoneStyle.dragStartPosition) / rightside;
+            elem.attr('checked', (p >= 0.5));
+          }
+          $.fn.iphoneStyle.clicking = null;
+          $.fn.iphoneStyle.dragging = null;
+          elem.change();
+        }
         return false;
       });
-      
+
+      $().mousemove(function(e) {
+        if ($.fn.iphoneStyle.clicking == handle) {
+          if (e.pageX != $.fn.iphoneStyle.dragStartPosition) {
+            $.fn.iphoneStyle.dragging = true;
+          }
+          var p = (e.pageX - $.fn.iphoneStyle.dragStartPosition) / rightside;
+          if (p < 0) { p = 0; }
+          if (p > 1) { p = 1; }
+          handle.css({ left: p * rightside + 'px' });
+          onlabel.css({ width: p * rightside + 'px' });
+          offspan.css({ 'marginRight': -p * rightside + 'px' });
+          onspan.css({ 'marginLeft': -(1 - p) * rightside + 'px' });
+          return false;
+        }
+      });
+
+      container.mousedown(function(e) {
+        $.fn.iphoneStyle.clicking = handle;
+        $.fn.iphoneStyle.dragStartPosition = e.pageX - handle.offset().left + 8;
+        return false;
+      });
+
       elem.change(function() {
-        var is_onstate = (handle.position().left <= 0),
+        var is_onstate = elem.attr('checked'),
             new_left   = (is_onstate) ? rightside : 0;
 
         handle.animate({   left: new_left }, options.duration);
