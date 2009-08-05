@@ -1,0 +1,15 @@
+= iPhone Style Checkboxes
+
+Turn your checkboxes into iPhone-style binary switches.
+
+== Dependencies
+
+jQuery or Prototype + Scriptaculous
+
+== Use
+
+Please see jquery-demo.html or prototype-demo.html for example use.
+
+
+Homepage:: http://tdreyno.github.com/iphone-style-checkboxes/
+License:: Copyright (c) 2009 Thomas Reynolds <mailto:tdreyno@gmail.com>, released under the MIT license
