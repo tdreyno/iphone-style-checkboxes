@@ -16,11 +16,11 @@
   left: 0;
   background: url(images/slider_left.png) no-repeat;
   z-index: 2;
-  padding-left: 4px; }
+  padding-left: 3px; }
   .iPhoneCheckHandleRight {
     height: 100%;
     width: 100%;
-    padding-right: 4px;
+    padding-right: 3px;
     background: url(images/slider_right.png) no-repeat top right;
     z-index: 2; }
   .iPhoneCheckHandleCenter {
@@ -41,20 +41,25 @@ label.iPhoneCheckLabelOn, label.iPhoneCheckLabelOff {
   position: absolute;
   width: auto;
   top: 0;
+  padding-top: 5px;
   overflow: hidden; }
   label.iPhoneCheckLabelOn {
     color: #fff;
     background: url(images/on.png) no-repeat;
     text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
     left: 0;
-    padding: 5px 0 0 8px; 
+    padding-top: 5px;
     z-index: 1; }
+  label.iPhoneCheckLabelOn span {
+    padding-left: 8px; 
+  }
   label.iPhoneCheckLabelOff {
     color: #8B8B8B;
     background: url(images/off.png) no-repeat right 0;
     text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.6);
     text-align: right;
-    right: 0;
-    padding: 5px 8px 0 0; }
+    right: 0; }
+  label.iPhoneCheckLabelOff span {
+    padding-right: 8px; 
   }
   

@@ -27,19 +27,19 @@ var iPhoneStyle = function(selector_or_elems, options) {
       
     if (options.resizeHandle) {
       var min = (onlabel.getWidth() < offlabel.getWidth()) ? onlabel.getWidth() : offlabel.getWidth();
-      handle.setStyle({width: min - 8 + 'px'});
+      handle.setStyle({width: min + 'px'});
     }
     if (options.resizeContainer) {
       var max = (onlabel.getWidth() > offlabel.getWidth()) ? onlabel.getWidth() : offlabel.getWidth();
       container.setStyle({width: max + handle.getWidth() + 12 + 'px'});
     }
-    offlabel.setStyle({width: container.getWidth() - 12  + 'px'});
+    offlabel.setStyle({width: container.getWidth() - 5  + 'px'});
 
-    var rightside = container.getWidth() - handle.getWidth() - 4;
+    var rightside = container.getWidth() - handle.getWidth() - 3;
 
     if (elem.checked) {
       handle.setStyle({ left: rightside + 'px' });
-      onlabel.setStyle({ width: rightside + 'px' });
+      onlabel.setStyle({ width: rightside + 4 + 'px' });
       offspan.setStyle({ 'marginRight': rightside + 'px' });
     } else {
       handle.setStyle({ left: 0 });
@@ -52,43 +52,43 @@ var iPhoneStyle = function(selector_or_elems, options) {
       var p = handle.positionedOffset().first() / rightside;
       new Effect.Tween(null, p, Number(is_onstate), { duration: options.duration / 1000 }, function(p) {
         handle.setStyle({ left: p * rightside + 'px' });
-        onlabel.setStyle({ width: p * rightside + 'px' });
+        onlabel.setStyle({ width: p * rightside + 4 + 'px' });
         offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
         onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
       });
     };
     
-    document.observe('mouseup', function(e) {
+    var down = function(e) {
       e.stop();
-      if (iPhoneStyle.clicking == handle) {
-        if (!iPhoneStyle.dragging) {
-          var is_onstate = elem.checked;
-          elem.writeAttribute('checked', !is_onstate);
-        } else {
-          var p = (Event.pointerX(e) - iPhoneStyle.dragStartPosition) / rightside;
-          elem.writeAttribute('checked', (p >= 0.5));
-        }
-        iPhoneStyle.clicking = null;
-        iPhoneStyle.dragging = null;
-        elem.change();
-      }
-    });
+      iPhoneStyle.clicking = handle;
+      var x = Event.pointerX(e) || e.changedTouches[0].pageX;
+      iPhoneStyle.dragStartPosition = x - (Number(handle.style.left.replace(/px$/, "")) || 0);
+      Event.stop(e);
+    };
 
-    document.observe('mousemove', function(e) {
+    container.observe('mousedown', down);
+    container.observe('touchstart', down);
+    
+    
+    var move = function(e) {
       if (iPhoneStyle.clicking == handle) {
         e.stop();
-        if (Event.pointerX(e) != iPhoneStyle.dragStartPosition) {
+        var x = Event.pointerX(e) || e.changedTouches[0].pageX;
+        if (x != iPhoneStyle.dragStartPosition) {
           iPhoneStyle.dragging = true;
         }
-        var p = (Event.pointerX(e) - iPhoneStyle.dragStartPosition) / rightside;
+        var p = (x - iPhoneStyle.dragStartPosition) / rightside;
         if (p < 0) { p = 0; }
         if (p > 1) { p = 1; }
         handle.setStyle({ left: p * rightside + 'px' });
-        onlabel.setStyle({ width: p * rightside + 'px' });
+        onlabel.setStyle({ width: p * rightside + 4 + 'px' });
         offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
         onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
       }
-    });
+    };
+
+    document.observe('mousemove', move);
+    document.observe('touchmove', move);
     
     container.observe('mousedown', function(e) {
       e.stop();
@@ -97,10 +97,28 @@ var iPhoneStyle = function(selector_or_elems, options) {
       return false;
     });
     
+    var up = function(e) {
+      if (iPhoneStyle.clicking == handle) {
+        e.stop();
+        if (!iPhoneStyle.dragging) {
+          var is_onstate = elem.checked;
+          elem.writeAttribute('checked', !is_onstate);
+        } else {
+          var x = Event.pointerX(e) || e.changedTouches[0].pageX;
+          var p = (x - iPhoneStyle.dragStartPosition) / rightside;
+          elem.writeAttribute('checked', (p >= 0.5));
+        }
+        iPhoneStyle.clicking = null;
+        iPhoneStyle.dragging = null;
+        elem.change();
+      }
+    };
+    document.observe('touchend', up);
+    document.observe('mouseup', up);
     // Disable text selection
-    // [container, onlabel, offlabel, handle].invoke('observe', 'mousedown', function(e) { Event.stop(e); return false; });
+    [container, onlabel, offlabel, handle].invoke('observe', 'mousedown', function(e) { e.preventDefault(); return false; });
     if (Prototype.Browser.IE) {
-      [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); });
+      [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); return false; });
     }
   });
 };
