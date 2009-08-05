@@ -94,7 +94,6 @@ var iPhoneStyle = function(selector_or_elems, options) {
       e.stop();
       iPhoneStyle.clicking = handle;
       iPhoneStyle.dragStartPosition = Event.pointerX(e) - (Number(handle.style.left.replace(/px$/, "")) || 0);
-      console.debug( Number(handle.style.left.replace(/px$/, "")));
       return false;
     });
     
