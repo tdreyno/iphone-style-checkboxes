@@ -11,8 +11,29 @@
     body {
       padding: 10px;
     }
+    label.left {
+      float: left;
+      padding: 4px;
+      padding-right: 15px;
+    }
     .css_sized_container .iPhoneCheckContainer {
       width: 250px;
+    }
+    ol {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    ol li {
+      padding: 10px;
+      margin: 0;
+    }
+    .onchange input {
+      opacity: 1 !important;
+      left: 100px;
+    }
+    .onchange .iPhoneCheckContainer {
+      overflow: visible;
     }
   </style>
 
@@ -32,28 +53,38 @@
   
 </head>
 <body>
-  <div class="on_off">
-    <h2>Default off</h2>
-    <input type="checkbox" />
+  <ol class="on_off">
+    <li>
+      <label class="left" for="on_off">Default</label>
+      <input type="checkbox" id="on_off" />
+    </li>
   
-    <h2>Default on</h2>
-    <input type="checkbox" checked="checked" />
-  </div>
+    <li>
+      <label class="left" for="on_off_on">Default On</label>
+      <input type="checkbox" checked="checked" id="on_off_on"/>
+    </li>
+  </ol>
 
-  <div class="css_sized_container">
-    <h2>CSS Sized Container and Handle</h2>
-    <input type="checkbox" />
-  </div>
+  <ol class="css_sized_container">
+    <li>
+      <label class="left" for="css_sized_container">CSS Sized Container and Handle</label>
+      <input type="checkbox" id="css_sized_container"/>
+    </li>
+  </ol>
 
-  <div class="long_tiny">
-    <h2>Long and short labels</h2>
-    <input type="checkbox" />
-  </div>
+  <ol class="long_tiny">
+    <li>
+      <label class="left" for="long_tiny">Long and short labels</label>
+      <input type="checkbox" id="long_tiny"/>
+    </li>
+  </ol>
 
-  <div class="onchange">
-    <h2>onChange event</h2>
-    <input type="checkbox" />
-    <p>Checkbox status is <strong><span id="status">...</span></strong>.</p>
-  </div>
+  <ol class="onchange">
+    <li>
+      <input type="checkbox" id="onchange"/>
+      <br />
+      <p>Checkbox status is <strong><span id="status">...</span></strong>.</p>
+    </li>
+  </ol>
 </body>
 </html>
