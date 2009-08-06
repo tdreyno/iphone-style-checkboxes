@@ -14,7 +14,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
     
     elem.setOpacity(0);
     elem.wrap('div', { 'class': options.containerClass});
-    elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '" /></div></div>' })
+    elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '"></div></div></div>' })
         .insert({ 'after': '<label class="' + options.labelOffClass + '"><span>'+ options.uncheckedLabel + '</span></label>' })
         .insert({ 'after': '<label class="' + options.labelOnClass + '"><span>' + options.checkedLabel   + '</span></label>' });
     
@@ -23,7 +23,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
       offspan   = offlabel.down('span'),
       onlabel   = elem.adjacent('.' + options.labelOnClass).first(),
       onspan    = onlabel.down('span'),
-      container = elem.up('.' + options.containerClass);
+      container = elem.up();
       
     if (options.resizeHandle) {
       var min = (onlabel.getWidth() < offlabel.getWidth()) ? onlabel.getWidth() : offlabel.getWidth();
