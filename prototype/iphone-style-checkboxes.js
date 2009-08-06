@@ -18,7 +18,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
         .insert({ 'after': '<label class="' + options.labelOffClass + '"><span>'+ options.uncheckedLabel + '</span></label>' })
         .insert({ 'after': '<label class="' + options.labelOnClass + '"><span>' + options.checkedLabel   + '</span></label>' });
     
-    var handle    = elem.up().down('.' + options.handleClass),
+    var handle  = elem.up().down('.' + options.handleClass),
       offlabel  = elem.adjacent('.' + options.labelOffClass).first(),
       offspan   = offlabel.down('span'),
       onlabel   = elem.adjacent('.' + options.labelOnClass).first(),
@@ -57,6 +57,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
         onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
       });
     };
+    elem.observe('change', elem.change);
     
     var down = function(e) {
       e.stop();
@@ -115,6 +116,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
     };
     document.observe('touchend', up);
     document.observe('mouseup', up);
+
     // Disable text selection
     [container, onlabel, offlabel, handle].invoke('observe', 'mousedown', function(e) { e.preventDefault(); return false; });
     if (Prototype.Browser.IE) {
