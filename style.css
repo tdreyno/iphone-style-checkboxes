@@ -14,6 +14,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  width: 0;
   background: url(images/slider_left.png) no-repeat;
   z-index: 2;
   padding-left: 3px; }
@@ -37,7 +38,7 @@ label.iPhoneCheckLabelOn, label.iPhoneCheckLabelOff {
   text-transform: uppercase;
   cursor: pointer;
   display: block;
-  height: 22px;
+  height: 27px;
   position: absolute;
   width: auto;
   top: 0;

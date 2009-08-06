@@ -6,7 +6,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
   } else {
     elems = [selector_or_elems].flatten();
   }
-  return elems.each(function(elem) {
+  return(elems.each(function(elem) {
     
     if (!elem.match('input[type=checkbox]')) {
       return;
@@ -122,7 +122,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
     if (Prototype.Browser.IE) {
       [container, onlabel, offlabel, handle].invoke('observe', 'startselect', function(e) { Event.stop(e); return false; });
     }
-  });
+  }));
 };
 
 iPhoneStyle.defaults = {

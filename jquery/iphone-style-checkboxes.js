@@ -19,7 +19,7 @@
   $.fn.iphoneStyle = function(options) {
     options = $.extend({}, $.iphoneStyle.defaults, options);
     
-    return this.each(function() {
+    return(this.each(function() {
       var elem = $(this);
       
       if (!elem.is(':checkbox')) {
@@ -147,6 +147,6 @@
       if ($.browser.ie) {
         $(container, onlabel, offlabel, handle).bind('startselect', function() { return false; });
       }
-    });
+    }));
   };
 })(jQuery);
