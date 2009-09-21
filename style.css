@@ -52,8 +52,7 @@ label.iPhoneCheckLabelOn, label.iPhoneCheckLabelOff {
     padding-top: 5px;
     z-index: 1; }
   label.iPhoneCheckLabelOn span {
-    padding-left: 8px; 
-  }
+    padding-left: 8px; }
   label.iPhoneCheckLabelOff {
     color: #8B8B8B;
     background: url(images/off.png) no-repeat right 0;
@@ -61,6 +60,4 @@ label.iPhoneCheckLabelOn, label.iPhoneCheckLabelOff {
     text-align: right;
     right: 0; }
   label.iPhoneCheckLabelOff span {
-    padding-right: 8px; 
-  }
-  
+    padding-right: 8px; }

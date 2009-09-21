@@ -1,12 +1,11 @@
-(function($){
+;(function($) {
   $.iphoneStyle = {
-    defaults: { 
+    defaults: {
       duration:          200,
-      checkedLabel:      'ON', 
-      uncheckedLabel:    'OFF', 
+      checkedLabel:      'ON',
+      uncheckedLabel:    'OFF',
       resizeHandle:      true,
       resizeContainer:   true,
-      background:        '#fff',
       containerClass:    'iPhoneCheckContainer',
       labelOnClass:      'iPhoneCheckLabelOn',
       labelOffClass:     'iPhoneCheckLabelOff',
@@ -15,138 +14,118 @@
       handleRightClass:  'iPhoneCheckHandleRight'
     }
   };
-  
-  $.fn.iphoneStyle = function(options) {
-    options = $.extend({}, $.iphoneStyle.defaults, options);
-    
-    return(this.each(function() {
-      var elem = $(this);
-      
-      if (!elem.is(':checkbox')) {
-        return;
-      }
-      
-      elem.css({ opacity: 0 });
-      elem.wrap('<div class="' + options.containerClass + '" />');
-      elem.after('<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '" /></div></div>')
-          .after('<label class="' + options.labelOffClass + '"><span>'+ options.uncheckedLabel + '</span></label>')
-          .after('<label class="' + options.labelOnClass + '"><span>' + options.checkedLabel   + '</span></label>');
-      
-      var handle    = elem.siblings('.' + options.handleClass),
-          offlabel  = elem.siblings('.' + options.labelOffClass),
-          offspan   = offlabel.children('span'),
-          onlabel   = elem.siblings('.' + options.labelOnClass),
-          onspan    = onlabel.children('span'),
-          container = elem.parent('.' + options.containerClass);
-      
+
+  $.fn.iphoneStyle = function(o) {
+    o = $.extend({}, $.iphoneStyle.defaults, o);
+
+    this.filter(':checkbox')
+        .css({ opacity: 0 })
+        .wrap('<div class="'+o.containerClass+'" />')
+        .after('<div class="'+o.handleClass+'"><div class="'+o.handleRightClass+'"><div class="'+o.handleCenterClass+'" /></div></div>')
+        .after('<label class="'+ o.labelOffClass +'"><span>'+ o.uncheckedLabel +'</span></label>')
+        .after('<label class="'+ o.labelOnClass +'"><span>'+ o.checkedLabel +'</span></label>')
+        .each(function() {
+
+      var elem      = $(this),
+          handle    = elem.siblings('.' + o.handleClass),
+          offLabel  = elem.siblings('.' + o.labelOffClass),
+          offSpan   = offLabel.children('span'),
+          onLabel   = elem.siblings('.' + o.labelOnClass),
+          onSpan    = onLabel.children('span'),
+          container = elem.parent();
+
       // Automatically resize the handle
-      if (options.resizeHandle) {
-        var min = (onlabel.width() < offlabel.width()) ? onlabel.width() : offlabel.width();
+      if (o.resizeHandle) {
+        var min = (onLabel.width() < offLabel.width()) ? onLabel.width() : offLabel.width();
         handle.css({ width: min });
       }
-      
+
       // Automatically resize the control
-      if (options.resizeContainer) {
-        var max = (onlabel.width() > offlabel.width()) ? onlabel.width() : offlabel.width();
+      if (o.resizeContainer) {
+        var max = (onLabel.width() > offLabel.width()) ? onLabel.width() : offLabel.width();
         container.css({ width: max + handle.width() + 15 });
       }
-      
-      offlabel.css({ width: container.width() - 5 });
-      
-      var rightside = container.width() - handle.width() - 6;
-      
+
+      offLabel.css({ width: container.width() - 5 });
+
+      var rightSide = container.width() - handle.width() - 6;
+
       if (elem.is(':checked')) {
-        handle.css({   left: rightside });
-        onlabel.css({ width: rightside + 4 });
-        offspan.css({ marginRight: -rightside });
+        handle.css({ left: rightSide });
+        onLabel.css({ width: rightSide + 4 });
+        offSpan.css({ marginRight: -rightSide });
       } else {
-        handle.css({   left: 0 });
-        onlabel.css({ width: 0 });
-        onspan.css({ marginLeft: -rightside });
+        handle.css({ left: 0 });
+        onLabel.css({ width: 0 });
+        onSpan.css({ marginLeft: -rightSide });
       }
-      
+
+      // Disable text selection
+      $(container, onLabel, offLabel, handle).bind('mousedown startselect', function(event) {
+        event.preventDefault();
+      });
+
       // A mousedown anywhere in the control will start tracking for dragging
-      var down = function(e) {
-        e.preventDefault();
+      container.bind('mousedown touchstart', function(event) {
+        event.preventDefault();
         $.iphoneStyle.clicking = handle;
-        var x = e.pageX || e.changedTouches[0].pageX;
+        var x = event.pageX || event.changedTouches[0].pageX;
         $.iphoneStyle.dragStartPosition = x - (parseInt(handle.css('left')) || 0);
-        return false;
-      };
-      
-      container.mousedown(down);
-      container.each(function() { this.addEventListener('touchstart', down, false); });
-      
-      
-      // As the mouse moves on the page, animate if we are in a drag state
-      var move = function(e) {
-        if ($.iphoneStyle.clicking != handle) { return }
-        e.preventDefault();
+      });
 
-        if (e.pageX != $.iphoneStyle.dragStartPosition) {
-          $.iphoneStyle.dragging = true;
-        }
-        
-        var x = e.pageX || e.changedTouches[0].pageX;
-        
-        var p = (x - $.iphoneStyle.dragStartPosition) / rightside;
-        if (p < 0) { p = 0; }
-        if (p > 1) { p = 1; }
-        
-        handle.css({ left: p * rightside });
-        onlabel.css({ width: p * rightside + 4 });
-        offspan.css({ 'marginRight': -p * rightside });
-        onspan.css({ 'marginLeft': -(1 - p) * rightside });
-        
-        return false;
-      };
-      
-      $(document).mousemove(move);
-      document.addEventListener('touchmove', move, false);
+      $(document)
+        // As the mouse moves on the page, animate if we are in a drag state
+        .bind('mousemove touchmove', function(event) {
+          event.preventDefault();
 
-      
-      // When the mouse comes up, leave drag state
-      var up = function(e) {
-        if ($.iphoneStyle.clicking != handle) { return false }
-        e.preventDefault();
-        
-        if (!$.iphoneStyle.dragging) {
-          var is_onstate = elem.attr('checked');
-          elem.attr('checked', !is_onstate);
-        } else {
-          var x = e.pageX || e.changedTouches[0].pageX;
+          if ($.iphoneStyle.clicking != handle) { return; }
 
-          var p = (x - $.iphoneStyle.dragStartPosition) / rightside;
-          elem.attr('checked', (p >= 0.5));
-        }
-        
-        $.iphoneStyle.clicking = null;
-        $.iphoneStyle.dragging = null;
-        elem.change();
-        
-        return false;
-      };
+          if (event.pageX != $.iphoneStyle.dragStartPosition) {
+            $.iphoneStyle.dragging = true;
+          }
 
-      $(document).mouseup(up);
-      document.addEventListener('touchend', up, false);
+          var x = event.pageX || event.changedTouches[0].pageX,
+              p = (x - $.iphoneStyle.dragStartPosition) / rightSide;
 
+          if (p < 0) { p = 0; }
+          if (p > 1) { p = 1; }
+
+          handle.css({ left: p * rightSide });
+          onLabel.css({ width: p * rightSide + 4 });
+          offSpan.css({ marginRight: -p * rightSide });
+          onSpan.css({ marginLeft: -(1 - p) * rightSide });
+        })
+
+        // When the mouse comes up, leave drag state
+        .bind('mouseup touchend', function(event) {
+          event.preventDefault();
+
+          if ($.iphoneStyle.clicking != handle) { return; }
+
+          if ($.iphoneStyle.dragging) {
+            var x = event.pageX || event.changedTouches[0].pageX,
+                p = (x - $.iphoneStyle.dragStartPosition) / rightSide;
+            elem.attr('checked', (p >= 0.5));
+          } else {
+            elem.attr('checked', !elem.attr('checked'));
+          }
+
+          $.iphoneStyle.clicking = null;
+          $.iphoneStyle.dragging = null;
+          elem.change();
+        });
 
       // Animate when we get a change event
       elem.change(function() {
-        var is_onstate = elem.attr('checked'),
-            new_left   = (is_onstate) ? rightside : 0;
+        var new_left   = elem.attr('checked') ? rightSide : 0;
 
-        handle.animate({   left: new_left }, options.duration);
-        onlabel.animate({ width: new_left + 4 }, options.duration);
-        onspan.animate({ marginLeft: new_left - rightside }, options.duration);
-        offspan.animate({ marginRight: -new_left }, options.duration);
+        handle.animate({         left: new_left },             o.duration);
+        onLabel.animate({       width: new_left + 4 },         o.duration);
+        onSpan.animate({   marginLeft: new_left - rightSide }, o.duration);
+        offSpan.animate({ marginRight: -new_left },            o.duration);
       });
-      
-      // Disable text selection
-      $(container, onlabel, offlabel, handle).mousedown(function(e) { e.preventDefault(); return false; });
-      if ($.browser.ie) {
-        $(container, onlabel, offlabel, handle).bind('startselect', function() { return false; });
-      }
-    }));
+    });
+
+    return this;
   };
 })(jQuery);
