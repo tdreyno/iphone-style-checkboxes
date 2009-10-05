@@ -4,12 +4,6 @@
 */
 ;(function($, iphoneStyle) {
 
-// One big, nasty global for keeping track of drag state
-iPhoneCheckbox = {
-  currentlyClicking: null,
-  dragStartPosition: null,
-};
-
 // Constructor
 $[iphoneStyle] = function(elem, options) {
   this.$elem = $(elem);
@@ -20,6 +14,7 @@ $[iphoneStyle] = function(elem, options) {
     obj[key] = value;
   });
   
+  // Initialize the control
   this.wrapCheckboxWithDivs();
   this.attachEvents();
   this.disableTextSelection();
@@ -57,13 +52,14 @@ $.extend($[iphoneStyle].prototype, {
 
     // Elements containing text should be unselectable
     $.each([this.handle, this.offLabel, this.onLabel, this.container], function(el) {
-      el.attr("unselectable", "on");
+      $(el).attr("unselectable", "on");
     });
   },
   
   // Automatically resize the handle
   optionallyResizeHandler: function() {
     if (!this.resizeHandle) return;
+    
     var min = (this.onLabel.width() < this.offLabel.width()) ? 
                 this.onLabel.width() :
                 this.offLabel.width();
@@ -73,6 +69,7 @@ $.extend($[iphoneStyle].prototype, {
   // Automatically resize the control
   optionallyResizeContainer: function() {
     if (!this.resizeContainer) return;
+    
     var max = (this.onLabel.width() > this.offLabel.width()) ? 
                 this.onLabel.width() : 
                 this.offLabel.width();
@@ -83,47 +80,41 @@ $.extend($[iphoneStyle].prototype, {
     var obj = this;
     
     // A mousedown anywhere in the control will start tracking for dragging
-    this.container.bind('mousedown touchstart', function(event) {
-      event.preventDefault();
-      var x = event.pageX || event.changedTouches[0].pageX;
-      iPhoneCheckbox.currentlyClicking = obj.handle;
-      iPhoneCheckbox.dragStartPosition = x - (parseInt(obj.handle.css('left')) || 0);
-    });
+    this.container
+      .bind('mousedown touchstart', function(event) {
+        event.preventDefault();
+        var x = event.pageX || event.changedTouches[0].pageX;
+        $[iphoneStyle].currentlyClicking = obj.handle;
+        $[iphoneStyle].dragStartPosition = x - (parseInt(obj.handle.css('left')) || 0);
+      })
     
-    // As the mouse moves on the page, animate if we are in a drag state
-    $(document).bind('mousemove touchmove', function(event) {
-      if (iPhoneCheckbox.currentlyClicking != obj.handle) return;
-      if (event.pageX != iPhoneCheckbox.dragStartPosition) iPhoneCheckbox.dragging = true;
-      event.preventDefault();
-
-      var x = event.pageX || event.changedTouches[0].pageX;
-      var p = (x - iPhoneCheckbox.dragStartPosition) / obj.rightSide;
-      if (p < 0) { p = 0; }
-      if (p > 1) { p = 1; }
-
-      obj.handle.css({ left: p * obj.rightSide });
-      obj.onLabel.css({ width: p * obj.rightSide + 4 });
-      obj.offSpan.css({ marginRight: -p * obj.rightSide });
-      obj.onSpan.css({ marginLeft: -(1 - p) * obj.rightSide });
-    });
+      // Utilize event bubbling to handle drag on any element beneath the container
+      .bind('iPhoneDrag', function(event, x) {
+        event.preventDefault();
+      
+        var p = (x - $[iphoneStyle].dragStartPosition) / obj.rightSide;
+        if (p < 0) { p = 0; }
+        if (p > 1) { p = 1; }
+      
+        obj.handle.css({ left: p * obj.rightSide });
+        obj.onLabel.css({ width: p * obj.rightSide + 4 });
+        obj.offSpan.css({ marginRight: -p * obj.rightSide });
+        obj.onSpan.css({ marginLeft: -(1 - p) * obj.rightSide });
+      })
     
-    // When the mouse comes up, leave drag state
-    $(document).bind('mouseup touchend', function(event) {
-      if (iPhoneCheckbox.currentlyClicking != obj.handle) return;
-      event.preventDefault();
+        // Utilize event bubbling to handle drag end on any element beneath the container
+      .bind('iPhoneDragEnd', function(event, x) {
+        if ($[iphoneStyle].dragging) {
+          var p = (x - $[iphoneStyle].dragStartPosition) / obj.rightSide;
+          obj.$elem.attr('checked', (p >= 0.5));
+        } else {
+          obj.$elem.attr('checked', !obj.$elem.attr('checked'));
+        }
 
-      if (iPhoneCheckbox.dragging) {
-        var x = event.pageX || event.changedTouches[0].pageX,
-            p = (x - iPhoneCheckbox.dragStartPosition) / obj.rightSide;
-        obj.$elem.attr('checked', (p >= 0.5));
-      } else {
-        obj.$elem.attr('checked', !obj.$elem.attr('checked'));
-      }
-
-      iPhoneCheckbox.currentlyClicking = null;
-      iPhoneCheckbox.dragging = null;
-      obj.$elem.change();
-    });
+        $[iphoneStyle].currentlyClicking = null;
+        $[iphoneStyle].dragging = null;
+        obj.$elem.change();
+      });
   
     // Animate when we get a change event
     this.$elem.change(function() {
@@ -140,7 +131,8 @@ $.extend($[iphoneStyle].prototype, {
   initialPosition: function() {
     this.offLabel.css({ width: this.container.width() - 5 });
 
-    this.rightSide = this.container.width() - this.handle.width() - 6;
+    var offset = ($.browser.msie && $.browser.version < 7) ? 3 : 6;
+    this.rightSide = this.container.width() - this.handle.width() - offset;
 
     if (this.$elem.is(':checked')) {
       this.handle.css({ left: this.rightSide });
@@ -165,8 +157,32 @@ $.fn[iphoneStyle] = function(options) {
   
   checkboxes.each(function() {
     new $[iphoneStyle](this, opt);
-  });  
+  });
 
+  if (!$[iphoneStyle].initComplete) {
+    // As the mouse moves on the page, animate if we are in a drag state
+    $(document)
+      .bind('mousemove touchmove', function(event) {
+        if (!$[iphoneStyle].currentlyClicking) return;
+        if (event.pageX != $[iphoneStyle].dragStartPosition) $[iphoneStyle].dragging = true;
+        event.preventDefault();
+    
+        var x = event.pageX || event.changedTouches[0].pageX;
+        $(event.target).trigger('iPhoneDrag', [x]);
+      })
+
+      // When the mouse comes up, leave drag state
+      .bind('mouseup touchend', function(event) {
+        if (!$[iphoneStyle].currentlyClicking) return;
+        event.preventDefault();
+    
+        var x = event.pageX || event.changedTouches[0].pageX;
+        $(event.target).trigger('iPhoneDragEnd', [x]);
+      });
+      
+    $[iphoneStyle].initComplete = true;
+  }
+  
   return this;
 }; // End of $.fn[iphoneStyle]
 
