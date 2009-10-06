@@ -18,8 +18,10 @@ $[iphoneStyle] = function(elem, options) {
   this.wrapCheckboxWithDivs();
   this.attachEvents();
   this.disableTextSelection();
-  this.optionallyResizeHandler();
-  this.optionallyResizeContainer();
+  
+  if (this.resizeHandle)    { this.optionallyResize('handle'); }
+  if (this.resizeContainer) { this.optionallyResize('container'); }
+  
   this.initialPosition();
 };
 
@@ -48,7 +50,7 @@ $.extend($[iphoneStyle].prototype, {
   
   // Disable IE text selection, other browsers are handled in CSS
   disableTextSelection: function() {
-    if (!$.browser.msie) return;
+    if (!$.browser.msie) { return; }
 
     // Elements containing text should be unselectable
     $.each([this.handle, this.offLabel, this.onLabel, this.container], function(el) {
@@ -56,24 +58,14 @@ $.extend($[iphoneStyle].prototype, {
     });
   },
   
-  // Automatically resize the handle
-  optionallyResizeHandler: function() {
-    if (!this.resizeHandle) return;
-    
-    var min = (this.onLabel.width() < this.offLabel.width()) ? 
-                this.onLabel.width() :
-                this.offLabel.width();
-    this.handle.css({ width: min });
-  },
-  
-  // Automatically resize the control
-  optionallyResizeContainer: function() {
-    if (!this.resizeContainer) return;
-    
-    var max = (this.onLabel.width() > this.offLabel.width()) ? 
-                this.onLabel.width() : 
-                this.offLabel.width();
-    this.container.css({ width: max + this.handle.width() + 15 });
+  // Automatically resize the handle or container
+  optionallyResize: function(mode) {
+    var onLabelWidth  = this.onLabel.width(),
+        offLabelWidth = this.offLabel.width(),
+        newWidth      = (onLabelWidth < offLabelWidth) ? onLabelWidth : offLabelWidth;
+
+    if (mode == 'container') { newWidth += this.handle.width() + 15; }
+    this[mode].css({ width: newWidth });
   },
   
   attachEvents: function() {
@@ -85,7 +77,7 @@ $.extend($[iphoneStyle].prototype, {
         event.preventDefault();
         var x = event.pageX || event.changedTouches[0].pageX;
         $[iphoneStyle].currentlyClicking = obj.handle;
-        $[iphoneStyle].dragStartPosition = x - (parseInt(obj.handle.css('left')) || 0);
+        $[iphoneStyle].dragStartPosition = x - (parseInt(obj.handle.css('left'), 10) || 0);
       })
     
       // Utilize event bubbling to handle drag on any element beneath the container
@@ -150,21 +142,21 @@ $.fn[iphoneStyle] = function(options) {
   var checkboxes = this.filter(':checkbox');
   
   // Fail early if we don't have any checkboxes passed in
-  if (!checkboxes.length) return this;
+  if (!checkboxes.length) { return this; }
   
   // Merge options passed in with global defaults
   var opt = $.extend({}, $[iphoneStyle].defaults, options);
   
   checkboxes.each(function() {
-    new $[iphoneStyle](this, opt);
+    $(this).data(iphoneStyle, new $[iphoneStyle](this, opt));
   });
 
   if (!$[iphoneStyle].initComplete) {
     // As the mouse moves on the page, animate if we are in a drag state
     $(document)
       .bind('mousemove touchmove', function(event) {
-        if (!$[iphoneStyle].currentlyClicking) return;
-        if (event.pageX != $[iphoneStyle].dragStartPosition) $[iphoneStyle].dragging = true;
+        if (!$[iphoneStyle].currentlyClicking) { return; }
+        if (event.pageX != $[iphoneStyle].dragStartPosition) { $[iphoneStyle].dragging = true; }
         event.preventDefault();
     
         var x = event.pageX || event.changedTouches[0].pageX;
@@ -173,7 +165,7 @@ $.fn[iphoneStyle] = function(options) {
 
       // When the mouse comes up, leave drag state
       .bind('mouseup touchend', function(event) {
-        if (!$[iphoneStyle].currentlyClicking) return;
+        if (!$[iphoneStyle].currentlyClicking) { return; }
         event.preventDefault();
     
         var x = event.pageX || event.changedTouches[0].pageX;
