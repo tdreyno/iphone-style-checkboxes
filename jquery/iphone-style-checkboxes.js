@@ -73,8 +73,11 @@ $.extend($[iphoneStyle].prototype, {
     
     // A mousedown anywhere in the control will start tracking for dragging
     this.container
-      .bind('mousedown touchstart', function(event) {
+      .bind('mousedown touchstart', function(event) {          
         event.preventDefault();
+        
+        if (obj.$elem.is(':disabled')) { return; }
+          
         var x = event.pageX || event.changedTouches[0].pageX;
         $[iphoneStyle].currentlyClicking = obj.handle;
         $[iphoneStyle].dragStartPosition = x - (parseInt(obj.handle.css('left'), 10) || 0);
@@ -83,7 +86,9 @@ $.extend($[iphoneStyle].prototype, {
       // Utilize event bubbling to handle drag on any element beneath the container
       .bind('iPhoneDrag', function(event, x) {
         event.preventDefault();
-      
+        
+        if (obj.$elem.is(':disabled')) { return; }
+        
         var p = (x - $[iphoneStyle].dragStartPosition) / obj.rightSide;
         if (p < 0) { p = 0; }
         if (p > 1) { p = 1; }
@@ -96,6 +101,8 @@ $.extend($[iphoneStyle].prototype, {
     
         // Utilize event bubbling to handle drag end on any element beneath the container
       .bind('iPhoneDragEnd', function(event, x) {
+        if (obj.$elem.is(':disabled')) { return; }
+        
         if ($[iphoneStyle].dragging) {
           var p = (x - $[iphoneStyle].dragStartPosition) / obj.rightSide;
           obj.$elem.attr('checked', (p >= 0.5));
@@ -134,6 +141,10 @@ $.extend($[iphoneStyle].prototype, {
       this.onLabel.css({ width: 0 });
       this.onSpan.css({ marginLeft: -this.rightSide });
     }
+    
+    if (this.$elem.is(':disabled')) {
+      this.container.addClass(this.disabledClass);
+    }
   }
 });
 
@@ -164,12 +175,12 @@ $.fn[iphoneStyle] = function(options) {
       })
 
       // When the mouse comes up, leave drag state
-      .bind('mouseup touchend', function(event) {
+      .bind('mouseup touchend', function(event) {        
         if (!$[iphoneStyle].currentlyClicking) { return; }
         event.preventDefault();
     
         var x = event.pageX || event.changedTouches[0].pageX;
-        $(event.target).trigger('iPhoneDragEnd', [x]);
+        $($[iphoneStyle].currentlyClicking).trigger('iPhoneDragEnd', [x]);
       });
       
     $[iphoneStyle].initComplete = true;
@@ -184,6 +195,7 @@ $[iphoneStyle].defaults = {
   uncheckedLabel:    'OFF',                     // Text content of "off" state
   resizeHandle:      true,                      // Automatically resize the handle to cover either label
   resizeContainer:   true,                      // Automatically resize the widget to contain the labels
+  disabledClass:     'iPhoneCheckDisabled',
   containerClass:    'iPhoneCheckContainer',
   labelOnClass:      'iPhoneCheckLabelOn',
   labelOffClass:     'iPhoneCheckLabelOff',

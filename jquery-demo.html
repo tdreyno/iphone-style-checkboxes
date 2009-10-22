@@ -22,6 +22,7 @@
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
       $('.on_off :checkbox').iphoneStyle();
+      $('.disabled :checkbox').iphoneStyle();
       $('.css_sized_container :checkbox').iphoneStyle({ resizeContainer: false, resizeHandle: false });
       $('.long_tiny :checkbox').iphoneStyle({ checkedLabel: 'Very Long Text', uncheckedLabel: 'Tiny' });
       
@@ -36,6 +37,12 @@
 </head>
 <body>
   <table>
+    <tr class="disabled">
+      <th><label for="disabled">Disabled</label></th>
+      <td>
+        <input type="checkbox" id="disabled" disabled="disabled" />
+      </td>
+    </tr>
     <tr class="on_off">
       <th><label for="on_off">Default</label></th>
       <td>

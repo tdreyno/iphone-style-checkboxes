@@ -5,6 +5,13 @@
   -moz-user-select: none;
   -khtml-user-select: none; }
 
+.iPhoneCheckDisabled {  
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5; }
+
+
 .iPhoneCheckContainer {
   position: relative;
   height: 27px;
