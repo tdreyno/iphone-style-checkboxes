@@ -117,6 +117,12 @@ $.extend($[iphoneStyle].prototype, {
   
     // Animate when we get a change event
     this.$elem.change(function() {
+      if (this.$elem.is(':disabled')) {
+        obj.container.addClass(obj.disabledClass);
+      } else {
+        obj.container.removeClass(obj.disabledClass);
+      }
+      
       var new_left = obj.$elem.attr('checked') ? obj.rightSide : 0;
 
       obj.handle.animate({         left: new_left },                 obj.duration);
