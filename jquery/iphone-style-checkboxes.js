@@ -117,7 +117,7 @@ $.extend($[iphoneStyle].prototype, {
   
     // Animate when we get a change event
     this.$elem.change(function() {
-      if (this.$elem.is(':disabled')) {
+      if (obj.$elem.is(':disabled')) {
         obj.container.addClass(obj.disabledClass);
       } else {
         obj.container.removeClass(obj.disabledClass);
