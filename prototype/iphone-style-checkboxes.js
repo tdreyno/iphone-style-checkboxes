@@ -15,8 +15,8 @@ var iPhoneStyle = function(selector_or_elems, options) {
     elem.setOpacity(0);
     elem.wrap('div', { 'class': options.containerClass});
     elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '"></div></div></div>' })
-        .insert({ 'after': '<label class="' + options.labelOffClass + '"><span>'+ options.uncheckedLabel + '</span></label>' })
-        .insert({ 'after': '<label class="' + options.labelOnClass + '"><span>' + options.checkedLabel   + '</span></label>' });
+        .insert({ 'after': '<label class="' + options.labelOnClass + '"><span>' + options.checkedLabel   + '</span></label>' })
+        .insert({ 'after': '<label class="' + options.labelOffClass + '"><span>'+ options.uncheckedLabel + '</span></label>' });
     
     var handle  = elem.up().down('.' + options.handleClass),
       offlabel  = elem.adjacent('.' + options.labelOffClass).first(),
