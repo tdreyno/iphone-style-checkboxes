@@ -119,6 +119,7 @@ $.extend($[iphoneStyle].prototype, {
     this.$elem.change(function() {
       if (obj.$elem.is(':disabled')) {
         obj.container.addClass(obj.disabledClass);
+        return false;
       } else {
         obj.container.removeClass(obj.disabledClass);
       }
