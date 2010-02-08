@@ -53,6 +53,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
       new Effect.Tween(null, p, Number(is_onstate), { duration: options.duration / 1000 }, function(p) {
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 4 + 'px' });
+        offlabel.setStyle({ width: (1 - p) * rightside + 4 + 'px' });
         offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
         onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
       });
@@ -83,6 +84,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
         if (p > 1) { p = 1; }
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 4 + 'px' });
+        offlabel.setStyle({ width: (1 - p) * rightside + 4 + 'px' });
         offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
         onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
       }
