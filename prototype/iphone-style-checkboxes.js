@@ -12,6 +12,11 @@ var iPhoneStyle = function(selector_or_elems, options) {
       return;
     }
     
+    if (elem.hasClassName(options.statusClass)) {
+        return;
+    }
+    
+    elem.addClassName(options.statusClass);
     elem.setOpacity(0);
     elem.wrap('div', { 'class': options.containerClass});
     elem.insert({ 'after': '<div class="' + options.handleClass + '"><div class="' + options.handleRightClass + '"><div class="' + options.handleCenterClass + '"></div></div></div>' })
@@ -57,6 +62,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
         offspan.setStyle({ 'marginRight': -p * rightside + 'px' });
         onspan.setStyle({ 'marginLeft': -(1 - p) * rightside + 'px' });
       });
+      options.statusChange(elem);
     };
     elem.observe('change', elem.change);
     
@@ -134,10 +140,12 @@ iPhoneStyle.defaults = {
   resizeHandle:      true,
   resizeContainer:   true,
   background:        '#fff',
+  statusClass:       'checkRendered',
   containerClass:    'iPhoneCheckContainer',
   labelOnClass:      'iPhoneCheckLabelOn',
   labelOffClass:     'iPhoneCheckLabelOff',
   handleClass:       'iPhoneCheckHandle',
   handleCenterClass: 'iPhoneCheckHandleCenter',
-  handleRightClass:  'iPhoneCheckHandleRight'
+  handleRightClass:  'iPhoneCheckHandleRight',
+  statusChange: function(){}
 };
