@@ -78,7 +78,7 @@ $.extend($[iphoneStyle].prototype, {
         
         if (obj.$elem.is(':disabled')) { return; }
           
-        var x = event.pageX || event.changedTouches[0].pageX;
+        var x = event.pageX || event.originalEvent.changedTouches[0].pageX;
         $[iphoneStyle].currentlyClicking = obj.handle;
         $[iphoneStyle].dragStartPosition = x - (parseInt(obj.handle.css('left'), 10) || 0);
       })
@@ -177,7 +177,7 @@ $.fn[iphoneStyle] = function(options) {
         if (event.pageX != $[iphoneStyle].dragStartPosition) { $[iphoneStyle].dragging = true; }
         event.preventDefault();
     
-        var x = event.pageX || event.changedTouches[0].pageX;
+        var x = event.pageX || event.originalEvent.changedTouches[0].pageX;
         $(event.target).trigger('iPhoneDrag', [x]);
       })
 
@@ -186,7 +186,7 @@ $.fn[iphoneStyle] = function(options) {
         if (!$[iphoneStyle].currentlyClicking) { return; }
         event.preventDefault();
     
-        var x = event.pageX || event.changedTouches[0].pageX;
+        var x = event.pageX || event.originalEvent.changedTouches[0].pageX;
         $($[iphoneStyle].currentlyClicking).trigger('iPhoneDragEnd', [x]);
       });
       
