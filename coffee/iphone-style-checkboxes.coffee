@@ -26,27 +26,27 @@ $.iphoneStyle::isDisabled: ->
 
 # Wrap the existing input[type=checkbox] with divs for styling and grab DOM references to the created nodes
 $.iphoneStyle::wrapCheckboxWithDivs: ->
-  @elem.wrap('<div class="' + @containerClass + '" />');
+  @elem.wrap("<div class='$@containerClass' />");
   
   @container: @elem.parent()
   
-  @offLabel:  $('<label class="'+ @labelOffClass +'">' +
-                  '<span>'+ @uncheckedLabel +'</span>' +
-                '</label>').appendTo(@container)
+  @offLabel:  $("<label class='$@labelOffClass'>" +
+                  "<span>$@uncheckedLabel</span>" +
+                "</label>").appendTo(@container)
                      
   @offSpan:   @offLabel.children('span')
   
-  @onLabel:   $('<label class="'+ @labelOnClass +'">' +
-                  '<span>'+ @checkedLabel +'</span>' +
-                '</label>').appendTo(@container)
+  @onLabel:   $("<label class='$@labelOnClass'>" +
+                  "<span>$@checkedLabel</span>" +
+                "</label>").appendTo(@container)
                      
   @onSpan:    @onLabel.children('span')
   
-  @handle:    $('<div class="' + this.handleClass + '">' +
-                  '<div class="' + this.handleRightClass + '">' +
-                    '<div class="' + this.handleCenterClass + '" />' +
-                  '</div>' +
-                '</div>').appendTo(this.container)
+  @handle:    $("<div class='$@handleClass'>" +
+                  "<div class='$@handleRightClass'>" +
+                    "<div class='$@handleCenterClass' />" +
+                  "</div>" +
+                "</div>").appendTo(this.container)
   
 # Disable IE text selection, other browsers are handled in CSS
 $.iphoneStyle::disableTextSelection: ->
@@ -75,9 +75,10 @@ $.iphoneStyle::attachEvents: ->
     
     return if @isDisabled()
       
-    x: event.pageX || event.changedTouches[0].pageX
-    $.iphoneStyle.currentlyClicking = @handle
-    $.iphoneStyle.dragStartPosition = x - (parseInt(@handle.css('left'), 10) || 0)
+    x: event.pageX || event.originalEvent.changedTouches[0].pageX
+    $.iphoneStyle.currentlyClicking: @handle
+    $.iphoneStyle.dragStartPosition: x
+    $.iphoneStyle.handleLeftOffset:  parseInt(@handle.css('left'), 10) || 0
     
   
   # Utilize event bubbling to handle drag on any element beneath the container
@@ -86,7 +87,7 @@ $.iphoneStyle::attachEvents: ->
     
     return if @isDisabled()
     
-    p: (x - $.iphoneStyle.dragStartPosition) / @rightSide
+    p: (x + $.iphoneStyle.handleLeftOffset - $.iphoneStyle.dragStartPosition) / @rightSide
     p: 0 if p < 0
     p: 1 if p > 1
   
@@ -157,10 +158,14 @@ $.fn.iphoneStyle: (options) ->
     # As the mouse moves on the page, animate if we are in a drag state
     $(document).bind 'mousemove touchmove', (event) =>
       return if not $.iphoneStyle.currentlyClicking
-      $.iphoneStyle.dragging: true if event.pageX isnt $.iphoneStyle.dragStartPosition
       event.preventDefault()
   
-      x: event.pageX || event.changedTouches[0].pageX
+      x: event.pageX || event.originalEvent.changedTouches[0].pageX
+      
+      if (!$.iphoneStyle.dragging &&
+          (Math.abs($.iphoneStyle.dragStartPosition - x) > opt.dragThreshold))
+        $.iphoneStyle.dragging: true
+      
       $(event.target).trigger 'iPhoneDrag', [x]
 
     # When the mouse comes up, leave drag state
@@ -168,7 +173,7 @@ $.fn.iphoneStyle: (options) ->
       return if not $.iphoneStyle.currentlyClicking
       event.preventDefault()
   
-      x: event.pageX || event.changedTouches[0].pageX
+      x: event.pageX || event.originalEvent.changedTouches[0].pageX
       $($.iphoneStyle.currentlyClicking).trigger 'iPhoneDragEnd', [x]
       
     $.iphoneStyle.initComplete: true
@@ -198,4 +203,7 @@ $.iphoneStyle.defaults: {
   handleClass:       'iPhoneCheckHandle'
   handleCenterClass: 'iPhoneCheckHandleCenter'
   handleRightClass:  'iPhoneCheckHandleRight'
+  
+  # Pixels that must be dragged for a click to be ignored
+  dragThreshold:     5                          
 }

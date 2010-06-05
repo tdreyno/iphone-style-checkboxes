@@ -4,9 +4,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>iPhone Style Radios Demo</title>
-  <script src="jquery/jquery-1.4.js" type="text/javascript" charset="utf-8"></script>
-  <script src="coffee/iphone-style-checkboxes.js" type="text/javascript" charset="utf-8"></script>
-  <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8" />
+  <script src="jquery/jquery-1.4.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
   <style type="text/css">
     body {
       padding: 10px; }
@@ -18,20 +17,22 @@
     .css_sized_container .iPhoneCheckContainer {
       width: 250px; }
   </style>
-
-  <script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
-      $('.on_off :checkbox').iphoneStyle();
-      $('.disabled :checkbox').iphoneStyle();
-      $('.css_sized_container :checkbox').iphoneStyle({ resizeContainer: false, resizeHandle: false });
-      $('.long_tiny :checkbox').iphoneStyle({ checkedLabel: 'Very Long Text', uncheckedLabel: 'Tiny' });
+  <script src="coffee/coffee-script.js" type="text/javascript"></script>
+  <script type="text/coffeescript">
+    $(document).ready ->
+      $.get "coffee/iphone-style-checkboxes.coffee", (data) ->
+        eval(CoffeeScript.compile(data))
+        
+        $('.on_off :checkbox').iphoneStyle()
+        $('.disabled :checkbox').iphoneStyle()
+        $('.css_sized_container :checkbox').iphoneStyle({ resizeContainer: false, resizeHandle: false })
+        $('.long_tiny :checkbox').iphoneStyle({ checkedLabel: 'Very Long Text', uncheckedLabel: 'Tiny' })
       
-      var onchange_checkbox = $('.onchange :checkbox').iphoneStyle();
-      setInterval(function toggleCheckbox() {
-        onchange_checkbox.attr('checked', !onchange_checkbox.is(':checked')).change();
-        $('span#status').html(onchange_checkbox.is(':checked').toString());
-      }, 2500);
-    });
+        onchange_checkbox: $('.onchange :checkbox').iphoneStyle()
+        intervalCallback: ->
+          onchange_checkbox.attr('checked', !onchange_checkbox.is(':checked')).change()
+          $('span#status').html(onchange_checkbox.is(':checked').toString())
+        setInterval(intervalCallback, 2500)
   </script>
   
 </head>

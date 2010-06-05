@@ -80,7 +80,8 @@ $.extend($[iphoneStyle].prototype, {
           
         var x = event.pageX || event.originalEvent.changedTouches[0].pageX;
         $[iphoneStyle].currentlyClicking = obj.handle;
-        $[iphoneStyle].dragStartPosition = x - (parseInt(obj.handle.css('left'), 10) || 0);
+        $[iphoneStyle].dragStartPosition = x;
+        $[iphoneStyle].handleLeftOffset  = parseInt(obj.handle.css('left'), 10) || 0;
       })
     
       // Utilize event bubbling to handle drag on any element beneath the container
@@ -89,10 +90,9 @@ $.extend($[iphoneStyle].prototype, {
         
         if (obj.$elem.is(':disabled')) { return; }
         
-        var p = (x - $[iphoneStyle].dragStartPosition) / obj.rightSide;
+        var p = (x + $[iphoneStyle].handleLeftOffset - $[iphoneStyle].dragStartPosition) / obj.rightSide;
         if (p < 0) { p = 0; }
         if (p > 1) { p = 1; }
-      
         obj.handle.css({ left: p * obj.rightSide });
         obj.onLabel.css({ width: p * obj.rightSide + 4 });
         obj.offSpan.css({ marginRight: -p * obj.rightSide });
@@ -174,10 +174,14 @@ $.fn[iphoneStyle] = function(options) {
     $(document)
       .bind('mousemove touchmove', function(event) {
         if (!$[iphoneStyle].currentlyClicking) { return; }
-        if (event.pageX != $[iphoneStyle].dragStartPosition) { $[iphoneStyle].dragging = true; }
         event.preventDefault();
-    
+        
         var x = event.pageX || event.originalEvent.changedTouches[0].pageX;
+        if (!$[iphoneStyle].dragging &&
+            (Math.abs($[iphoneStyle].dragStartPosition - x) > opt.dragThreshold)) { 
+          $[iphoneStyle].dragging = true; 
+        }
+    
         $(event.target).trigger('iPhoneDrag', [x]);
       })
 
@@ -208,7 +212,8 @@ $[iphoneStyle].defaults = {
   labelOffClass:     'iPhoneCheckLabelOff',
   handleClass:       'iPhoneCheckHandle',
   handleCenterClass: 'iPhoneCheckHandleCenter',
-  handleRightClass:  'iPhoneCheckHandleRight'
+  handleRightClass:  'iPhoneCheckHandleRight',
+  dragThreshold:     5                          // Pixels that must be dragged for a click to be ignored
 };
 
 })(jQuery, 'iphoneStyle');
