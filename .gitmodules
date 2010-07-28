@@ -1,0 +1,3 @@
+[submodule "extjs"]
+	path = extjs
+	url = git://github.com/steelThread/ExtJs-ToggleSlide.git
