@@ -1,3 +1,6 @@
 [submodule "extjs"]
 	path = extjs
 	url = git://github.com/steelThread/ExtJs-ToggleSlide.git
+[submodule "compass-extension"]
+	path = compass-extension
+	url = git@github.com:tdreyno/compass-iphone-style-checkboxes.git
