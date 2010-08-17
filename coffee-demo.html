@@ -19,7 +19,7 @@
   </style>
   <script src="coffee/coffee-script.js" type="text/javascript"></script>
   <script type="text/coffeescript">
-    $(document).ready ->
+    $(window).load ->
       $.get "coffee/iphone-style-checkboxes.coffee", (data) ->
         eval(CoffeeScript.compile(data))
         

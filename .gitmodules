@@ -4,3 +4,6 @@
 [submodule "compass-extension"]
 	path = compass-extension
 	url = git@github.com:tdreyno/compass-iphone-style-checkboxes.git
+[submodule "extensions/iphone-style-checkboxes"]
+	path = extensions/iphone-style-checkboxes
+	url = git@github.com:tdreyno/compass-iphone-style-checkboxes.git
