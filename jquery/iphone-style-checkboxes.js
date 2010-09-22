@@ -61,10 +61,15 @@ $.extend($[iphoneStyle].prototype, {
   // Automatically resize the handle or container
   optionallyResize: function(mode) {
     var onLabelWidth  = this.onLabel.width(),
-        offLabelWidth = this.offLabel.width(),
-        newWidth      = (onLabelWidth < offLabelWidth) ? onLabelWidth : offLabelWidth;
-
-    if (mode == 'container') { newWidth += this.handle.width() + 15; }
+        offLabelWidth = this.offLabel.width();
+        
+    if (mode == 'container') {
+      var newWidth = (onLabelWidth > offLabelWidth) ? onLabelWidth : offLabelWidth;
+      newWidth += this.handle.width() + 15; 
+    } else { 
+      var newWidth = (onLabelWidth < offLabelWidth) ? onLabelWidth : offLabelWidth;
+    }
+    
     this[mode].css({ width: newWidth });
   },
   
