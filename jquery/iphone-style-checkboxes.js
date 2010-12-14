@@ -117,7 +117,10 @@ $.extend($[iphoneStyle].prototype, {
           var checked = !obj.$elem.attr('checked');
         }
 
-        obj.$elem.attr('checked', checked);
+        obj.$elem.attr('changed', checked != obj.$elem.attr('checked'));
+        if (obj.$elem.attr('changed') == 'true') {
+          obj.$elem.attr('checked', checked);
+        }
 
         $[iphoneStyle].currentlyClicking = null;
         $[iphoneStyle].dragging = null;
