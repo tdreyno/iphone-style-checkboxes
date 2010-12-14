@@ -112,10 +112,12 @@ $.extend($[iphoneStyle].prototype, {
 
         if ($[iphoneStyle].dragging) {
           var p = (x - $[iphoneStyle].dragStartPosition) / obj.rightSide;
-          obj.$elem.attr('checked', (p >= 0.5));
+            checked = (p < 0) ? Math.abs(p) < 0.5 : p >= 0.5;
         } else {
-          obj.$elem.attr('checked', !obj.$elem.attr('checked'));
+          var checked = !obj.$elem.attr('checked');
         }
+
+        obj.$elem.attr('checked', checked);
 
         $[iphoneStyle].currentlyClicking = null;
         $[iphoneStyle].dragging = null;
