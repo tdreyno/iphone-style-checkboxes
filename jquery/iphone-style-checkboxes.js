@@ -53,8 +53,8 @@ $.extend($[iphoneStyle].prototype, {
     if (!$.browser.msie) { return; }
 
     // Elements containing text should be unselectable
-    $.each([this.handle, this.offLabel, this.onLabel, this.container], function(el) {
-      $(el).attr("unselectable", "on");
+    $.each([this.handle, this.offLabel, this.onLabel, this.container], function() {
+      $(this).attr("unselectable", "on");
     });
   },
   
