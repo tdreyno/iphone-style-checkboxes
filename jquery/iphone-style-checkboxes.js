@@ -87,6 +87,7 @@ $.extend($[iphoneStyle].prototype, {
         $[iphoneStyle].currentlyClicking = obj.handle;
         $[iphoneStyle].dragStartPosition = x;
         $[iphoneStyle].handleLeftOffset  = parseInt(obj.handle.css('left'), 10) || 0;
+        $[iphoneStyle].dragStartedOn     = obj.$elem;
       })
     
       // Utilize event bubbling to handle drag on any element beneath the container
@@ -94,6 +95,7 @@ $.extend($[iphoneStyle].prototype, {
         event.preventDefault();
         
         if (obj.$elem.is(':disabled')) { return; }
+        if (obj.$elem != $[iphoneStyle].dragStartedOn) { return; }
         
         var p = (x + $[iphoneStyle].handleLeftOffset - $[iphoneStyle].dragStartPosition) / obj.rightSide;
         if (p < 0) { p = 0; }
@@ -108,12 +110,15 @@ $.extend($[iphoneStyle].prototype, {
       .bind('iPhoneDragEnd', function(event, x) {
         if (obj.$elem.is(':disabled')) { return; }
         
+        var checked;
         if ($[iphoneStyle].dragging) {
           var p = (x - $[iphoneStyle].dragStartPosition) / obj.rightSide;
-          obj.$elem.attr('checked', (p >= 0.5));
+          checked = (p < 0) ? Math.abs(p) < 0.5 : p >= 0.5;
         } else {
-          obj.$elem.attr('checked', !obj.$elem.attr('checked'));
+          checked = !obj.$elem.attr('checked');
         }
+        
+        obj.$elem.attr('checked', checked);
 
         $[iphoneStyle].currentlyClicking = null;
         $[iphoneStyle].dragging = null;
