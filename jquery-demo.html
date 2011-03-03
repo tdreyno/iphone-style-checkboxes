@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>iPhone Style Radios Demo</title>
-  <script src="jquery/jquery-1.4.js" type="text/javascript" charset="utf-8"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="jquery/iphone-style-checkboxes.js" type="text/javascript" charset="utf-8"></script>
   <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8" />
   <style type="text/css">
@@ -25,6 +25,13 @@
       $('.disabled :checkbox').iphoneStyle();
       $('.css_sized_container :checkbox').iphoneStyle({ resizeContainer: false, resizeHandle: false });
       $('.long_tiny :checkbox').iphoneStyle({ checkedLabel: 'Very Long Text', uncheckedLabel: 'Tiny' });
+      
+      $('.will_change :checkbox').iphoneStyle().bind('willChange', function(event) {
+        var doit = confirm("Do you want to change?");
+        if (!doit) {
+          event.preventDefault();
+        }
+      });
       
       var onchange_checkbox = $('.onchange :checkbox').iphoneStyle();
       setInterval(function toggleCheckbox() {
@@ -53,6 +60,12 @@
       <th><label for="on_off_on">Default On</label></th>
       <td>
         <input type="checkbox" checked="checked" id="on_off_on"/>
+      </td>
+    </tr>
+    <tr class="will_change">
+      <th><label for="will_change">willChange callback</label></th>
+      <td>
+        <input type="checkbox" id="will_change"/>
       </td>
     </tr>
     <tr class="css_sized_container">
