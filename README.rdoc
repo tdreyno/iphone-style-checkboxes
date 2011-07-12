@@ -12,4 +12,4 @@ Please see jquery-demo.html or prototype-demo.html for example use.
 
 
 Homepage:: http://tdreyno.github.com/iphone-style-checkboxes/
-License:: Copyright (c) 2009 Thomas Reynolds <me@tdreyno>, released under the MIT license
+License:: Copyright (c) 2009 Thomas Reynolds <me@tdreyno.com>, released under the MIT license
