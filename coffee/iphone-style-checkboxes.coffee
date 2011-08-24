@@ -210,3 +210,21 @@ $.fn.iphoneStyle = (options) ->
     $(checkbox).data("iphoneStyle", new iOSCheckbox(checkbox, options))
 
   return @
+  
+$.fn.iOSCheckbox = (options={}) ->
+  # iOS5 style only supports circular handle
+  opts = $.extend({}, options, {
+    resizeHandle:      false
+    disabledClass:     'iOSCheckDisabled'
+    containerClass:    'iOSCheckContainer'
+    labelOnClass:      'iOSCheckLabelOn'
+    labelOffClass:     'iOSCheckLabelOff'
+    handleClass:       'iOSCheckHandle'
+    handleCenterClass: 'iOSCheckHandleCenter'
+    handleRightClass:  'iOSCheckHandleRight'
+  })
+  
+  for checkbox in @filter(':checkbox')
+    $(checkbox).data("iOSCheckbox", new iOSCheckbox(checkbox, opts))
+
+  return @
