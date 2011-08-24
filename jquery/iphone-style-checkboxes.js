@@ -1,229 +1,228 @@
-/*!
-// iPhone-style Checkboxes jQuery plugin
-// Copyright Thomas Reynolds, licensed GPL & MIT
-*/
-;(function($, iphoneStyle) {
-
-// Constructor
-$[iphoneStyle] = function(elem, options) {
-  this.$elem = $(elem);
-  
-  // Import options into instance variables
-  var obj = this;
-  $.each(options, function(key, value) {
-    obj[key] = value;
-  });
-  
-  // Initialize the control
-  this.wrapCheckboxWithDivs();
-  this.attachEvents();
-  this.disableTextSelection();
-  
-  if (this.resizeHandle)    { this.optionallyResize('handle'); }
-  if (this.resizeContainer) { this.optionallyResize('container'); }
-  
-  this.initialPosition();
-};
-
-$.extend($[iphoneStyle].prototype, {
-  // Wrap the existing input[type=checkbox] with divs for styling and grab DOM references to the created nodes
-  wrapCheckboxWithDivs: function() {
-    this.$elem.wrap('<div class="' + this.containerClass + '" />');
-    this.container = this.$elem.parent();
-    
-    this.offLabel  = $('<label class="'+ this.labelOffClass +'">' +
-                         '<span>'+ this.uncheckedLabel +'</span>' +
-                       '</label>').appendTo(this.container);
-    this.offSpan   = this.offLabel.children('span');
-    
-    this.onLabel   = $('<label class="'+ this.labelOnClass +'">' +
-                         '<span>'+ this.checkedLabel +'</span>' +
-                       '</label>').appendTo(this.container);
-    this.onSpan    = this.onLabel.children('span');
-    
-    this.handle    = $('<div class="' + this.handleClass + '">' +
-                         '<div class="' + this.handleRightClass + '">' +
-                           '<div class="' + this.handleCenterClass + '" />' +
-                         '</div>' +
-                       '</div>').appendTo(this.container);
-  },
-  
-  // Disable IE text selection, other browsers are handled in CSS
-  disableTextSelection: function() {
-    if (!$.browser.msie) { return; }
-
-    // Elements containing text should be unselectable
-    $.each([this.handle, this.offLabel, this.onLabel, this.container], function() {
-      $(this).attr("unselectable", "on");
-    });
-  },
-  
-  // Automatically resize the handle or container
-  optionallyResize: function(mode) {
-    var onLabelWidth  = this.onLabel.width(),
-        offLabelWidth = this.offLabel.width();
-        
-    if (mode == 'container') {
-      var newWidth = (onLabelWidth > offLabelWidth) ? onLabelWidth : offLabelWidth;
-      newWidth += this.handle.width() + 15; 
-    } else { 
-      var newWidth = (onLabelWidth < offLabelWidth) ? onLabelWidth : offLabelWidth;
+(function() {
+  var iOSCheckbox;
+  iOSCheckbox = (function() {
+    function iOSCheckbox(elem, options) {
+      var key, opts, value;
+      this.elem = $(elem);
+      opts = $.extend({}, iOSCheckbox.defaults, options);
+      for (key in opts) {
+        value = opts[key];
+        this[key] = value;
+      }
+      this.wrapCheckboxWithDivs();
+      this.attachEvents();
+      this.disableTextSelection();
+      if (this.resizeHandle) {
+        this.optionallyResize('handle');
+      }
+      if (this.resizeContainer) {
+        this.optionallyResize('container');
+      }
+      this.initialPosition();
     }
-    
-    this[mode].css({ width: newWidth });
-  },
-  
-  attachEvents: function() {
-    var obj = this;
-    
-    // A mousedown anywhere in the control will start tracking for dragging
-    this.container
-      .bind('mousedown touchstart', function(event) {          
-        event.preventDefault();
-        
-        if (obj.$elem.is(':disabled')) { return; }
-          
-        var x = event.pageX || event.originalEvent.changedTouches[0].pageX;
-        $[iphoneStyle].currentlyClicking = obj.handle;
-        $[iphoneStyle].dragStartPosition = x;
-        $[iphoneStyle].handleLeftOffset  = parseInt(obj.handle.css('left'), 10) || 0;
-        $[iphoneStyle].dragStartedOn     = obj.$elem;
-      })
-    
-      // Utilize event bubbling to handle drag on any element beneath the container
-      .bind('iPhoneDrag', function(event, x) {
-        event.preventDefault();
-        
-        if (obj.$elem.is(':disabled')) { return; }
-        if (obj.$elem != $[iphoneStyle].dragStartedOn) { return; }
-        
-        var p = (x + $[iphoneStyle].handleLeftOffset - $[iphoneStyle].dragStartPosition) / obj.rightSide;
-        if (p < 0) { p = 0; }
-        if (p > 1) { p = 1; }
-        obj.handle.css({ left: p * obj.rightSide });
-        obj.onLabel.css({ width: p * obj.rightSide + 4 });
-        obj.offSpan.css({ marginRight: -p * obj.rightSide });
-        obj.onSpan.css({ marginLeft: -(1 - p) * obj.rightSide });
-      })
-    
-        // Utilize event bubbling to handle drag end on any element beneath the container
-      .bind('iPhoneDragEnd', function(event, x) {
-        if (obj.$elem.is(':disabled')) { return; }
-        
-        var checked;
-        if ($[iphoneStyle].dragging) {
-          var p = (x - $[iphoneStyle].dragStartPosition) / obj.rightSide;
-          checked = (p < 0) ? Math.abs(p) < 0.5 : p >= 0.5;
-        } else {
-          checked = !obj.$elem.attr('checked');
-        }
-        
-        obj.$elem.attr('checked', checked);
-
-        $[iphoneStyle].currentlyClicking = null;
-        $[iphoneStyle].dragging = null;
-        obj.$elem.change();
+    iOSCheckbox.prototype.isDisabled = function() {
+      return this.elem.is(':disabled');
+    };
+    iOSCheckbox.prototype.wrapCheckboxWithDivs = function() {
+      this.elem.wrap("<div class='" + this.containerClass + "' />");
+      this.container = this.elem.parent();
+      this.offLabel = $("<label class='" + this.labelOffClass + "'>\n  <span>" + this.uncheckedLabel + "</span>\n</label>").appendTo(this.container);
+      this.offSpan = this.offLabel.children('span');
+      this.onLabel = $("<label class='" + this.labelOnClass + "'>\n  <span>" + this.checkedLabel + "</span>\n</label>").appendTo(this.container);
+      this.onSpan = this.onLabel.children('span');
+      return this.handle = $("<div class='" + this.handleClass + "'>\n  <div class='" + this.handleRightClass + "'>\n    <div class='" + this.handleCenterClass + "' />\n  </div>\n</div>").appendTo(this.container);
+    };
+    iOSCheckbox.prototype.disableTextSelection = function() {
+      if ($.browser.msie) {
+        return $([this.handle, this.offLabel, this.onLabel, this.container]).attr("unselectable", "on");
+      }
+    };
+    iOSCheckbox.prototype.optionallyResize = function(mode) {
+      var newWidth, offLabelWidth, onLabelWidth;
+      onLabelWidth = this.onLabel.width();
+      offLabelWidth = this.offLabel.width();
+      newWidth = onLabelWidth < offLabelWidth ? onLabelWidth : offLabelWidth;
+      if (mode === "container") {
+        newWidth += this.handle.width() + 15;
+        return this.container.css({
+          width: newWidth
+        });
+      } else {
+        return this.handle.css({
+          width: newWidth
+        });
+      }
+    };
+    iOSCheckbox.prototype.onMouseDown = function(event) {
+      var x;
+      event.preventDefault();
+      if (this.isDisabled()) {
+        return;
+      }
+      x = event.pageX || event.originalEvent.changedTouches[0].pageX;
+      iOSCheckbox.currentlyClicking = this.handle;
+      iOSCheckbox.dragStartPosition = x;
+      return iOSCheckbox.handleLeftOffset = parseInt(this.handle.css('left'), 10) || 0;
+    };
+    iOSCheckbox.prototype.onDragMove = function(event, x) {
+      var p;
+      if (iOSCheckbox.currentlyClicking !== this.handle) {
+        return;
+      }
+      if (this.isDisabled()) {
+        return;
+      }
+      p = (x + iOSCheckbox.handleLeftOffset - iOSCheckbox.dragStartPosition) / this.rightSide;
+      if (p < 0) {
+        p = 0;
+      }
+      if (p > 1) {
+        p = 1;
+      }
+      this.handle.css({
+        left: p * this.rightSide
       });
-  
-    // Animate when we get a change event
-    this.$elem.change(function() {
-      if (obj.$elem.is(':disabled')) {
-        obj.container.addClass(obj.disabledClass);
+      this.onLabel.css({
+        width: p * this.rightSide + 4
+      });
+      this.offSpan.css({
+        marginRight: -p * this.rightSide
+      });
+      return this.onSpan.css({
+        marginLeft: -(1 - p) * this.rightSide
+      });
+    };
+    iOSCheckbox.prototype.onDragEnd = function(event, x) {
+      var p;
+      if (iOSCheckbox.currentlyClicking !== this.handle) {
+        return;
+      }
+      if (this.isDisabled()) {
+        return;
+      }
+      if (iOSCheckbox.dragging) {
+        p = (x - iOSCheckbox.dragStartPosition) / this.rightSide;
+        this.elem.prop('checked', p >= 0.5);
+      } else {
+        this.elem.prop('checked', !this.elem.prop('checked'));
+      }
+      iOSCheckbox.currentlyClicking = null;
+      iOSCheckbox.dragging = null;
+      return this.elem.change();
+    };
+    iOSCheckbox.prototype.onChange = function() {
+      var new_left;
+      if (this.isDisabled()) {
+        this.container.addClass(this.disabledClass);
         return false;
       } else {
-        obj.container.removeClass(obj.disabledClass);
+        this.container.removeClass(this.disabledClass);
       }
-      
-      var new_left = obj.$elem.attr('checked') ? obj.rightSide : 0;
-
-      obj.handle.animate({         left: new_left },                 obj.duration);
-      obj.onLabel.animate({       width: new_left + 4 },             obj.duration);
-      obj.offSpan.animate({ marginRight: -new_left },                obj.duration);
-      obj.onSpan.animate({   marginLeft: new_left - obj.rightSide }, obj.duration);
-    });
-  },
-  
-  // Setup the control's inital position
-  initialPosition: function() {
-    this.offLabel.css({ width: this.container.width() - 5 });
-
-    var offset = ($.browser.msie && $.browser.version < 7) ? 3 : 6;
-    this.rightSide = this.container.width() - this.handle.width() - offset;
-
-    if (this.$elem.is(':checked')) {
-      this.handle.css({ left: this.rightSide });
-      this.onLabel.css({ width: this.rightSide + 4 });
-      this.offSpan.css({ marginRight: -this.rightSide });
-    } else {
-      this.onLabel.css({ width: 0 });
-      this.onSpan.css({ marginLeft: -this.rightSide });
-    }
-    
-    if (this.$elem.is(':disabled')) {
-      this.container.addClass(this.disabledClass);
-    }
-  }
-});
-
-// jQuery-specific code
-$.fn[iphoneStyle] = function(options) {
-  var checkboxes = this.filter(':checkbox');
-  
-  // Fail early if we don't have any checkboxes passed in
-  if (!checkboxes.length) { return this; }
-  
-  // Merge options passed in with global defaults
-  var opt = $.extend({}, $[iphoneStyle].defaults, options);
-  
-  checkboxes.each(function() {
-    $(this).data(iphoneStyle, new $[iphoneStyle](this, opt));
-  });
-
-  if (!$[iphoneStyle].initComplete) {
-    // As the mouse moves on the page, animate if we are in a drag state
-    $(document)
-      .bind('mousemove touchmove', function(event) {
-        if (!$[iphoneStyle].currentlyClicking) { return; }
-        event.preventDefault();
-        
-        var x = event.pageX || event.originalEvent.changedTouches[0].pageX;
-        if (!$[iphoneStyle].dragging &&
-            (Math.abs($[iphoneStyle].dragStartPosition - x) > opt.dragThreshold)) { 
-          $[iphoneStyle].dragging = true; 
-        }
-    
-        $(event.target).trigger('iPhoneDrag', [x]);
-      })
-
-      // When the mouse comes up, leave drag state
-      .bind('mouseup touchend', function(event) {        
-        if (!$[iphoneStyle].currentlyClicking) { return; }
-        event.preventDefault();
-    
-        var x = event.pageX || event.originalEvent.changedTouches[0].pageX;
-        $($[iphoneStyle].currentlyClicking).trigger('iPhoneDragEnd', [x]);
+      new_left = this.elem.prop('checked') ? this.rightSide : 0;
+      this.handle.animate({
+        left: new_left
+      }, this.duration);
+      this.onLabel.animate({
+        width: new_left + 4
+      }, this.duration);
+      this.offSpan.animate({
+        marginRight: -new_left
+      }, this.duration);
+      return this.onSpan.animate({
+        marginLeft: new_left - this.rightSide
+      }, this.duration);
+    };
+    iOSCheckbox.prototype.attachEvents = function() {
+      var self;
+      self = this;
+      this.container.bind('mousedown touchstart', function(event) {
+        return self.onMouseDown.apply(self, arguments);
       });
-      
-    $[iphoneStyle].initComplete = true;
-  }
-  
-  return this;
-}; // End of $.fn[iphoneStyle]
-
-$[iphoneStyle].defaults = {
-  duration:          200,                       // Time spent during slide animation
-  checkedLabel:      'ON',                      // Text content of "on" state
-  uncheckedLabel:    'OFF',                     // Text content of "off" state
-  resizeHandle:      true,                      // Automatically resize the handle to cover either label
-  resizeContainer:   true,                      // Automatically resize the widget to contain the labels
-  disabledClass:     'iPhoneCheckDisabled',
-  containerClass:    'iPhoneCheckContainer',
-  labelOnClass:      'iPhoneCheckLabelOn',
-  labelOffClass:     'iPhoneCheckLabelOff',
-  handleClass:       'iPhoneCheckHandle',
-  handleCenterClass: 'iPhoneCheckHandleCenter',
-  handleRightClass:  'iPhoneCheckHandleRight',
-  dragThreshold:     5                          // Pixels that must be dragged for a click to be ignored
-};
-
-})(jQuery, 'iphoneStyle');
+      $(document).bind('mousemove touchmove', function(event) {
+        return self.onGlobalMove.apply(self, arguments);
+      });
+      $(document).bind('mouseup touchend', function(event) {
+        return self.onGlobalUp.apply(self, arguments);
+      });
+      return this.elem.bind("change", function() {
+        return self.onChange.apply(self, arguments);
+      });
+    };
+    iOSCheckbox.prototype.initialPosition = function() {
+      var offset;
+      this.offLabel.css({
+        width: this.container.width() - 5
+      });
+      offset = $.browser.msie && $.browser.version < 7 ? 3 : 6;
+      this.rightSide = this.container.width() - this.handle.width() - offset;
+      if (this.elem.is(':checked')) {
+        this.handle.css({
+          left: this.rightSide
+        });
+        this.onLabel.css({
+          width: this.rightSide + 4
+        });
+        this.offSpan.css({
+          marginRight: -this.rightSide
+        });
+      } else {
+        this.onLabel.css({
+          width: 0
+        });
+        this.onSpan.css({
+          marginLeft: -this.rightSide
+        });
+      }
+      if (this.isDisabled()) {
+        return this.container.addClass(this.disabledClass);
+      }
+    };
+    iOSCheckbox.prototype.onGlobalMove = function(event) {
+      var x;
+      if (!iOSCheckbox.currentlyClicking) {
+        return;
+      }
+      event.preventDefault();
+      x = event.pageX || event.originalEvent.changedTouches[0].pageX;
+      if (!iOSCheckbox.dragging && (Math.abs(iOSCheckbox.dragStartPosition - x) > this.dragThreshold)) {
+        iOSCheckbox.dragging = true;
+      }
+      return this.onDragMove(event, x);
+    };
+    iOSCheckbox.prototype.onGlobalUp = function(event) {
+      var x;
+      if (!iOSCheckbox.currentlyClicking) {
+        return;
+      }
+      event.preventDefault();
+      x = event.pageX || event.originalEvent.changedTouches[0].pageX;
+      return this.onDragEnd(event, x);
+    };
+    iOSCheckbox.defaults = {
+      duration: 200,
+      checkedLabel: 'ON',
+      uncheckedLabel: 'OFF',
+      resizeHandle: true,
+      resizeContainer: true,
+      disabledClass: 'iPhoneCheckDisabled',
+      containerClass: 'iPhoneCheckContainer',
+      labelOnClass: 'iPhoneCheckLabelOn',
+      labelOffClass: 'iPhoneCheckLabelOff',
+      handleClass: 'iPhoneCheckHandle',
+      handleCenterClass: 'iPhoneCheckHandleCenter',
+      handleRightClass: 'iPhoneCheckHandleRight',
+      dragThreshold: 5
+    };
+    return iOSCheckbox;
+  })();
+  $.iphoneStyle = this.iOSCheckbox = iOSCheckbox;
+  $.fn.iphoneStyle = function(options) {
+    var checkbox, _i, _len, _ref;
+    _ref = this.filter(':checkbox');
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      checkbox = _ref[_i];
+      $(checkbox).data("iphoneStyle", new iOSCheckbox(checkbox, options));
+    }
+    return this;
+  };
+}).call(this);
