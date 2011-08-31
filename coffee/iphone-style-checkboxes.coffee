@@ -58,16 +58,20 @@ class iOSCheckbox
   optionallyResize: (mode) -> 
     onLabelWidth  = @onLabel.width()
     offLabelWidth = @offLabel.width()
-    
-    newWidth      = if (onLabelWidth < offLabelWidth)
-      onLabelWidth
-    else 
-      offLabelWidth
 
     if mode == "container"
-      newWidth += @handle.width() + 15 
+      newWidth = if (onLabelWidth > offLabelWidth)
+        onLabelWidth
+      else 
+        offLabelWidth
+      
+      newWidth += @handle.width() + @handleMargin
       @container.css(width: newWidth)
     else
+      newWidth = if (onLabelWidth > offLabelWidth)
+        onLabelWidth
+      else 
+        offLabelWidth
       @handle.css(width: newWidth)
 
   onMouseDown: (event) ->
@@ -81,16 +85,16 @@ class iOSCheckbox
     iOSCheckbox.handleLeftOffset  = parseInt(@handle.css('left'), 10) || 0
 
   onDragMove: (event, x) ->
-    return unless iOSCheckbox.currentlyClicking == @handle  
-    return if @isDisabled()
+    return unless iOSCheckbox.currentlyClicking == @handle
     
     p = (x + iOSCheckbox.handleLeftOffset - iOSCheckbox.dragStartPosition) / @rightSide
     p = 0 if p < 0
     p = 1 if p > 1
 
-    @handle.css(left: p * @rightSide)
-    @onLabel.css(width: p * @rightSide + 4)
-    @offSpan.css(marginRight: -p * @rightSide)
+    newWidth = p * @rightSide
+    @handle.css(left: newWidth)
+    @onLabel.css(width: newWidth + @handleRadius)
+    @offSpan.css(marginRight: -newWidth)
     @onSpan.css(marginLeft: -(1 - p) * @rightSide)
 
   onDragEnd: (event, x) ->
@@ -117,24 +121,30 @@ class iOSCheckbox
     new_left = if @elem.prop('checked') then @rightSide else 0
 
     @handle.animate(left: new_left, @duration)
-    @onLabel.animate(width: new_left + 4, @duration)
+    @onLabel.animate(width: new_left + @handleRadius, @duration)
     @offSpan.animate(marginRight: -new_left, @duration)
     @onSpan.animate(marginLeft: new_left - @rightSide, @duration)
   
   attachEvents: ->
     self = this
     
+    localMouseMove = (event) ->
+      self.onGlobalMove.apply(self, arguments)
+      
+    localMouseUp = (event) ->
+      self.onGlobalUp.apply(self, arguments)
+      $(document).unbind 'mousemove touchmove', localMouseMove
+      $(document).unbind 'mouseup touchend', localMouseUp
+      
     # A mousedown anywhere in the control will start tracking for dragging
     @container.bind 'mousedown touchstart', (event) ->
       self.onMouseDown.apply(self, arguments)
   
-    # As the mouse moves on the page, animate if we are in a drag state
-    $(document).bind 'mousemove touchmove', (event) ->
-      self.onGlobalMove.apply(self, arguments)
+      # As the mouse moves on the page, animate if we are in a drag state
+      $(document).bind 'mousemove touchmove', localMouseMove
 
-    # When the mouse comes up, leave drag state
-    $(document).bind 'mouseup touchend', (event) ->
-      self.onGlobalUp.apply(self, arguments)
+      # When the mouse comes up, leave drag state
+      $(document).bind 'mouseup touchend', localMouseUp
       
     # Animate when we get a change event
     @elem.bind "change", ->
@@ -142,14 +152,15 @@ class iOSCheckbox
     
   # Setup the control's inital position
   initialPosition: ->
-    @offLabel.css(width: @container.width() - 5)
+    @offLabel.css(width: @container.width() - @containerRadius)
 
-    offset     = if $.browser.msie and $.browser.version < 7 then 3 else 6
+    offset     = @containerRadius + 1
+    offset     -= 3 if $.browser.msie and $.browser.version < 7
     @rightSide = @container.width() - @handle.width() - offset
 
     if @elem.is(':checked')
       @handle.css(left: @rightSide)
-      @onLabel.css(width: @rightSide + 4)
+      @onLabel.css(width: @rightSide + @handleRadius)
       @offSpan.css(marginRight: -@rightSide)
     else
       @onLabel.css(width: 0)
@@ -158,7 +169,7 @@ class iOSCheckbox
     @container.addClass(@disabledClass) if @isDisabled()
 
   onGlobalMove: (event) ->
-    return unless iOSCheckbox.currentlyClicking
+    return unless !@isDisabled() && iOSCheckbox.currentlyClicking
     event.preventDefault()
 
     x = event.pageX || event.originalEvent.changedTouches[0].pageX
@@ -202,6 +213,10 @@ class iOSCheckbox
   
     # Pixels that must be dragged for a click to be ignored
     dragThreshold:     5
+    
+    handleMargin:      15
+    handleRadius:      4
+    containerRadius:   5
 
 $.iphoneStyle = @iOSCheckbox = iOSCheckbox
 
