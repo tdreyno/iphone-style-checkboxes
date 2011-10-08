@@ -1,5 +1,6 @@
 (function() {
   var iOSCheckbox;
+  var __slice = Array.prototype.slice;
   iOSCheckbox = (function() {
     function iOSCheckbox(elem, options) {
       var key, opts, value;
@@ -107,10 +108,16 @@
       }
       iOSCheckbox.currentlyClicking = null;
       iOSCheckbox.dragging = null;
-      return this.elem.change();
+      return this.didChange();
     };
-    iOSCheckbox.prototype.onChange = function() {
+    iOSCheckbox.prototype.refresh = function() {
+      return this.didChange();
+    };
+    iOSCheckbox.prototype.didChange = function() {
       var new_left;
+      if (typeof this.onChange === "function") {
+        this.onChange(this.elem, this.elem.prop('checked'));
+      }
       if (this.isDisabled()) {
         this.container.addClass(this.disabledClass);
         return false;
@@ -142,13 +149,10 @@
         $(document).unbind('mousemove touchmove', localMouseMove);
         return $(document).unbind('mouseup touchend', localMouseUp);
       };
-      this.container.bind('mousedown touchstart', function(event) {
+      return this.container.bind('mousedown touchstart', function(event) {
         self.onMouseDown.apply(self, arguments);
         $(document).bind('mousemove touchmove', localMouseMove);
         return $(document).bind('mouseup touchend', localMouseUp);
-      });
-      return this.elem.bind("change", function() {
-        return self.onChange.apply(self, arguments);
       });
     };
     iOSCheckbox.prototype.initialPosition = function() {
@@ -202,7 +206,8 @@
       }
       event.preventDefault();
       x = event.pageX || event.originalEvent.changedTouches[0].pageX;
-      return this.onDragEnd(event, x);
+      this.onDragEnd(event, x);
+      return false;
     };
     iOSCheckbox.defaults = {
       duration: 200,
@@ -220,17 +225,28 @@
       dragThreshold: 5,
       handleMargin: 15,
       handleRadius: 4,
-      containerRadius: 5
+      containerRadius: 5,
+      onChange: function() {}
     };
     return iOSCheckbox;
   })();
   $.iphoneStyle = this.iOSCheckbox = iOSCheckbox;
-  $.fn.iphoneStyle = function(options) {
-    var checkbox, _i, _len, _ref;
+  $.fn.iphoneStyle = function() {
+    var args, checkbox, existingControl, method, options, params, _i, _len, _ref, _ref2;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     _ref = this.filter(':checkbox');
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       checkbox = _ref[_i];
-      $(checkbox).data("iphoneStyle", new iOSCheckbox(checkbox, options));
+      existingControl = $(checkbox).data("iphoneStyle");
+      if (existingControl != null) {
+        method = args[0], params = 2 <= args.length ? __slice.call(args, 1) : [];
+        if ((_ref2 = existingControl[method]) != null) {
+          _ref2.apply(existingControl, params);
+        }
+      } else {
+        options = args[0];
+        $(checkbox).data("iphoneStyle", new iOSCheckbox(checkbox, options));
+      }
     }
     return this;
   };

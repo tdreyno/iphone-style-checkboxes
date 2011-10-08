@@ -109,9 +109,13 @@ class iOSCheckbox
 
     iOSCheckbox.currentlyClicking = null
     iOSCheckbox.dragging          = null
-    @elem.change()
+    @didChange()
 
-  onChange: ->  
+  refresh: -> @didChange()
+    
+  didChange: ->
+    @onChange?(@elem, @elem.prop('checked'))
+    
     if @isDisabled()
       @container.addClass(@disabledClass)
       return false
@@ -145,10 +149,6 @@ class iOSCheckbox
 
       # When the mouse comes up, leave drag state
       $(document).bind 'mouseup touchend', localMouseUp
-      
-    # Animate when we get a change event
-    @elem.bind "change", ->
-      self.onChange.apply(self, arguments)
     
   # Setup the control's inital position
   initialPosition: ->
@@ -185,7 +185,9 @@ class iOSCheckbox
     event.preventDefault()
 
     x = event.pageX || event.originalEvent.changedTouches[0].pageX
+    
     @onDragEnd(event, x)
+    false
 
   @defaults: 
     # Time spent during slide animation
@@ -217,14 +219,22 @@ class iOSCheckbox
     handleMargin:      15
     handleRadius:      4
     containerRadius:   5
+    
+    onChange: ->
 
 $.iphoneStyle = @iOSCheckbox = iOSCheckbox
 
-$.fn.iphoneStyle = (options) ->
+$.fn.iphoneStyle = (args...) ->
   for checkbox in @filter(':checkbox')
-    $(checkbox).data("iphoneStyle", new iOSCheckbox(checkbox, options))
+    existingControl = $(checkbox).data("iphoneStyle")
+    if existingControl?
+      [method, params...] = args
+      existingControl[method]?.apply(existingControl, params)
+    else
+      options = args[0]
+      $(checkbox).data("iphoneStyle", new iOSCheckbox(checkbox, options))
 
-  return @
+  this
   
 $.fn.iOSCheckbox = (options={}) ->
   # iOS5 style only supports circular handle
