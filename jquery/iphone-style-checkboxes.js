@@ -10,6 +10,7 @@
         value = opts[key];
         this[key] = value;
       }
+      this.elem.data(this.dataName, this);
       this.wrapCheckboxWithDivs();
       this.attachEvents();
       this.disableTextSelection();
@@ -38,13 +39,20 @@
         return $([this.handle, this.offLabel, this.onLabel, this.container]).attr("unselectable", "on");
       }
     };
+    iOSCheckbox.prototype._getDimension = function(elem, dimension) {
+      if ($.fn.actual != null) {
+        return elem.actual(dimension);
+      } else {
+        return elem[dimension]();
+      }
+    };
     iOSCheckbox.prototype.optionallyResize = function(mode) {
       var newWidth, offLabelWidth, onLabelWidth;
-      onLabelWidth = this.onLabel.width();
-      offLabelWidth = this.offLabel.width();
+      onLabelWidth = this._getDimension(this.onLabel, "width");
+      offLabelWidth = this._getDimension(this.offLabel, "width");
       if (mode === "container") {
         newWidth = onLabelWidth > offLabelWidth ? onLabelWidth : offLabelWidth;
-        newWidth += this.handle.width() + this.handleMargin;
+        newWidth += this._getDimension(this.handle, "width") + this.handleMargin;
         return this.container.css({
           width: newWidth
         });
@@ -156,15 +164,16 @@
       });
     };
     iOSCheckbox.prototype.initialPosition = function() {
-      var offset;
+      var containerWidth, offset;
+      containerWidth = this._getDimension(this.container, "width");
       this.offLabel.css({
-        width: this.container.width() - this.containerRadius
+        width: containerWidth - this.containerRadius
       });
       offset = this.containerRadius + 1;
       if ($.browser.msie && $.browser.version < 7) {
         offset -= 3;
       }
-      this.rightSide = this.container.width() - this.handle.width() - offset;
+      this.rightSide = containerWidth - this._getDimension(this.handle, "width") - offset;
       if (this.elem.is(':checked')) {
         this.handle.css({
           left: this.rightSide
@@ -226,32 +235,33 @@
       handleMargin: 15,
       handleRadius: 4,
       containerRadius: 5,
+      dataName: "iphoneStyle",
       onChange: function() {}
     };
     return iOSCheckbox;
   })();
   $.iphoneStyle = this.iOSCheckbox = iOSCheckbox;
   $.fn.iphoneStyle = function() {
-    var args, checkbox, existingControl, method, options, params, _i, _len, _ref, _ref2;
+    var args, checkbox, dataName, existingControl, method, params, _i, _len, _ref, _ref2, _ref3, _ref4;
     args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    _ref = this.filter(':checkbox');
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      checkbox = _ref[_i];
-      existingControl = $(checkbox).data("iphoneStyle");
+    dataName = (_ref = (_ref2 = args[0]) != null ? _ref2.dataName : void 0) != null ? _ref : iOSCheckbox.defaults.dataName;
+    _ref3 = this.filter(':checkbox');
+    for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+      checkbox = _ref3[_i];
+      existingControl = $(checkbox).data(dataName);
       if (existingControl != null) {
         method = args[0], params = 2 <= args.length ? __slice.call(args, 1) : [];
-        if ((_ref2 = existingControl[method]) != null) {
-          _ref2.apply(existingControl, params);
+        if ((_ref4 = existingControl[method]) != null) {
+          _ref4.apply(existingControl, params);
         }
       } else {
-        options = args[0];
-        $(checkbox).data("iphoneStyle", new iOSCheckbox(checkbox, options));
+        new iOSCheckbox(checkbox, args[0]);
       }
     }
     return this;
   };
   $.fn.iOSCheckbox = function(options) {
-    var checkbox, opts, _i, _len, _ref;
+    var opts;
     if (options == null) {
       options = {};
     }
@@ -263,13 +273,9 @@
       labelOffClass: 'iOSCheckLabelOff',
       handleClass: 'iOSCheckHandle',
       handleCenterClass: 'iOSCheckHandleCenter',
-      handleRightClass: 'iOSCheckHandleRight'
+      handleRightClass: 'iOSCheckHandleRight',
+      dataName: 'iOSCheckbox'
     });
-    _ref = this.filter(':checkbox');
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      checkbox = _ref[_i];
-      $(checkbox).data("iOSCheckbox", new iOSCheckbox(checkbox, opts));
-    }
-    return this;
+    return this.iphoneStyle(opts);
   };
 }).call(this);

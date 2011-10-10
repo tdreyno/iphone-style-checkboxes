@@ -11,6 +11,8 @@ class iOSCheckbox
     for key, value of opts
       @[key] = value
 
+    @elem.data(@dataName, this)
+
     # Initialize the control
     @wrapCheckboxWithDivs()
     @attachEvents()
@@ -54,18 +56,24 @@ class iOSCheckbox
     if $.browser.msie
       $([@handle, @offLabel, @onLabel, @container]).attr("unselectable", "on")
 
+  _getDimension: (elem, dimension) ->
+    if $.fn.actual?
+      elem.actual(dimension)
+    else
+      elem[dimension]()
+      
   # Automatically resize the handle or container
   optionallyResize: (mode) -> 
-    onLabelWidth  = @onLabel.width()
-    offLabelWidth = @offLabel.width()
+    onLabelWidth  = @_getDimension(@onLabel, "width")
+    offLabelWidth = @_getDimension(@offLabel, "width")
 
     if mode == "container"
       newWidth = if (onLabelWidth > offLabelWidth)
         onLabelWidth
       else 
         offLabelWidth
-      
-      newWidth += @handle.width() + @handleMargin
+
+      newWidth += @_getDimension(@handle, "width") + @handleMargin
       @container.css(width: newWidth)
     else
       newWidth = if (onLabelWidth > offLabelWidth)
@@ -152,11 +160,12 @@ class iOSCheckbox
     
   # Setup the control's inital position
   initialPosition: ->
-    @offLabel.css(width: @container.width() - @containerRadius)
+    containerWidth = @_getDimension(@container, "width")
+    @offLabel.css(width: containerWidth - @containerRadius)
 
     offset     = @containerRadius + 1
     offset     -= 3 if $.browser.msie and $.browser.version < 7
-    @rightSide = @container.width() - @handle.width() - offset
+    @rightSide = containerWidth - @_getDimension(@handle, "width") - offset
 
     if @elem.is(':checked')
       @handle.css(left: @rightSide)
@@ -220,19 +229,22 @@ class iOSCheckbox
     handleRadius:      4
     containerRadius:   5
     
+    dataName:          "iphoneStyle"
+    
     onChange: ->
 
 $.iphoneStyle = @iOSCheckbox = iOSCheckbox
 
 $.fn.iphoneStyle = (args...) ->
+  dataName = args[0]?.dataName ? iOSCheckbox.defaults.dataName
+
   for checkbox in @filter(':checkbox')
-    existingControl = $(checkbox).data("iphoneStyle")
+    existingControl = $(checkbox).data(dataName)
     if existingControl?
       [method, params...] = args
       existingControl[method]?.apply(existingControl, params)
     else
-      options = args[0]
-      $(checkbox).data("iphoneStyle", new iOSCheckbox(checkbox, options))
+      new iOSCheckbox(checkbox, args[0])
 
   this
   
@@ -247,9 +259,7 @@ $.fn.iOSCheckbox = (options={}) ->
     handleClass:       'iOSCheckHandle'
     handleCenterClass: 'iOSCheckHandleCenter'
     handleRightClass:  'iOSCheckHandleRight'
+    dataName:          'iOSCheckbox'
   })
   
-  for checkbox in @filter(':checkbox')
-    $(checkbox).data("iOSCheckbox", new iOSCheckbox(checkbox, opts))
-
-  return @
+  this.iphoneStyle(opts)
