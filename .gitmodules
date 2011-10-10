@@ -7,3 +7,6 @@
 [submodule "extensions/iphone-style-checkboxes"]
 	path = extensions/iphone-style-checkboxes
 	url = git@github.com:tdreyno/compass-iphone-style-checkboxes.git
+[submodule "libs/jquery.actual"]
+	path = libs/jquery.actual
+	url = git://github.com/dreamerslab/jquery.actual.git
