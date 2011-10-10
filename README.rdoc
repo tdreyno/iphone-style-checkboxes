@@ -10,6 +10,9 @@ jQuery or Prototype + Scriptaculous
 
 Please see jquery-demo.html or prototype-demo.html for example use.
 
+== YUI
+
+There is a YUI project which accomplishes the same effect here: http://yuilibrary.com/gallery/show/slidecheckbox
 
 Homepage:: http://tdreyno.github.com/iphone-style-checkboxes/
 License:: Copyright (c) 2009 Thomas Reynolds <me@tdreyno.com>, released under the MIT license
