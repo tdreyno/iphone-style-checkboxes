@@ -1,3 +1,5 @@
+//= require jquery
+
 (function() {
   var iOSCheckbox;
   var __slice = Array.prototype.slice;
