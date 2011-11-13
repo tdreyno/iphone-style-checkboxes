@@ -13,12 +13,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "ios-checkboxes"
   s.add_dependency "railties", "~> 3.1"
 
-  s.files    = [
-    'lib/ios-checkboxes.rb',
-    'lib/ios-checkboxes/version.rb',
-    'vendor/assets/javascripts/ios-checkboxes.js',
-    'vendor/assets/stylesheets/ios-checkboxes.css',
-  ]
+  s.files = `git ls-files`.split("\n")
 
   s.require_paths = ["lib"]
 end
