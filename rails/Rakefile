@@ -1,1 +1,18 @@
+require 'rake'
 require 'bundler/gem_tasks'
+
+desc "Update the gem with the latest files"
+task :update do
+  # Copy the js file and require jQuery
+  js_content = File.read "../jquery/iphone-style-checkboxes.js"
+  File.write("vendor/assets/javascripts/ios-checkboxes.js", "//= require jquery\n\n#{js_content}")
+
+  # Copy the images
+  cp_r "../images/", "vendor/assets/"
+
+  # Copy CSS and make sure it references the images via assets pipeline
+  css_content = File.read "../style.css"
+  pattern = /url\('images\/([^']+)'\)/
+  css_processed = css_content.gsub(pattern) {|m| "url('<%= image_path \"#{$1.sub(/\?.*/, '')}\" %>')" }
+  File.write("vendor/assets/stylesheets/ios-checkboxes.css.erb", css_processed)
+end
