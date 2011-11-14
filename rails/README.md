@@ -23,7 +23,7 @@ $ bundle install
 
 ## Usage
 
-After installation, all you need to di is to require `ios-checkboxes` inside JavaScript/CoffeeScript and CSS files.
+After installation, all you need to do is to require `ios-checkboxes` inside JavaScript/CoffeeScript and CSS files.
 
 Usually you would add this to your `app/assets/javascripts/application.js` file:
 
@@ -31,9 +31,10 @@ Usually you would add this to your `app/assets/javascripts/application.js` file:
 //= require ios-checkboxes
 ```
 
-This will automatically require `jquery`.
+This will also automatically require `jquery`.
 
 And also update your `app/assets/javascripts/applications.css` to inlude `ios-checkboxes`
+
 ```css
 /*
  *= require ios-checkboxes
