@@ -157,6 +157,9 @@
         $(document).unbind('mousemove touchmove', localMouseMove);
         return $(document).unbind('mouseup touchend', localMouseUp);
       };
+      this.elem.change(function() {
+        return self.refresh();
+      });
       return this.container.bind('mousedown touchstart', function(event) {
         self.onMouseDown.apply(self, arguments);
         $(document).bind('mousemove touchmove', localMouseMove);
