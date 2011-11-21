@@ -2,6 +2,8 @@
 
 Turn your checkboxes into iPhone-style binary switches.
 
+= Please refer to ios-checkbxes[https://github.com/dnagir/ios-checkboxes] where jQuery and Rails version is.
+
 == Dependencies
 
 jQuery or Prototype + Scriptaculous
