@@ -1,0 +1,32 @@
+{
+    "name": "iphone-style-checkboxes",
+    "version": "1.0",
+    "title": "iPhone-Style Checkboxes",
+    "author": {
+        "name": "Thomas Reynolds",
+        "url": "https://github.com/tdreyno"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "LICENSE"
+        }
+    ],
+    "dependencies": {
+        "jquery": "1"
+    },
+    "description": "Converts normal checkbox inputs into iPhone-style sliders",
+    "keywords": [
+        "iphone",
+        "ios",
+        "input",
+        "form",
+        "checkbox"
+    ],
+    "homepage": "https://github.com/tdreyno/iphone-style-checkboxes",
+    "contributors": [
+    ],
+    "files": [
+        "jquery/iphone-style-checkboxes.js"
+    ]
+}
