@@ -2,6 +2,9 @@
 
 Turn your checkboxes into iPhone-style binary switches.
 
+Homepage:: http://awardwinningfjords.com/2009/06/16/iphone-style-checkboxes.html
+Demo:: http://jsfiddle.net/tdreyno/jye3g/
+
 == Dependencies
 
 jQuery or Prototype + Scriptaculous
@@ -14,5 +17,4 @@ Please see jquery-demo.html or prototype-demo.html for example use.
 
 There is a YUI project which accomplishes the same effect here: http://yuilibrary.com/gallery/show/slidecheckbox
 
-Homepage:: http://tdreyno.github.com/iphone-style-checkboxes/
 License:: Copyright (c) 2009 Thomas Reynolds <me@tdreyno.com>, released under the MIT license
