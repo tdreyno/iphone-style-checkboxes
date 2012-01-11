@@ -3,7 +3,8 @@
 Turn your checkboxes into iPhone-style binary switches.
 
 Homepage:: http://awardwinningfjords.com/2009/06/16/iphone-style-checkboxes.html
-Demo:: http://jsfiddle.net/tdreyno/jye3g/
+jQuery Demo:: http://jsfiddle.net/tdreyno/jye3g/
+Prototype Demo:: http://jsfiddle.net/YNMSa/2/
 
 == Dependencies
 
