@@ -54,7 +54,7 @@ var iPhoneStyle = function(selector_or_elems, options) {
 
     elem.change = function() {
       var is_onstate = elem.checked;
-      var p = handle.positionedOffset().first() / rightside;
+      var p = handle.positionedOffset()[0] / rightside;
       new Effect.Tween(null, p, Number(is_onstate), { duration: options.duration / 1000 }, function(p) {
         handle.setStyle({ left: p * rightside + 'px' });
         onlabel.setStyle({ width: p * rightside + 4 + 'px' });
