@@ -117,9 +117,9 @@ class iOSCheckbox
 
     iOSCheckbox.currentlyClicking = null
     iOSCheckbox.dragging          = null
-    @didChange()
+    @elem.trigger('change')
 
-  refresh: -> @didChange() #TODO: Verify - this might fire event unnecessarily
+  refresh: -> @didChange()
 
   didChange: ->
     @onChange?(@elem, @elem.prop('checked'))
@@ -148,8 +148,8 @@ class iOSCheckbox
       $(document).unbind 'mousemove touchmove', localMouseMove
       $(document).unbind 'mouseup touchend', localMouseUp
 
-    # The original checkbox value might be changed by clickig on the associated label or other means
-    # To make sure we are in sync:
+    # Mirror the state of the original checkbox
+    # The original checkbox value might also be changed by clicking on the associated label or other means
     @elem.change -> self.refresh()
 
     # A mousedown anywhere in the control will start tracking for dragging
