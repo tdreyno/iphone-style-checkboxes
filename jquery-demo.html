@@ -31,9 +31,17 @@
           $('span#status').html(value.toString());
         }
       });
+
+      var inverted_onchange_checkbox = ($('.inverted_onchange :checkbox')).iphoneStyle({
+				inverted: true,
+        onChange: function(elem, value) { 
+          $('span#inverted_status').html(value.toString());
+        }
+      });
       
       setInterval(function() {
         onchange_checkbox.prop('checked', !onchange_checkbox.is(':checked')).iphoneStyle("refresh");
+        inverted_onchange_checkbox.prop('checked', !onchange_checkbox.is(':checked')).iphoneStyle("refresh");
         return
       }, 2500);
     });
@@ -77,6 +85,13 @@
       <td>
         <input type="checkbox" id="onchange" />
         <p>Checkbox status is <strong><span id="status">...</span></strong>.</p>
+      </td>
+    </tr>
+    <tr class="inverted_onchange">
+      <th>Event tracking</th>
+      <td>
+        <input type="checkbox" id="inverted_onchange" checked="checked"/>
+        <p>Inverted checkbox status is <strong><span id="inverted_status">...</span></strong>.</p>
       </td>
     </tr>
   </table>
