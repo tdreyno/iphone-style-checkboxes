@@ -124,7 +124,7 @@
     iOSCheckbox.prototype.didChange = function() {
       var new_left;
       if (typeof this.onChange === "function") {
-        this.onChange(this.elem, this.elem.prop('checked'));
+        this.onChange(this.elem, this.elem.prop('checked')) ^ this.inverted;
       }
       if (this.isDisabled()) {
         this.container.addClass(this.disabledClass);
@@ -132,7 +132,7 @@
       } else {
         this.container.removeClass(this.disabledClass);
       }
-      new_left = this.elem.prop('checked') ? this.rightSide : 0;
+      new_left = (this.elem.prop('checked') ^ this.inverted) ? this.rightSide : 0;
       this.handle.animate({
         left: new_left
       }, this.duration);
@@ -177,7 +177,7 @@
         offset -= 3;
       }
       this.rightSide = containerWidth - this._getDimension(this.handle, "width") - offset;
-      if (this.elem.is(':checked')) {
+      if (this.elem.is(':checked') ^ this.inverted) {
         this.handle.css({
           left: this.rightSide
         });
@@ -239,6 +239,7 @@
       handleRadius: 4,
       containerRadius: 5,
       dataName: "iphoneStyle",
+			inverted: false,
       onChange: function() {}
     };
     return iOSCheckbox;
