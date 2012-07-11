@@ -4,9 +4,9 @@
 class iOSCheckbox
   constructor: (elem, options) ->
     @elem = $(elem)
-  
+
     opts = $.extend({}, iOSCheckbox.defaults, options)
-    
+
     # Import options into instance variables
     for key, value of opts
       @[key] = value
@@ -17,39 +17,39 @@ class iOSCheckbox
     @wrapCheckboxWithDivs()
     @attachEvents()
     @disableTextSelection()
-  
+
     @optionallyResize('handle') if @resizeHandle
     @optionallyResize('container') if @resizeContainer
-  
+
     @initialPosition()
 
   isDisabled: -> @elem.is(':disabled')
 
-  # Wrap the existing input[type=checkbox] with divs for styling and grab 
+  # Wrap the existing input[type=checkbox] with divs for styling and grab
   # DOM references to the created nodes
   wrapCheckboxWithDivs: ->
     @elem.wrap("<div class='#{@containerClass}' />")
-  
+
     @container = @elem.parent()
-  
+
     @offLabel  = $("""<label class='#{@labelOffClass}'>
                         <span>#{@uncheckedLabel}</span>
                       </label>""").appendTo(@container)
-                     
+
     @offSpan   = @offLabel.children('span')
-  
+
     @onLabel   = $("""<label class='#{@labelOnClass}'>
                         <span>#{@checkedLabel}</span>
                       </label>""").appendTo(@container)
-                     
+
     @onSpan    = @onLabel.children('span')
-  
+
     @handle    = $("""<div class='#{@handleClass}'>
                         <div class='#{@handleRightClass}'>
                           <div class='#{@handleCenterClass}' />
                         </div>
                       </div>""").appendTo(this.container)
-  
+
   # Disable IE text selection, other browsers are handled in CSS
   disableTextSelection: ->
     # Elements containing text should be unselectable
@@ -61,16 +61,16 @@ class iOSCheckbox
       elem.actual(dimension)
     else
       elem[dimension]()
-      
+
   # Automatically resize the handle or container
-  optionallyResize: (mode) -> 
+  optionallyResize: (mode) ->
     onLabelWidth  = @_getDimension(@onLabel, "width")
     offLabelWidth = @_getDimension(@offLabel, "width")
 
     if mode == "container"
       newWidth = if (onLabelWidth > offLabelWidth)
         onLabelWidth
-      else 
+      else
         offLabelWidth
 
       newWidth += @_getDimension(@handle, "width") + @handleMargin
@@ -78,7 +78,7 @@ class iOSCheckbox
     else
       newWidth = if (onLabelWidth > offLabelWidth)
         onLabelWidth
-      else 
+      else
         offLabelWidth
       @handle.css(width: newWidth)
 
@@ -94,7 +94,7 @@ class iOSCheckbox
 
   onDragMove: (event, x) ->
     return unless iOSCheckbox.currentlyClicking == @handle
-    
+
     p = (x + iOSCheckbox.handleLeftOffset - iOSCheckbox.dragStartPosition) / @rightSide
     p = 0 if p < 0
     p = 1 if p > 1
@@ -108,7 +108,7 @@ class iOSCheckbox
   onDragEnd: (event, x) ->
     return unless iOSCheckbox.currentlyClicking == @handle
     return if @isDisabled()
-  
+
     if iOSCheckbox.dragging
       p = (x - iOSCheckbox.dragStartPosition) / @rightSide
       @elem.prop('checked', (p >= 0.5))
@@ -117,51 +117,51 @@ class iOSCheckbox
 
     iOSCheckbox.currentlyClicking = null
     iOSCheckbox.dragging          = null
-    @didChange()
+    @elem.trigger('change')
 
-  refresh: -> @didChange() #TODO: Verify - this might fire event unnecessarily
-    
+  refresh: -> @didChange()
+
   didChange: ->
     @onChange?(@elem, @elem.prop('checked'))
-    
+
     if @isDisabled()
       @container.addClass(@disabledClass)
       return false
     else
       @container.removeClass(@disabledClass)
-  
+
     new_left = if @elem.prop('checked') then @rightSide else 0
 
     @handle.animate(left: new_left, @duration)
     @onLabel.animate(width: new_left + @handleRadius, @duration)
     @offSpan.animate(marginRight: -new_left, @duration)
     @onSpan.animate(marginLeft: new_left - @rightSide, @duration)
-  
+
   attachEvents: ->
     self = this
-    
+
     localMouseMove = (event) ->
       self.onGlobalMove.apply(self, arguments)
-      
+
     localMouseUp = (event) ->
       self.onGlobalUp.apply(self, arguments)
       $(document).unbind 'mousemove touchmove', localMouseMove
       $(document).unbind 'mouseup touchend', localMouseUp
-      
-    # The original checkbox value might be changed by clickig on the associated label or other means
-    # To make sure we are in sync:
+
+    # Mirror the state of the original checkbox
+    # The original checkbox value might also be changed by clicking on the associated label or other means
     @elem.change -> self.refresh()
 
     # A mousedown anywhere in the control will start tracking for dragging
     @container.bind 'mousedown touchstart', (event) ->
       self.onMouseDown.apply(self, arguments)
-  
+
       # As the mouse moves on the page, animate if we are in a drag state
       $(document).bind 'mousemove touchmove', localMouseMove
 
       # When the mouse comes up, leave drag state
       $(document).bind 'mouseup touchend', localMouseUp
-    
+
   # Setup the control's inital position
   initialPosition: ->
     containerWidth = @_getDimension(@container, "width")
@@ -178,7 +178,7 @@ class iOSCheckbox
     else
       @onLabel.css(width: 0)
       @onSpan.css(marginLeft: -@rightSide)
-    
+
     @container.addClass(@disabledClass) if @isDisabled()
 
   onGlobalMove: (event) ->
@@ -190,34 +190,34 @@ class iOSCheckbox
     if (!iOSCheckbox.dragging &&
         (Math.abs(iOSCheckbox.dragStartPosition - x) > @dragThreshold))
       iOSCheckbox.dragging = true
-    
+
     @onDragMove(event, x)
-    
+
   onGlobalUp: (event) ->
     return unless iOSCheckbox.currentlyClicking
     event.preventDefault()
 
     x = event.pageX || event.originalEvent.changedTouches[0].pageX
-    
+
     @onDragEnd(event, x)
     false
 
-  @defaults: 
+  @defaults:
     # Time spent during slide animation
     duration:          200
-  
+
     # Text content of "on" state
     checkedLabel:      'ON'
-  
+
     # Text content of "off" state
     uncheckedLabel:    'OFF'
-  
+
     # Automatically resize the handle to cover either label
     resizeHandle:      true
-  
+
     # Automatically resize the widget to contain the labels
     resizeContainer:   true
-  
+
     disabledClass:     'iPhoneCheckDisabled'
     containerClass:    'iPhoneCheckContainer'
     labelOnClass:      'iPhoneCheckLabelOn'
@@ -225,16 +225,16 @@ class iOSCheckbox
     handleClass:       'iPhoneCheckHandle'
     handleCenterClass: 'iPhoneCheckHandleCenter'
     handleRightClass:  'iPhoneCheckHandleRight'
-  
+
     # Pixels that must be dragged for a click to be ignored
     dragThreshold:     5
-    
+
     handleMargin:      15
     handleRadius:      4
     containerRadius:   5
-    
+
     dataName:          "iphoneStyle"
-    
+
     onChange: ->
 
 $.iphoneStyle = @iOSCheckbox = iOSCheckbox
@@ -251,7 +251,7 @@ $.fn.iphoneStyle = (args...) ->
       new iOSCheckbox(checkbox, args[0])
 
   this
-  
+
 $.fn.iOSCheckbox = (options={}) ->
   # iOS5 style only supports circular handle
   opts = $.extend({}, options, {
@@ -265,5 +265,5 @@ $.fn.iOSCheckbox = (options={}) ->
     handleRightClass:  'iOSCheckHandleRight'
     dataName:          'iOSCheckbox'
   })
-  
+
   this.iphoneStyle(opts)
