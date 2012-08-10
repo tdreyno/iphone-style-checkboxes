@@ -114,6 +114,7 @@
       } else {
         this.elem.prop('checked', !this.elem.prop('checked'));
       }
+      this.elem.change();  // notice changing to original element
       iOSCheckbox.currentlyClicking = null;
       iOSCheckbox.dragging = null;
       return this.didChange();
