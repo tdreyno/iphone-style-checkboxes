@@ -100,7 +100,7 @@
         marginLeft: -(1 - p) * this.rightSide
       });
     };
-    iOSCheckbox.prototype.onDragEnd = function(event, x) {
+    iOSCheckbox.prototype.onDragEnd = function(event, x, triggerChange) {
       var p;
       if (iOSCheckbox.currentlyClicking !== this.handle) {
         return;
@@ -108,24 +108,27 @@
       if (this.isDisabled()) {
         return;
       }
+      var checked = this.elem.is(':checked');
+
       if (iOSCheckbox.dragging) {
         p = (x - iOSCheckbox.dragStartPosition) / this.rightSide;
-        this.elem.prop('checked', p >= 0.5);
+        this.elem.attr('checked', p >= 0.5);
       } else {
-        this.elem.prop('checked', !this.elem.prop('checked'));
+        this.elem.attr('checked', !this.elem.is(':checked'));
       }
       iOSCheckbox.currentlyClicking = null;
       iOSCheckbox.dragging = null;
-      return this.didChange();
+      return this.didChange(checked !== this.elem.is(':checked'));
     };
     iOSCheckbox.prototype.refresh = function() {
       return this.didChange();
     };
-    iOSCheckbox.prototype.didChange = function() {
+    iOSCheckbox.prototype.didChange = function(triggerChange) {
       var new_left;
-      if (typeof this.onChange === "function") {
-        this.onChange(this.elem, this.elem.prop('checked'));
+      if (triggerChange && typeof this.onChange === "function") {
+        this.onChange(this.elem, this.elem.is(':checked'));
       }
+	  
       if (this.isDisabled()) {
         this.container.addClass(this.disabledClass);
         return false;
