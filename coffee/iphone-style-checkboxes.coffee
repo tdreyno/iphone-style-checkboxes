@@ -194,7 +194,7 @@ class iOSCheckbox
     @onDragMove(event, x)
     
   onGlobalUp: (event) ->
-    return unless iOSCheckbox.currentlyClicking
+    return if iOSCheckbox.currentlyClicking
     event.preventDefault()
 
     x = event.pageX || event.originalEvent.changedTouches[0].pageX
