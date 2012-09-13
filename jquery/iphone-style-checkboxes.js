@@ -47,22 +47,33 @@
       }
     };
     iOSCheckbox.prototype.optionallyResize = function(mode) {
-      var newWidth, offLabelWidth, onLabelWidth;
-      onLabelWidth = this._getDimension(this.onLabel, "width");
-      offLabelWidth = this._getDimension(this.offLabel, "width");
-      if (mode === "container") {
-        newWidth = onLabelWidth > offLabelWidth ? onLabelWidth : offLabelWidth;
-        newWidth += this._getDimension(this.handle, "width") + this.handleMargin;
-        return this.container.css({
-          width: newWidth
-        });
-      } else {
-        newWidth = onLabelWidth > offLabelWidth ? onLabelWidth : offLabelWidth;
-        return this.handle.css({
-          width: newWidth
-        });
-      }
-    };
+            var newWidth, offLabelWidth, onLabelWidth;
+            onLabelWidth = this._getDimension(this.onLabel, "width");
+            offLabelWidth = this._getDimension(this.offLabel, "width");
+
+            //--- bugfix start ----
+            if(onLabelWidth==0){            
+                var cloned=$(this.container).clone();
+                cloned.appendTo('body').wrap('<div style="display:block;visibility:visible;position:absolute;" />');    
+                onLabelWidth = this._getDimension(cloned.find('.'+this.labelOnClass), "width");
+                offLabelWidth = this._getDimension(cloned.find('.'+this.labelOffClass), "width");
+                cloned.unwrap().remove();
+            }
+            //--- bugfix end----
+
+            if (mode === "container") {
+                newWidth = onLabelWidth > offLabelWidth ? onLabelWidth : offLabelWidth;
+                newWidth += this._getDimension(this.handle, "width") + this.handleMargin;
+                return this.container.css({
+                    width: newWidth
+                });
+            } else {
+                newWidth = onLabelWidth > offLabelWidth ? onLabelWidth : offLabelWidth;
+                return this.handle.css({
+                    width: newWidth
+                });
+            }
+        };
     iOSCheckbox.prototype.onMouseDown = function(event) {
       var x;
       event.preventDefault();
