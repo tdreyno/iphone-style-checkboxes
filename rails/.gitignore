@@ -1,7 +1,0 @@
-.DS_Store
-pkg/*
-*.gem
-*.rbc
-*.swp
-.bundle
-Gemfile.lock

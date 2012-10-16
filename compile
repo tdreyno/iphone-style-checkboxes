@@ -1,4 +1,0 @@
-coffee -o jquery -c coffee/iphone-style-checkboxes.coffee
-pushd rails
-rake update
-popd
