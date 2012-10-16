@@ -1,21 +1,21 @@
-# iPhone Style Checkboxes
+# iOS Checkboxes
 
 Turn your checkboxes into iPhone-style binary switches.
 
-Homepage:: http://awardwinningfjords.com/iphone-style-checkboxes
+Homepage:: http://ios-checkboxes.awardwinningfjords.com/
 
 ## Use
 
 ### Pure JS:
 
 ```javascript
-iPhoneStyle(document.getElementById('checkbox'))
+iOSStyle(document.getElementById('checkbox'))
 ```
 
 ### jQuery:
 
 ```javascript
-$('#checkbox').iPhoneStyle();
+$('#checkbox').iOSStyle();
 ```
 
 ## Licensing
