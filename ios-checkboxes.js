@@ -130,9 +130,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
     if (n >= len)
       return -1;
 
-    var k = n >= 0
-          ? n
-          : Math.max(len - Math.abs(n), 0);
+    var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
 
     for (; k < len; k++)
     {
@@ -143,12 +141,45 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
   };
 
   /**
-   * iOSCheckbox sets up a checkbox to behave and appear as an iOS-styled
+   * Shared controller and options for all instances.
+   */
+  var iOSCheckboxes = {
+    instances: [],
+
+    push: function(instance) {
+      iOSCheckboxes.instances.push(instance);
+      
+      // Start polling on first init.
+      if (iOSCheckboxes.instances.length === 1) {
+        iOSCheckboxes.poll();
+      }
+    },
+
+    pollFrequency: 50,
+
+    poll: function pollCheckboxes_() {
+      var keepPolling = false;
+
+      for (var i = 0; i < iOSCheckboxes.instances.length; i++) {
+        if (iOSCheckboxes.instances[i].polling) {
+          keepPolling = true;
+          iOSCheckboxes.instances[i].refresh();
+        }
+      }
+
+      if (keepPolling) {
+        setTimeout(iOSCheckboxes.poll, iOSCheckboxes.pollFrequency);
+      }
+    }
+  };
+
+  /**
+   * IOSCheckbox sets up a checkbox to behave and appear as an iOS-styled
    * slider.
    *
    * Examples:
    *
-   *   var slider = new iOSCheckbox('my_checkbox', {
+   *   var slider = new IOSCheckbox('my_checkbox', {
    *     checkedLabel: 'Hello',
    *     uncheckedLabel: 'World'
    *   });
@@ -173,14 +204,15 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
    * @param {Number} options.containerRaidus Radius of the container in pixels.
    * @param {String} options.dataName Local cache name.
    * @param {Function} options.onChange The default onChange callback.
+   * @param {Boolean} options.polling Whether we should poll for updates.
    */
-  function iOSCheckbox(elem, options) {
+  function IOSCheckbox(elem, options) {
     // Save options for later.
-    this._opts = options;
+    this._opts = $.extend({}, options);
 
     // If elem is a string, treat it as a selector.
     if ('string' === typeof elem) {
-      elem = $(elem);
+      elem = $(elem).eq(0);
     }
 
     // Store the element we are acting on.
@@ -194,12 +226,14 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
 
     // Convert the checkbox into widget.
     this.prepare();
+
+    iOSCheckboxes.push(this);
   }
 
   /**
    * Actually change the original element into our new widget.
    */
-  iOSCheckbox.prototype.prepare = function prepare() {
+  IOSCheckbox.prototype.prepare = function prepare() {
     // Whether we've already done this step.
     this._prepared = ('undefined' !== this._prepared) ? this._prepared : false;
 
@@ -240,7 +274,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
   /**
    * Tear down the widget, can be re-initialized later.
    */
-  iOSCheckbox.prototype.teardown = function teardown() {
+  IOSCheckbox.prototype.teardown = function teardown() {
     if (!this._prepared) {
       return;
     }
@@ -257,15 +291,22 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
   /**
    * Teardown and cleanup the widget.
    */
-  iOSCheckbox.prototype.destroy = function destroy() {
+  IOSCheckbox.prototype.destroy = function destroy() {
     this.teardown();
 
+    // Remove from instances.
+    var idx = indexOf(iOSCheckboxes, this);
+    if (idx > -1) {
+      iOSCheckboxes.splice(idx, 1);
+    }
+
+    var doNothing = function() {};
     // Destroy any garbage we may be holding on to.
     for (var key in this) {
       if (this.hasOwnProperty(key)) {
         if ('function' === typeof this[key]) {
           // Make all future function calls, no-ops.
-          this[key] = function() {};
+          this[key] = doNothing;
         } else {
           this[key] = null;
         }
@@ -276,7 +317,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
   /**
    * Initialize configurable options.
    */
-  iOSCheckbox.prototype._initializeOptions = function _initializeOptions() {
+  IOSCheckbox.prototype._initializeOptions = function _initializeOptions() {
     // Time to animate on or off.
     this.duration = 200;
 
@@ -332,9 +373,12 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
     // The default onChange callback.
     this.onChange = null;
 
+    // Whether we should poll for updates.
+    this.polling = true;
+
     // Take the incoming options
     if ('undefined' !== typeof this._opts) {
-      for (var key of this._opts) {
+      for (var key in this._opts) {
         if (this._opts.hasOwnProperty(key) && this.hasOwnProperty(key)) {
           this[key] = this._opts[key];
         }
@@ -346,7 +390,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
    * Setup the list of change callbacks, including the one passed in to
    * the initial options if given.
    */
-  iOSCheckbox.prototype._setupChangeEvents = function _setupChangeEvents() {
+  IOSCheckbox.prototype._setupChangeEvents = function _setupChangeEvents() {
     this._onChangeEvents = [];
 
     if ('function' === typeof this.onChange) {
@@ -358,7 +402,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
    * Add onChange listener.
    * @param {Function} cb The function to call on change.
    */
-  iOSCheckbox.prototype.change = function change(cb) {
+  IOSCheckbox.prototype.change = function change(cb) {
     if (indexOf(cb) === -1) {
       this._onChangeEvents.push(cb);
     }
@@ -368,7 +412,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
    * Remove onChange listener.
    * @param {Function} cb The function to remove on change callback.
    */
-  iOSCheckbox.prototype.removeChangeCallback = function removeChangeCallback(cb) {
+  IOSCheckbox.prototype.removeChangeCallback = function removeChangeCallback(cb) {
     var idx = indexOf(cb);
     if (idx !== -1) {
       this._onChangeEvents.splice(idx, 1);
@@ -379,11 +423,11 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
    * Whether the checkbox is disabled.
    * @return {Boolean} Whether the checkbox is disabled.
    */
-  iOSCheckbox.prototype.isDisabled = function() {
+  IOSCheckbox.prototype.isDisabled = function() {
     return this.elem.disabled === true;
   };
 
-  iOSCheckbox.prototype._wrapCheckboxWithDivs = function() {
+  IOSCheckbox.prototype._wrapCheckboxWithDivs = function() {
     this.elem.wrap("<div class='" + this.containerClass + "' />");
     this.container = this.elem.parent();
     this.offLabel = $("<label class='" + this.labelOffClass + "'>\n  <span>" + this.uncheckedLabel + "</span>\n</label>").appendTo(this.container);
@@ -393,13 +437,13 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
     return this.handle = $("<div class='" + this.handleClass + "'>\n  <div class='" + this.handleRightClass + "'>\n    <div class='" + this.handleCenterClass + "' />\n  </div>\n</div>").appendTo(this.container);
   };
 
-  iOSCheckbox.prototype._disableTextSelection = function() {
+  IOSCheckbox.prototype._disableTextSelection = function() {
     if ($.browser.msie) {
       return $([this.handle, this.offLabel, this.onLabel, this.container]).attr("unselectable", "on");
     }
   };
 
-  iOSCheckbox.prototype._getDimension = function(elem, dimension) {
+  IOSCheckbox.prototype._getDimension = function(elem, dimension) {
       return elem.actual(dimension);
 /*
   $.fn.extend({
@@ -493,7 +537,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
 */
   };
 
-  iOSCheckbox.prototype._optionallyResize = function(mode) {
+  IOSCheckbox.prototype._optionallyResize = function(mode) {
     var newWidth;
     var onLabelWidth = this._getDimension(this.onLabel, 'width');
     var offLabelWidth = this._getDimension(this.offLabel, 'width');
@@ -509,20 +553,20 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
     }
   };
 
-  iOSCheckbox.prototype.onMouseDown = function(event) {
+  IOSCheckbox.prototype.onMouseDown = function(event) {
     var x;
     event.preventDefault();
     if (this.isDisabled()) return;
     x = event.pageX || event.originalEvent.changedTouches[0].pageX;
-    iOSCheckbox.currentlyClicking = this.handle;
-    iOSCheckbox.dragStartPosition = x;
-    return iOSCheckbox.handleLeftOffset = parseInt(this.handle.css('left'), 10) || 0;
+    IOSCheckbox.currentlyClicking = this.handle;
+    IOSCheckbox.dragStartPosition = x;
+    return IOSCheckbox.handleLeftOffset = parseInt(this.handle.css('left'), 10) || 0;
   };
 
-  iOSCheckbox.prototype.onDragMove = function(event, x) {
+  IOSCheckbox.prototype.onDragMove = function(event, x) {
     var newWidth, p;
-    if (iOSCheckbox.currentlyClicking !== this.handle) return;
-    p = (x + iOSCheckbox.handleLeftOffset - iOSCheckbox.dragStartPosition) / this.rightSide;
+    if (IOSCheckbox.currentlyClicking !== this.handle) return;
+    p = (x + IOSCheckbox.handleLeftOffset - IOSCheckbox.dragStartPosition) / this.rightSide;
     if (p < 0) p = 0;
     if (p > 1) p = 1;
     newWidth = p * this.rightSide;
@@ -540,26 +584,22 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
     });
   };
 
-  iOSCheckbox.prototype.onDragEnd = function(event, x) {
+  IOSCheckbox.prototype.onDragEnd = function(event, x) {
     var p;
-    if (iOSCheckbox.currentlyClicking !== this.handle) return;
+    if (IOSCheckbox.currentlyClicking !== this.handle) return;
     if (this.isDisabled()) return;
-    if (iOSCheckbox.dragging) {
-      p = (x - iOSCheckbox.dragStartPosition) / this.rightSide;
+    if (IOSCheckbox.dragging) {
+      p = (x - IOSCheckbox.dragStartPosition) / this.rightSide;
       this.elem.prop('checked', p >= 0.5);
     } else {
       this.elem.prop('checked', !this.elem.prop('checked'));
     }
-    iOSCheckbox.currentlyClicking = null;
-    iOSCheckbox.dragging = null;
-    return this.didChange();
+    IOSCheckbox.currentlyClicking = null;
+    IOSCheckbox.dragging = null;
+    return this.refresh();
   };
 
-  iOSCheckbox.prototype.refresh = function() {
-    return this.didChange();
-  };
-
-  iOSCheckbox.prototype.didChange = function() {
+  IOSCheckbox.prototype.refresh = function() {
     var new_left;
     if (typeof this.onChange === 'function') {
       this.onChange(this.elem, this.elem.prop('checked'));
@@ -585,7 +625,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
     }, this.duration);
   };
 
-  iOSCheckbox.prototype._attachEvents = function() {
+  IOSCheckbox.prototype._attachEvents = function() {
     var localMouseMove, localMouseUp, self;
     self = this;
     localMouseMove = function(event) {
@@ -606,7 +646,7 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
     });
   };
 
-  iOSCheckbox.prototype.initialPosition = function() {
+  IOSCheckbox.prototype.initialPosition = function() {
     var containerWidth, offset;
     containerWidth = this._getDimension(this.container, "width");
     this.offLabel.css({
@@ -636,44 +676,51 @@ $iphone-style-font: "Helvetica Neue", Arial, Helvetica, sans-serif
     if (this.isDisabled()) return this.container.addClass(this.disabledClass);
   };
 
-  iOSCheckbox.prototype.onGlobalMove = function(event) {
+  IOSCheckbox.prototype.onGlobalMove = function(event) {
     var x;
-    if (!(!this.isDisabled() && iOSCheckbox.currentlyClicking)) return;
+    if (!(!this.isDisabled() && IOSCheckbox.currentlyClicking)) return;
     event.preventDefault();
     x = event.pageX || event.originalEvent.changedTouches[0].pageX;
-    if (!iOSCheckbox.dragging && (Math.abs(iOSCheckbox.dragStartPosition - x) > this.dragThreshold)) {
-      iOSCheckbox.dragging = true;
+    if (!IOSCheckbox.dragging && (Math.abs(IOSCheckbox.dragStartPosition - x) > this.dragThreshold)) {
+      IOSCheckbox.dragging = true;
     }
     return this.onDragMove(event, x);
   };
 
-  iOSCheckbox.prototype.onGlobalUp = function(event) {
+  IOSCheckbox.prototype.onGlobalUp = function(event) {
     var x;
-    if (!iOSCheckbox.currentlyClicking) return;
+    if (!IOSCheckbox.currentlyClicking) return;
     event.preventDefault();
     x = event.pageX || event.originalEvent.changedTouches[0].pageX;
     this.onDragEnd(event, x);
     return false;
   };
 
-  $.fn.iphoneStyle = function jQueryIphoneStyle() {
+  $.fn.iOSCheckbox = $.fn.iphoneStyle = function iOSCheckboxJQuery() {
     var args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    var dataName = (_ref = (_ref2 = args[0]) != null ? _ref2.dataName : void 0) != null ? _ref : iOSCheckbox.defaults.dataName;
+    // var dataName = (_ref = (_ref2 = args[0]) != null ? _ref2.dataName : void 0) != null ? _ref : IOSCheckbox.defaults.dataName;
 
-    for (var i = 0, len = this.length; i < len; i++) {
-      var checkbox = this[i];
-      var existingControl = $(checkbox).data(dataName);
+    return $(this).each(function() {
+      var checkbox = $(this);
+
+      var existingControl = false;
+      for (var j = 0; j < iOSCheckboxes.length; j++) {
+        if (checkbox == iOSCheckboxes[j].elem) {
+          existingControl = iOSCheckboxes[j];
+          break;
+        }
+      }
 
       if (existingControl != null) {
         var method = args[0], params = 2 <= args.length ? slice.call(args, 1) : [];
-        if ((var control = existingControl[method]) != null) {
+        var control = existingControl[method];
+        if (control != null) {
           control.apply(existingControl, params);
         }
       } else {
-        new iOSCheckbox(checkbox, args[0]);
+        new IOSCheckbox(checkbox, args[0]);
       }
-    }
-    return this;
+    });
   };
 
 }).call(this, window, jQuery, undefined);

@@ -17,7 +17,7 @@
     .css_sized_container .iPhoneCheckContainer {
       width: 250px; }
   </style>
-  <script src="../iphone-style-checkboxes.js"></script>
+  <script src="../ios-checkboxes.js"></script>
 </head>
 <body>
   <table>
@@ -66,22 +66,19 @@
     </tr>
   </table>
   <script type="text/javascript">
-    new iOSCheckbox(document.getElementById('disabled'));
-    /*
     $(window).load(function() {
-      var onchange_checkbox;
-      ($('.on_off :checkbox')).iphoneStyle();
-      ($('.disabled :checkbox')).iphoneStyle();
-      ($('.ios5 :checkbox')).iOSCheckbox();
-      ($('.css_sized_container :checkbox')).iphoneStyle({
+      $('.on_off :checkbox').iphoneStyle();
+      $('.disabled :checkbox').iphoneStyle();
+      $('.ios5 :checkbox').iphoneStyle(); // Different CSS
+      $('.css_sized_container :checkbox').iphoneStyle({
         resizeContainer: false,
         resizeHandle: false
       });
-      ($('.long_tiny :checkbox')).iphoneStyle({
+      $('.long_tiny :checkbox').iphoneStyle({
         checkedLabel: 'Very Long Text',
         uncheckedLabel: 'Tiny'
       });
-      onchange_checkbox = ($('.onchange :checkbox')).iphoneStyle({
+      var onchange_checkbox = $('.onchange :checkbox').iphoneStyle({
         onChange: function(elem, value) { 
           $('span#status').html(value.toString());
         }
@@ -91,7 +88,7 @@
         onchange_checkbox.prop('checked', !onchange_checkbox.is(':checked')).iphoneStyle("refresh");
         return
       }, 2500);
-    });*/
+    });
   </script>
 </body>
 </html>
