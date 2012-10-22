@@ -20,6 +20,6 @@ $('#checkbox').iOSStyle();
 
 ## Licensing
 
-Commercial use requires purchase of one-time license fee per developer seat. Commercial use includes any application that makes you money. This includes portfolio sites and premium templates. Commercial licenses may be purchased at [http://store.awardwinningfjords.com/products/iphone-style-checkboxes-v2-commercial-license](http://store.awardwinningfjords.com/products/iphone-style-checkboxes-v2-commercial-license.
+Commercial use requires purchase of one-time license fee per developer seat. Commercial use includes any application that makes you money. This includes portfolio sites and premium templates. Commercial licenses may be purchased at [http://store.awardwinningfjords.com/products/iphone-style-checkboxes-v2-commercial-license](http://store.awardwinningfjords.com/products/iphone-style-checkboxes-v2-commercial-license).
 
-Use in non-commercial and personal applications is free.
+Use in non-commercial, educational and personal applications is free.
