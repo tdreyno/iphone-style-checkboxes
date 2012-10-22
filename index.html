@@ -2,65 +2,141 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Iphone-style-checkboxes by tdreyno</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1'>
+    <meta name="author" content="Thomas Reynolds">
+    
+    <!-- Mobile viewport optimization http://goo.gl/b9SaQ -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
+    <meta http-equiv="cleartype" content="on">
+    
+    <title>iOS Checkboxes &laquo; Thomas Reynolds</title>
+    <link href="stylesheets/site.css" rel="stylesheet">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Iphone-style-checkboxes</h1>
-        <p>Turn your checkboxes into iPhone-style binary switches</p>
-
-        <p class="view"><a href="https://github.com/tdreyno/iphone-style-checkboxes">View the Project on GitHub <small>tdreyno/iphone-style-checkboxes</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/tdreyno/iphone-style-checkboxes/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/tdreyno/iphone-style-checkboxes/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/tdreyno/iphone-style-checkboxes">View On <strong>GitHub</strong></a></li>
-        </ul>
+    <header>
+      <h1>
+        <a href="http://awardwinningfjords.com/">Award-Winning Fjords</a>
+        <span class="sub">Thomas Reynolds</span>
       </header>
-      <section>
-        <h3>Welcome to GitHub Pages.</h3>
+    </header>
+    
+    <div id="frame">
+      
+        <article>
+          <h2>iOS Checkboxes</h2>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+          <p>Ever wanted those flash iPhone on/off toggle switches on your webpage? Love jQuery? Well then I&#39;ve got something special for you. iphone-style-checkboxes implements the iPhone toggles as replacements for standard HTML checkboxes. Simply run the script and your site will be updated with these specialized controls. Best of all, the underlying checkbox is not touched and backend system will never know the difference. The change is purely visual.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+          <h2>Examples</h2>
+
+          <div class='table'>
+            <table>
+              <tr>
+                <td style='vertical-align: middle !important;'>
+                  A checkbox defaulting to <strong>checked</strong>
+                </td>
+                <td>
+                  <input checked='checked' class='normal' type='checkbox' />
+                </td>
+              </tr>
+              <tr>
+                <td style='vertical-align: middle !important;'>
+                  A checkbox defaulting to <strong>unchecked</strong>
+                </td>
+                <td>
+                  <input class='normal' type='checkbox' />
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <h2>Download and implement</h2>
+
+          <p>In keeping with the jQuery philosophy, using the iphone-style-checkboxes library is very simple.
+          <a href="http://github.com/tdreyno/iphone-style-checkboxes/zipball/master">Download the package</a>,
+          unzip it and place the javascript, images and stylesheet where you please. You&#39;ll need to update the stylesheet to point to the new location of your images if they have changed relative to the stylesheet.</p>
+
+          <p>Once the files are available to your site, activating the script is very easy:</p>
+
+          <pre><code>&lt;head&gt;
+  &lt;script src=&quot;jquery-1.4.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;jquery/iphone-style-checkboxes.js&quot;&gt;&lt;/script&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;path_to/style.css&quot;&gt;
+  &lt;script type=&quot;text/javascript&quot;&gt;
+    $(document).ready(function() {
+      $(&#39;:checkbox&#39;).iphoneStyle();
+    });
+  &lt;/script&gt;
+&lt;/head&gt;
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+          <p>The initialization method takes a handful of options.</p>
 
-<h3>Designer Templates</h3>
+          <ul>
+            <li><tt>checkedLabel</tt> sets the text of the "on" state. Defaults to: <strong>ON</strong></li>
+            <li><tt>uncheckedLabel</tt> sets the text of the "off" state. Defaults to: <strong>OFF</strong></li>
+          </ul>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+          <p>For example:</p>
 
-<h3>Rather Drive Stick?</h3>
+          <pre><code>$(&#39;:checkbox&#39;).iphoneStyle({
+  checkedLabel: &#39;YES&#39;,
+  uncheckedLabel: &#39;NO&#39;
+});
+</code></pre>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+          <div class='table'>
+            <table>
+              <tr>
+                <td style='vertical-align: middle !important;'>
+                  A checkbox defaulting to <strong>checked</strong>
+                </td>
+                <td>
+                  <input checked='checked' class='yesno' type='checkbox' />
+                </td>
+              </tr>
+              <tr>
+                <td style='vertical-align: middle !important;'>
+                  A checkbox defaulting to <strong>unchecked</strong>
+                </td>
+                <td>
+                  <input class='yesno' type='checkbox' />
+                </td>
+              </tr>
+            </table>
+          </div>
 
-<h3>Authors and Contributors</h3>
+          <h2>Commercial Licensing</h2>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+          <p>Commercial use requires purchase of one-time license fee per developer seat. Commercial use includes any application that makes you money. This includes portfolio sites and premium templates. <a href="https://spb.io/p/on8lagNie5">Commercial licenses may be purchased online</a>. Contact me directly for volume licenses.</p>
 
-<h3>Support or Contact</h3>
+          <p>Use in non-commercial, educational and personal applications is free.</p>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
+        </article>
+    
       <footer>
-        <p>This project is maintained by <a href="https://github.com/tdreyno">tdreyno</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p class="descr">My name is Thomas Reynolds. I'm a Technical Lead at <a href="http://weareinstrument.com">Instrument</a>, lucky denizen of Portland, active Crossfitter, a foodie, a cocktail enthusiast and all-around nerd.</p>
+
+        <p>
+          <a href="http://twitter.com/tdreyno">Twitter</a> &bull;
+          <a href="mailto:me@tdreyno.com">Email</a> &bull;
+          <a href="https://github.com/tdreyno">Github</a> &bull;
+          <a href="http://feeds2.feedburner.com/awf-allposts">RSS</a>
+        </p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+
+
+    <script src='iphone-style-checkboxes/jquery.min.js'></script>
+    <script src='iphone-style-checkboxes/iphone-style-checkboxes.js'></script>
+    <link href='iphone-style-checkboxes/style.css'rel='stylesheet' type='text/css'>
+    <script src='iphone-style-checkboxes/setup.js'></script>
+    <script src="javascripts/highlight.pack.js"></script>
+    <link href="stylesheets/solarized_light.css" rel="stylesheet">
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

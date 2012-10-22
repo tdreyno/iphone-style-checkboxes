@@ -1,0 +1,929 @@
+/* Artfully masterminded by ZURB */
+/* Table of Contents */
+/*  :: Reset & Standards */
+/*  :: Links */
+/*  :: Lists */
+/*  :: Tables */
+/*  :: Misc */
+/* Global Reset & Standards */
+/* Eric Meyer's CSS Reset :: http://meyerweb.com/eric/tools/css/reset/ :: v2.0 | 20110126 :: License: none (public domain) */
+/* line 14, zurb/_globals.sass */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* line 20, zurb/_globals.sass */
+html {
+  font-size: 62.5%; }
+
+/* HTML 5 display-role reset for older browsers */
+/* line 24, zurb/_globals.sass */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+/* line 26, zurb/_globals.sass */
+body {
+  line-height: 1; }
+
+/* line 28, zurb/_globals.sass */
+ol, ul {
+  list-style: none; }
+
+/* line 30, zurb/_globals.sass */
+blockquote, q {
+  quotes: none; }
+  /* line 32, zurb/_globals.sass */
+  blockquote:before, blockquote:after, q:before, q:after {
+    content: "";
+    content: none; }
+
+/* line 35, zurb/_globals.sass */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/* line 39, zurb/_globals.sass */
+body {
+  background: white;
+  font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 13px;
+  font-size: 1.3rem;
+  -webkit-font-smoothing: antialiased;
+  line-height: 18px;
+  color: #555555;
+  position: relative; }
+
+/* Links */
+/* line 49, zurb/_globals.sass */
+a {
+  color: #00a6fc;
+  text-decoration: none;
+  line-height: inherit; }
+  /* line 53, zurb/_globals.sass */
+  a:hover {
+    color: #30b8ff; }
+  /* line 55, zurb/_globals.sass */
+  a:focus {
+    color: #cc4714;
+    outline: none; }
+
+/* line 60, zurb/_globals.sass */
+p a, p a:visited {
+  line-height: inherit; }
+
+/* Lists */
+/* line 64, zurb/_globals.sass */
+ul, ol {
+  margin-bottom: 18px; }
+
+/* line 66, zurb/_globals.sass */
+ul {
+  list-style: none outside; }
+  /* line 68, zurb/_globals.sass */
+  ul.square {
+    list-style: square outside; }
+  /* line 70, zurb/_globals.sass */
+  ul.circle {
+    list-style: circle outside; }
+  /* line 72, zurb/_globals.sass */
+  ul.disc, article ul {
+    list-style: disc outside; }
+
+/* line 74, zurb/_globals.sass */
+ol {
+  list-style: decimal; }
+
+/* line 76, zurb/_globals.sass */
+ol, ul.square, ul.circle, ul.disc, article ul {
+  margin-left: 30px; }
+
+/* line 78, zurb/_globals.sass */
+li {
+  margin-bottom: 12px; }
+
+/* line 80, zurb/_globals.sass */
+ul.large li {
+  line-height: 21px; }
+
+/* Tables */
+/* line 84, zurb/_globals.sass */
+table {
+  background: white;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  margin: 0 0 18px;
+  border: solid 1px #dddddd; }
+  /* line 89, zurb/_globals.sass */
+  table thead, table tfoot {
+    background: whitesmoke; }
+    /* line 92, zurb/_globals.sass */
+    table thead tr th, table tfoot tr th {
+      font-size: 12px;
+      font-size: 1.2rem;
+      line-height: 18px;
+      text-align: left; }
+  /* line 98, zurb/_globals.sass */
+  table thead tr th {
+    padding: 8px 10px 9px;
+    font-size: 14px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #222222; }
+    /* line 103, zurb/_globals.sass */
+    table thead tr th:first-child {
+      border-left: none; }
+    /* line 105, zurb/_globals.sass */
+    table thead tr th:last-child {
+      border-right: none; }
+  /* line 109, zurb/_globals.sass */
+  table tbody tr td {
+    font-size: 14px;
+    font-size: 1.4rem;
+    line-height: 18px;
+    text-align: left;
+    color: #333333;
+    padding: 9px 10px;
+    vertical-align: top;
+    border: none; }
+  /* line 117, zurb/_globals.sass */
+  table tbody tr.even, table tbody tr.alt {
+    background: #f9f9f9; }
+  /* line 119, zurb/_globals.sass */
+  table tbody tr:nth-child(even) {
+    background: #f9f9f9; }
+  /* line 123, zurb/_globals.sass */
+  table tfoot tr td {
+    font-size: 14px;
+    font-size: 1.4rem;
+    line-height: 18px;
+    text-align: left; }
+    /* line 127, zurb/_globals.sass */
+    table tfoot tr td:last-child {
+      border-left: none; }
+    /* line 129, zurb/_globals.sass */
+    table tfoot tr td:last-child {
+      border-right: none; }
+
+/* Misc */
+/* line 133, zurb/_globals.sass */
+.left {
+  float: left; }
+
+/* line 135, zurb/_globals.sass */
+.right {
+  float: right; }
+
+/* line 137, zurb/_globals.sass */
+.hide {
+  display: none; }
+
+/* line 139, zurb/_globals.sass */
+.highlight {
+  background: yellow; }
+
+/* Typography */
+/* line 4, zurb/_typography.sass */
+h1, h2, h3, h4, h5, h6 {
+  color: #181818;
+  font-weight: bold;
+  line-height: 1.25; }
+  /* line 8, zurb/_typography.sass */
+  h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+    color: #777777; }
+  /* line 10, zurb/_typography.sass */
+  h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+    font-weight: inherit; }
+
+/* line 12, zurb/_typography.sass */
+h1 {
+  font-size: 46px;
+  font-size: 4.6rem;
+  margin-bottom: 12px; }
+
+/* line 15, zurb/_typography.sass */
+h2 {
+  font-size: 35px;
+  font-size: 3.5rem;
+  margin-bottom: 9px; }
+
+/* line 18, zurb/_typography.sass */
+h3 {
+  font-size: 28px;
+  font-size: 2.8rem;
+  margin-bottom: 9px; }
+
+/* line 21, zurb/_typography.sass */
+h4 {
+  font-size: 21px;
+  font-size: 2.1rem;
+  margin-bottom: 3px; }
+
+/* line 24, zurb/_typography.sass */
+h5 {
+  font-size: 18px;
+  font-size: 1.8rem;
+  margin-bottom: 3px;
+  font-weight: normal; }
+
+/* line 28, zurb/_typography.sass */
+h6 {
+  font-size: 15px;
+  font-size: 1.5rem;
+  font-weight: normal; }
+
+/* line 32, zurb/_typography.sass */
+.subhead {
+  color: #777777;
+  font-weight: 300;
+  margin-bottom: 24px; }
+
+/* line 37, zurb/_typography.sass */
+p {
+  line-height: 17px;
+  margin: 0 0 18px; }
+  /* line 40, zurb/_typography.sass */
+  p img {
+    margin: 0; }
+  /* line 42, zurb/_typography.sass */
+  p.lead {
+    font-size: 18px;
+    font-size: 1.8rem;
+    line-height: 24px; }
+
+/* line 46, zurb/_typography.sass */
+em, i {
+  font-style: italic;
+  line-height: inherit; }
+
+/* line 49, zurb/_typography.sass */
+strong, b {
+  font-weight: bold;
+  line-height: inherit; }
+
+/* line 52, zurb/_typography.sass */
+small {
+  font-size: 60%;
+  line-height: inherit; }
+
+/* Blockquotes */
+/* line 57, zurb/_typography.sass */
+blockquote {
+  line-height: 20px;
+  color: #777777;
+  margin: 0 0 18px;
+  padding: 9px 20px 0 19px;
+  border-left: 1px solid #dddddd; }
+  /* line 63, zurb/_typography.sass */
+  blockquote p {
+    line-height: 20px;
+    color: #777777; }
+  /* line 66, zurb/_typography.sass */
+  blockquote cite {
+    display: block;
+    font-size: 12px;
+    font-size: 1.2rem;
+    color: #555555; }
+    /* line 70, zurb/_typography.sass */
+    blockquote cite:before {
+      content: "/2014 /0020"; }
+    /* line 72, zurb/_typography.sass */
+    blockquote cite a, blockquote cite a:visited {
+      color: #555555; }
+
+/* line 75, zurb/_typography.sass */
+hr {
+  border: solid #dddddd;
+  border-width: 1px 0 0;
+  clear: both;
+  margin: 12px 0 18px;
+  height: 0; }
+
+/* line 82, zurb/_typography.sass */
+abbr, acronym {
+  text-transform: uppercase;
+  font-size: 90%;
+  color: #222222;
+  border-bottom: 1px solid #dddddd;
+  cursor: help; }
+
+/* line 88, zurb/_typography.sass */
+abbr {
+  text-transform: none; }
+
+/* Print styles. Inlined to avoid required HTTP connection: */ /* www.phpied.com/delay-loading-your-print-css/ */
+/* Credit to Paul Irish and HTML5 Boilerplate (html5boilerplate.com) */
+/* line 93, zurb/_typography.sass */
+.print-only {
+  display: block !important; }
+
+@media print {
+  /* line 96, zurb/_typography.sass */
+  * {
+    background: transparent !important;
+    color: #141414 !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -ms-filter: none !important; }
+
+  /* line 103, zurb/_typography.sass */
+  p a, p a:visited {
+    color: #444444 !important;
+    text-decoration: underline; }
+  /* line 106, zurb/_typography.sass */
+  p a[href]:after {
+    content: " (" attr(href) ")"; }
+
+  /* line 108, zurb/_typography.sass */
+  abbr[title]:after {
+    content: " (" attr(href) ")"; }
+
+  /* line 110, zurb/_typography.sass */
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+    content: ""; }
+
+  /* line 112, zurb/_typography.sass */
+  pre, blockquote {
+    border: solid 1px #999999;
+    page-break-inside: avoid; }
+
+  /* line 115, zurb/_typography.sass */
+  thead {
+    display: table-header-group; }
+
+  /* line 117, zurb/_typography.sass */
+  tr, img {
+    page-break-inside: avoid; }
+
+  @page {
+    margin: 0.5cm; }
+
+  /* line 121, zurb/_typography.sass */
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3; }
+
+  /* line 124, zurb/_typography.sass */
+  h2, h3 {
+    page-break-after: avoid; }
+
+  /* line 126, zurb/_typography.sass */
+  .hide-on-print {
+    display: none !important; }
+
+  /* line 128, zurb/_typography.sass */
+  .print-only {
+    display: block !important; } }
+/* Mobile Grid Fixes */
+/* Typography */
+@media only screen and (max-width: 767px) {
+  /* line 8, zurb/_mobile.sass */
+  h1 {
+    font-size: 32px;
+    font-size: 3.2rem;
+    line-height: 1.3; }
+
+  /* line 11, zurb/_mobile.sass */
+  h2 {
+    font-size: 28px;
+    font-size: 2.8rem;
+    line-height: 1.3; }
+
+  /* line 14, zurb/_mobile.sass */
+  h3 {
+    font-size: 21px;
+    font-size: 2.1rem;
+    line-height: 1.3; }
+
+  /* line 17, zurb/_mobile.sass */
+  h4 {
+    font-size: 18px;
+    font-size: 1.8rem;
+    line-height: 1.2; }
+
+  /* line 20, zurb/_mobile.sass */
+  h5 {
+    font-size: 16px;
+    font-size: 1.6rem;
+    line-height: 1.2; }
+
+  /* line 23, zurb/_mobile.sass */
+  h6 {
+    font-size: 15px;
+    font-size: 1.5rem;
+    line-height: 1.2; }
+
+  /* line 26, zurb/_mobile.sass */
+  body, p {
+    font-size: 15px;
+    font-size: 1.5rem;
+    line-height: 1.4; } }
+/* Tablet screens */
+@media only screen and (device-width: 768px), (device-width: 800) {
+  /* Currently unused */ }
+@media only screen and (max-width: 767px) {
+  /* line 35, zurb/_mobile.sass */
+  body {
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0; }
+
+  /* line 44, zurb/_mobile.sass */
+  .container {
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0; }
+
+  /* line 48, zurb/_mobile.sass */
+  .row {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0; }
+
+  /* line 53, zurb/_mobile.sass */
+  .row .row .column, .row .row .columns {
+    padding: 0; }
+
+  /* line 55, zurb/_mobile.sass */
+  .column, .columns {
+    width: auto !important;
+    float: none;
+    margin-left: 0;
+    margin-right: 0; }
+
+  /* line 60, zurb/_mobile.sass */
+  .column:last-child, .columns:last-child {
+    margin-right: 0; }
+
+  /* line 62, zurb/_mobile.sass */
+  .offset-by-one, .offset-by-two, .offset-by-three, .offset-by-four, .offset-by-five, .offset-by-six, .offset-by-seven, .offset-by-eight, .offset-by-nine, .offset-by-ten, .offset-by-eleven, .centered {
+    margin-left: 0% !important; } }
+/* Mobile 4-column Grid */
+/* line 67, zurb/_mobile.sass */
+.row .phone-one.column:first-child, .row .phone-two.column:first-child, .row .phone-three.column:first-child, .row .phone-four.column:first-child, .row .phone-one.columns:first-child, .row .phone-two.columns:first-child, .row .phone-three.columns:first-child, .row .phone-four.columns:first-child {
+  margin-left: 0; }
+/* line 69, zurb/_mobile.sass */
+.row .phone-one.column, .row .phone-two.column, .row .phone-three.column, .row .phone-four.column, .row .phone-one.columns, .row .phone-two.columns, .row .phone-three.columns, .row .phone-four.columns {
+  margin-left: 4.4%;
+  float: left;
+  min-height: 1px;
+  position: relative;
+  padding: 0; }
+/* line 75, zurb/_mobile.sass */
+.row .phone-one.columns {
+  width: 21.68% !important; }
+/* line 77, zurb/_mobile.sass */
+.row .phone-two.columns {
+  width: 47.8% !important; }
+/* line 79, zurb/_mobile.sass */
+.row .phone-three.columns {
+  width: 73.9% !important; }
+/* line 81, zurb/_mobile.sass */
+.row .phone-four.columns {
+  width: 100% !important; }
+
+/* Block Grid */
+@media only screen and (max-width: 767px) {
+  /* line 88, zurb/_mobile.sass */
+  .block-grid.mobile {
+    margin-left: 0%; }
+    /* line 90, zurb/_mobile.sass */
+    .block-grid.mobile li {
+      float: none;
+      width: 100%;
+      margin-left: 0%; } }
+/* Mobile Visibility Affordances */
+/* line 96, zurb/_mobile.sass */
+.show-on-phones {
+  display: none !important; }
+
+/* line 98, zurb/_mobile.sass */
+.show-on-tablets {
+  display: none !important; }
+
+/* line 100, zurb/_mobile.sass */
+.show-on-desktops {
+  display: block !important; }
+
+/* line 103, zurb/_mobile.sass */
+.hide-on-phones {
+  display: block !important; }
+
+/* line 105, zurb/_mobile.sass */
+.hide-on-tablets {
+  display: block !important; }
+
+/* line 107, zurb/_mobile.sass */
+.hide-on-desktops {
+  display: none !important; }
+
+@media only screen and (max-device-width: 800), only screen and (device-width: 1024px) and (device-width: 600), only screen and (width: 1280) and (orientation: landscape), only screen and (device-width: 800) {
+  /* line 111, zurb/_mobile.sass */
+  .hide-on-phones {
+    display: block !important; }
+
+  /* line 113, zurb/_mobile.sass */
+  .hide-on-tablets {
+    display: none !important; }
+
+  /* line 115, zurb/_mobile.sass */
+  .hide-on-desktops {
+    display: block !important; }
+
+  /* line 118, zurb/_mobile.sass */
+  .show-on-phones {
+    display: none !important; }
+
+  /* line 120, zurb/_mobile.sass */
+  .show-on-tablets {
+    display: block !important; }
+
+  /* line 122, zurb/_mobile.sass */
+  .show-on-desktops {
+    display: none !important; } }
+@media only screen and (max-width: 767px) {
+  /* line 126, zurb/_mobile.sass */
+  .hide-on-phones {
+    display: none !important; }
+
+  /* line 128, zurb/_mobile.sass */
+  .hide-on-tablets {
+    display: block !important; }
+
+  /* line 130, zurb/_mobile.sass */
+  .hide-on-desktops {
+    display: block !important; }
+
+  /* line 133, zurb/_mobile.sass */
+  .show-on-phones {
+    display: block !important; }
+
+  /* line 135, zurb/_mobile.sass */
+  .show-on-tablets {
+    display: none !important; }
+
+  /* line 137, zurb/_mobile.sass */
+  .show-on-desktops {
+    display: none !important; } }
+/* Specific overrides for elements that require something other than display: block */
+/* line 143, zurb/_mobile.sass */
+table.show-on-desktops {
+  display: table !important; }
+/* line 145, zurb/_mobile.sass */
+table.hide-on-phones {
+  display: table !important; }
+/* line 147, zurb/_mobile.sass */
+table.hide-on-tablets {
+  display: table !important; }
+
+@media only screen and (max-device-width: 800), only screen and (device-width: 1024px) and (device-height: 600), only screen and (width: 1280) and (orientation: landscape), only screen and (device-width: 800) {
+  /* line 152, zurb/_mobile.sass */
+  table.hide-on-phones {
+    display: block !important; }
+  /* line 154, zurb/_mobile.sass */
+  table.hide-on-desktops {
+    display: block !important; }
+  /* line 156, zurb/_mobile.sass */
+  table.show-on-tablets {
+    display: block !important; } }
+@media only screen and (max-width: 767px) {
+  /* line 161, zurb/_mobile.sass */
+  table.hide-on-tablets {
+    display: block !important; }
+  /* line 163, zurb/_mobile.sass */
+  table.hide-on-desktops {
+    display: block !important; }
+  /* line 165, zurb/_mobile.sass */
+  table.show-on-phones {
+    display: block !important; } }
+/* Forms */
+@media only screen and (max-width: 767px) {
+  /* line 170, zurb/_mobile.sass */
+  input.input-text, input.input-text.oversize, textarea, form.nice input.input-text, form.nice input.input-text.oversize, form.nice textarea {
+    display: block;
+    width: 96%;
+    padding: 6px 2% 4px;
+    font-size: 18px;
+    font-size: 1.8rem; }
+
+  /* line 175, zurb/_mobile.sass */
+  form.nice input.input-text, form.nice input.input-text.oversize, form.nice textarea {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px; }
+
+  /* line 177, zurb/_mobile.sass */
+  form.nice small.error {
+    padding: 6px 2%;
+    display: block; }
+
+  /* line 180, zurb/_mobile.sass */
+  form.nice .small + .error, form.nice #recent h2 a + .error, #recent h2 form.nice a + .error, form.nice #projects h2 a + .error, #projects h2 form.nice a + .error, form.nice .medium + .error, form.nice .large + .error {
+    width: auto; } }
+/* Buttons */
+@media only screen and (max-width: 767px) {
+  /* line 185, zurb/_mobile.sass */
+  .button {
+    display: block; }
+
+  /* line 187, zurb/_mobile.sass */
+  button.button {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0; } }
+/* Tabs */
+@media only screen and (max-width: 767px) {
+  /* line 194, zurb/_mobile.sass */
+  dl.tabs.mobile, dl.nice.tabs.mobile {
+    width: auto;
+    margin: 20px -20px 40px;
+    height: auto; }
+
+  /* line 198, zurb/_mobile.sass */
+  dl.tabs.mobile dt, dl.tabs.mobile dd, dl.nice.tabs.mobile dt, dl.nice.tabs.mobile dd {
+    float: none;
+    height: auto; }
+
+  /* line 202, zurb/_mobile.sass */
+  dl.tabs.mobile dd a {
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 18px 20px;
+    line-height: 1;
+    border: solid 0 #cccccc;
+    border-width: 1px 0 0;
+    margin: 0;
+    color: #555555;
+    background: #eeeeee;
+    font-size: 15px;
+    font-size: 1.5rem; }
+
+  /* line 214, zurb/_mobile.sass */
+  dl.tabs.mobile dd a.active {
+    height: auto;
+    margin: 0;
+    border-width: 1px 0 0; }
+
+  /* line 219, zurb/_mobile.sass */
+  .nice.tabs.mobile {
+    border-bottom: solid 1px #cccccc;
+    height: auto; }
+
+  /* line 222, zurb/_mobile.sass */
+  .nice.tabs.mobile dd a {
+    padding: 18px 20px;
+    border: none;
+    border-left: none;
+    border-right: none;
+    border-top: solid 1px #cccccc;
+    background: white; }
+    /* line 229, zurb/_mobile.sass */
+    .nice.tabs.mobile dd a.active {
+      border: none;
+      background: #00a6fc;
+      color: white;
+      margin: 0;
+      position: static;
+      top: 0;
+      height: auto; }
+
+  /* line 237, zurb/_mobile.sass */
+  .nice.tabs.mobile dd:first-child a.active {
+    margin-bottom: 0; }
+
+  /* line 240, zurb/_mobile.sass */
+  dl.contained.mobile, dl.nice.contained.mobile {
+    margin-bottom: 0; }
+
+  /* line 242, zurb/_mobile.sass */
+  dl.contained.tabs.mobile dd a {
+    padding: 18px 20px; }
+
+  /* line 244, zurb/_mobile.sass */
+  dl.nice.contained.tabs.mobile dd a {
+    padding: 18px 20px; }
+
+  /* Nav Bar with Dropdowns */
+  /* line 248, zurb/_mobile.sass */
+  .nav-bar {
+    height: auto; }
+    /* line 250, zurb/_mobile.sass */
+    .nav-bar > li {
+      float: none;
+      display: block; }
+      /* line 253, zurb/_mobile.sass */
+      .nav-bar > li > a {
+        text-align: left;
+        border-top: 1px solid #dddddd;
+        border-right: none; }
+      /* line 259, zurb/_mobile.sass */
+      .nav-bar > li.has-flyout > a:after {
+        content: "";
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 4px solid #2a85e8;
+        display: block; }
+      /* line 268, zurb/_mobile.sass */
+      .nav-bar > li:first-child > a {
+        border-top: none; }
+      /* line 271, zurb/_mobile.sass */
+      .nav-bar > li:hover > a {
+        font-weight: bold; }
+      /* line 273, zurb/_mobile.sass */
+      .nav-bar > li:hover ul {
+        position: relative; }
+
+  /* line 275, zurb/_mobile.sass */
+  .flyout {
+    position: relative;
+    width: auto;
+    margin-right: -2px;
+    border-width: 1px 1px 0px 1px; }
+    /* line 280, zurb/_mobile.sass */
+    .flyout.right {
+      float: none;
+      right: auto;
+      left: -1px; }
+    /* line 284, zurb/_mobile.sass */
+    .flyout.small, #recent h2 a.flyout, #projects h2 a.flyout, .flyout.large {
+      width: auto; }
+    /* line 286, zurb/_mobile.sass */
+    .flyout p.last-child {
+      margin-bottom: 18px; } }
+/* Video */
+@media only screen and (max-device-width: 800px), only screen and (device-width: 1024px) and (device-height: 600px), only screen and (width: 1280px) and (orientation: landscape), only screen and (device-width: 800px), only screen and (max-width: 767px) {
+  /* line 291, zurb/_mobile.sass */
+  .video {
+    padding-top: 0; } }
+/* line 6, new.css.scss */
+body {
+  font-size: 15px;
+  font-size: 1.5rem; }
+
+/* line 9, new.css.scss */
+p {
+  line-height: 20px;
+  margin-bottom: 20px; }
+
+/* line 14, new.css.scss */
+header {
+  background: #eee;
+  margin-bottom: 24px; }
+  /* line 17, new.css.scss */
+  header h1 {
+    padding: 12px 0;
+    font-size: 15px;
+    font-size: 1.5rem; }
+    /* line 20, new.css.scss */
+    header h1 a {
+      color: #666; }
+    /* line 22, new.css.scss */
+    header h1 .sub {
+      float: right;
+      color: #666; }
+
+@media only screen and (max-width: 767px) {
+  /* line 29, new.css.scss */
+  header h1 {
+    text-align: center; }
+    /* line 31, new.css.scss */
+    header h1 .sub {
+      display: block;
+      float: none; } }
+/* line 38, new.css.scss */
+#frame, header h1 {
+  margin: 0 auto;
+  max-width: 600px;
+  padding-left: 20px;
+  padding-right: 20px; }
+
+/* line 45, new.css.scss */
+h2 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+  margin-bottom: 18px; }
+
+/* line 51, new.css.scss */
+.small, #recent h2 a, #projects h2 a {
+  font-size: 15px;
+  font-size: 1.5rem; }
+
+/* line 55, new.css.scss */
+article {
+  position: relative; }
+  /* line 57, new.css.scss */
+  article time {
+    display: none; }
+  /* line 59, new.css.scss */
+  article ul {
+    margin-left: 0; }
+    /* line 62, new.css.scss */
+    article ul ul {
+      margin-left: 30px; }
+      /* line 64, new.css.scss */
+      article ul ul li {
+        margin-bottom: 6px; }
+    /* line 67, new.css.scss */
+    article ul h1, article ul h2, article ul h3, article ul h4, article ul h5, article ul h6 {
+      margin-bottom: 6px; }
+  /* line 71, new.css.scss */
+  article p img, article iframe {
+    display: block;
+    margin: auto; }
+  /* line 77, new.css.scss */
+  article code {
+    background: #eee;
+    font-family: monaco, monospace;
+    padding: 0 3px;
+    font-size: 13px; }
+  /* line 83, new.css.scss */
+  article pre {
+    background: #eee;
+    padding: 24px;
+    margin-bottom: 20px; }
+    /* line 87, new.css.scss */
+    article pre code {
+      font-size: 14px;
+      padding: 0; }
+
+/* line 94, new.css.scss */
+#recent {
+  margin-bottom: 24px; }
+  /* line 96, new.css.scss */
+  #recent time {
+    float: right; }
+    @media only screen and (max-width: 767px) {
+      /* line 96, new.css.scss */
+      #recent time {
+        display: none; } }
+
+/* line 104, new.css.scss */
+#recent, #projects {
+  font-size: 14px;
+  font-size: 1.4rem; }
+  /* line 107, new.css.scss */
+  #recent h2 a, #projects h2 a {
+    padding-top: 19px;
+    display: inline;
+    float: right; }
+    @media only screen and (max-width: 767px) {
+      /* line 107, new.css.scss */
+      #recent h2 a, #projects h2 a {
+        display: none; } }
+  /* line 117, new.css.scss */
+  #recent ul.disc, #recent article ul, article #recent ul, #projects ul.disc, #projects article ul, article #projects ul {
+    margin-left: 0; }
+    /* line 120, new.css.scss */
+    #recent ul.disc li a, #recent article ul li a, article #recent ul li a, #projects ul.disc li a, #projects article ul li a, article #projects ul li a {
+      font-weight: bold; }
+
+/* line 126, new.css.scss */
+footer {
+  text-align: center;
+  border-top: 4px solid #eee;
+  padding-top: 18px; }
+
+/* line 132, new.css.scss */
+.albums {
+  list-style: none; }
+  /* line 11, ../../../../.rbenv/versions/1.9.3-p194/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/typography/lists/_bullets.scss */
+  .albums li {
+    list-style-image: none;
+    list-style-type: none;
+    margin-left: 0; }
+  @media only screen and (min-width: 767px) {
+    /* line 135, new.css.scss */
+    .albums li {
+      *zoom: 1; }
+      /* line 38, ../../../../.rbenv/versions/1.9.3-p194/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+      .albums li:after {
+        content: "";
+        display: table;
+        clear: both; }
+    /* line 137, new.css.scss */
+    .albums .cover {
+      float: left;
+      width: 220px; }
+    /* line 141, new.css.scss */
+    .albums .content {
+      float: left;
+      width: 330px; }
+    /* line 145, new.css.scss */
+    .albums .player {
+      float: right;
+      width: 40px;
+      text-align: right; } }
