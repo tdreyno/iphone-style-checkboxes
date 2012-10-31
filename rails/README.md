@@ -33,7 +33,7 @@ Usually you would add this to your `app/assets/javascripts/application.js` file:
 
 This will also automatically require `jquery`.
 
-And also update your `app/assets/javascripts/applications.css` to inlude `ios-checkboxes`
+And also update your `app/assets/stylesheets/applications.css` to inlude `ios-checkboxes`
 
 ```css
 /*
