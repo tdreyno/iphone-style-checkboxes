@@ -1,0 +1,22 @@
+{
+    "name"         : "iphone-style-checkboxes",
+    "version"      : "1.0.0",
+    "description"  : "Turn your checkboxes into iOS-style binary switches",
+    "main"         : [ "jquery/iphone-style-checkboxes.js" ],
+    "homepage"     : "https://github.com/tdreyno/iphone-style-checkboxes",
+    "dependencies" : {
+        "jquery" : ">= 1.5.x"
+    },
+    "keywords"     : [
+        "iphone",
+        "ios",
+        "input",
+        "form",
+        "checkbox"
+    ],
+    "author" : {
+        "name" : "Thomas Reynolds",
+        "web"  : "https://github.com/tdreyno"
+    },
+    "license": "http://opensource.org/licenses/MIT"
+}
