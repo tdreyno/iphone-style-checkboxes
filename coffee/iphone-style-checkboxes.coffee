@@ -45,10 +45,12 @@ class iOSCheckbox
     @wrapCheckboxWithDivs()
     @attachEvents()
     @disableTextSelection()
-  
+
+    @calculateDimensions()
+
+  calculateDimensions: ->
     @optionallyResize('handle') if @resizeHandle
     @optionallyResize('container') if @resizeContainer
-  
     @initialPosition()
 
   isDisabled: -> @elem.is(':disabled')
@@ -91,9 +93,14 @@ class iOSCheckbox
       elem[dimension]()
       
   # Automatically resize the handle or container
-  optionallyResize: (mode) -> 
-    onLabelWidth  = @_getDimension(@onLabel, "width")
-    offLabelWidth = @_getDimension(@offLabel, "width")
+  optionallyResize: (mode) ->
+    onSpan = @onLabel.find('span')
+    onLabelWidth = @_getDimension(onSpan, "width")
+    onLabelWidth += parseInt(onSpan.css('padding-left'), 10)
+
+    offSpan = @offLabel.find('span')
+    offLabelWidth = @_getDimension(offSpan, "width")
+    offLabelWidth += parseInt(offSpan.css('padding-right'), 10)
 
     if mode == "container"
       newWidth = if (onLabelWidth > offLabelWidth)
