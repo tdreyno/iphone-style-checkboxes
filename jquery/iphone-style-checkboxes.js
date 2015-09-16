@@ -156,9 +156,9 @@
       }
       if (iOSCheckbox.dragging) {
         p = (x - iOSCheckbox.dragStartPosition) / this.rightSide;
-        this.elem.prop('checked', p >= 0.5);
+        this.elem.prop('checked', p >= 0.5).change();
       } else {
-        this.elem.prop('checked', !this.elem.prop('checked'));
+        this.elem.prop('checked', !this.elem.prop('checked')).change();
       }
       iOSCheckbox.currentlyClicking = null;
       iOSCheckbox.dragging = null;
