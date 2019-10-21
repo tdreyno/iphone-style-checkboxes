@@ -13,7 +13,7 @@
         }
     ],
     "dependencies": {
-        "jquery": "1"
+        "jquery": "3"
     },
     "description": "Converts normal checkbox inputs into iPhone-style sliders",
     "keywords": [
